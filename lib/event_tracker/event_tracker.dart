@@ -6,44 +6,44 @@ final eventTracker = _EventTracker();
 class _EventTracker {
   static final _firebaseAnalytics = FirebaseAnalytics.instance;
 
-  void log(String name, [Map<String, dynamic>? params]) {
+  Future<void> log(String name, [Map<String, dynamic>? params]) async {
     // Copy params, since we might receive a `const` map which we can't modify.
     params ??= {};
-    _firebaseAnalytics.logEvent(
+    await _firebaseAnalytics.logEvent(
       name: name,
       parameters: Map<String, Object?>.from(params),
     );
   }
 
-  void screen(String screenName, [Map<String, dynamic>? params]) {
-    _firebaseAnalytics.setCurrentScreen(screenName: screenName);
+  Future<void> screen(String screenName, [Map<String, dynamic>? params]) async {
+    await _firebaseAnalytics.setCurrentScreen(screenName: screenName);
   }
 
-  void setUser(dynamic user) {
+  Future<void> setUser(dynamic user) async {
     if (user == null) return;
-    _firebaseAnalytics.setUserId(id: user.uid);
+    await _firebaseAnalytics.setUserId(id: user.uid);
   }
 
-  void logOut() {
-    _firebaseAnalytics.setUserId(id: null);
+  Future<void> logOut() async {
+    await _firebaseAnalytics.setUserId(id: null);
   }
 
-  void logAppOpen(String stationId) {
-    _firebaseAnalytics.logAppOpen();
-    _firebaseAnalytics.setUserProperty(name: 'station', value: stationId);
+  Future<void> logAppOpen(String stationId) async {
+    await _firebaseAnalytics.logAppOpen();
+    await _firebaseAnalytics.setUserProperty(name: 'station', value: stationId);
   }
 
-  Trace startTrace(String trace) {
+  Trace startTrace(String trace)  {
     return FirebasePerformance.instance.newTrace(trace);
   }
 
-  void logShare({
+  Future<void> logShare({
     String name = 'share',
     String contentType = 'share_text',
     String itemId = 'android_app',
     Map<String, dynamic>? aParams,
     String? method,
-  }) {
+  }) async {
     final Map<String, dynamic> params = {
       for (var p in (aParams ?? {}).entries) p.key: p.value,
       'id': itemId,
@@ -54,15 +54,15 @@ class _EventTracker {
     } else {
       method = 'generic';
     }
-    _firebaseAnalytics.logShare(
+    await _firebaseAnalytics.logShare(
       contentType: contentType,
       itemId: itemId,
       method: method,
     );
   }
 
-  void logListenTime(String stationId, int time) {
-    _firebaseAnalytics.logEvent(
+  Future<void> logListenTime(String stationId, int time) async {
+    await _firebaseAnalytics.logEvent(
       name: "listen_time",
       parameters: {'listen_time': time, 'station': stationId},
     );

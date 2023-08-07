@@ -1,4 +1,4 @@
-name: flutter_boilerplate_project
+name: browser_app
 description: A new Flutter project.
 
 publish_to: "none"
@@ -70,7 +70,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-    
+
   # Class Generator
   build_runner: any
   json_serializable: any

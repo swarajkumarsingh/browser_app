@@ -1,5 +1,5 @@
 import 'package:firebase_performance/firebase_performance.dart';
-import 'package:flutter_boilerplate_project/event_tracker/event_tracker.dart';
+import 'package:browser_app/event_tracker/event_tracker.dart';
 
 import '../../../../constants/status_code.dart';
 import '../../../../service/api_service.dart';
@@ -14,7 +14,7 @@ class HomeDataSource {
   Future<RemoteResponse<Home>> getHomeData() async {
     RemoteResponse<Home> remoteResponse;
     try {
-      final Trace customTrace = eventTracker.startTrace("simu-event"); 
+      final Trace customTrace = eventTracker.startTrace("simu-event");
       await customTrace.start();
 
       final response = await apiService.getHomeData();

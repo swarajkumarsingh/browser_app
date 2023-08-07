@@ -30,6 +30,7 @@ class _ErrorTracker {
       await initErrorTrackers();
       FlutterError.onError = errorTracker.onFlutterError;
 
+      // capture isolate errors
       Isolate.current.addErrorListener(RawReceivePort((pair) async {
         final List<dynamic> errorAndStacktrace = pair;
         await FirebaseCrashlytics.instance.recordError(
@@ -64,7 +65,6 @@ class _ErrorTracker {
       FirebaseCrashlytics.instance.recordFlutterFatalError(error),
       Sentry.captureException(error, stackTrace: stackTrace, hint: hint),
     ]);
-    logger.success("SUCCESS");
   }
 
   Future<void> addBreadCrumb(

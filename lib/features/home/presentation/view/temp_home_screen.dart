@@ -1,9 +1,9 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import '../../domain/models/home.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 
 import '../../../../dio/remote_response.dart';
+import '../../../../event_tracker/event_tracker.dart';
 import '../../application/services/home_service.dart';
 
 class TempHomeScreen extends StatelessWidget {
@@ -42,14 +42,7 @@ class TempHomeScreen extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () async {
-                  final FirebaseAnalytics firebaseAnalysis =
-                      FirebaseAnalytics.instance;
-                  await firebaseAnalysis.setAnalyticsCollectionEnabled(true);
-
-                  await firebaseAnalysis.logEvent(
-                    name: "counter_incr",
-                    parameters: <String, dynamic>{"hi": "HELLO"},
-                  );
+                 await eventTracker.log("Simu_cuteness", {"number": "infinite"});
                 },
                 child: const Text("Test firebase analysis"),
               ),
