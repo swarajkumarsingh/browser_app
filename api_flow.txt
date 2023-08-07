@@ -1,0 +1,6 @@
+Button -->
+     HomeViewModel [statemanagement code]
+         --> HomeRepository(a class) [blueprint of functions]
+             --> HomeRepositoryImpl(e class) [check user's network]
+                 --> HomeDataSource(n class) [full code]
+                     --> ApiService.getReferralScreenData [request]

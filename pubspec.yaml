@@ -1,0 +1,83 @@
+name: flutter_boilerplate_project
+description: A new Flutter project.
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Date utils package
+  intl: ^0.18.1
+
+  # Local storage
+  shared_preferences: ^2.2.0
+
+  # Custom util package
+  flutter_approuter: ^3.0.1
+  flutter_logger_plus: ^4.0.0
+  flutter_encrypt_plus: ^2.0.0
+
+  # Restart app
+  restart_app: ^1.2.1
+
+  # Dependency Injection
+  get_it: ^7.6.0
+
+  # Dio
+  dio: ^5.2.1+1
+  dio_smart_retry: ^5.0.0
+
+  # Class Generator
+  freezed_annotation: any
+
+  # Increase FPs
+  flutter_displaymode: ^0.6.0
+
+  # IOS icons
+  cupertino_icons: ^1.0.2
+
+  # Firebase Packages
+  firebase_core: ^2.14.0
+  firebase_crashlytics: ^3.3.3
+  firebase_analytics: ^10.4.3
+
+  # Device Info package
+  device_info_plus: ^9.0.2
+
+  # Handle Permissions
+  permission_handler: ^10.4.3
+
+  # Get more info about user's screen
+  flutter_screenutil: ^5.8.4
+
+  # Check for internet connectivity
+  connectivity_plus: ^4.0.1
+
+  # Cache image locally
+  cached_network_image: ^3.2.3
+
+  # Get app configurations dynamically
+  package_info_plus: ^4.0.2
+  sentry_flutter: ^7.9.0
+  firebase_performance: ^0.9.2+4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+    
+  # Class Generator
+  build_runner: any
+  json_serializable: any
+  freezed: any
+
+  # Flutter Lints
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
