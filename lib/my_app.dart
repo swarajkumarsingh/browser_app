@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 
-import 'constants/constants.dart';
-import 'features/home/presentation/view/temp_home_screen.dart';
+import 'core/constants/constants.dart';
+import 'presentation/view/temp_home_screen.dart';
 import 'utils/restart/restart_widget.dart';
 
 class AppWrapper extends StatelessWidget {

@@ -66,6 +66,8 @@ dependencies:
   package_info_plus: ^4.0.2
   sentry_flutter: ^7.9.0
   firebase_performance: ^0.9.2+4
+  flutter_launcher_icons: ^0.13.1
+  hive: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +80,11 @@ dev_dependencies:
 
   # Flutter Lints
   flutter_lints: ^2.0.0
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icon.png"
 
 flutter:
   uses-material-design: true

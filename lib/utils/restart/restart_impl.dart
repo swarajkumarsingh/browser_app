@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:restart_app/restart_app.dart';
 
-import '../../constants/constants.dart';
-import '../../provider/generic_data_provider.dart';
+import '../../core/constants/constants.dart';
+import '../../data/provider/generic_data_provider.dart';
 import 'restart.dart';
 import 'restart_widget.dart';
 

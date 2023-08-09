@@ -1,5 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/di/injection_container.dart';
+
+final sf = getIt<PreferencesService>();
 abstract class PreferencesService {
   Future<SharedPreferences> provideSharedPreferences();
 
