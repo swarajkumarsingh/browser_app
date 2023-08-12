@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 
 import 'core/constants/constants.dart';
-import 'presentation/view/temp_home_screen.dart';
+import 'presentation/view/home/home_screen.dart';
 import 'utils/restart/restart_widget.dart';
 
 class AppWrapper extends StatelessWidget {
@@ -25,15 +25,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Browser App',
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       scaffoldMessengerKey: scaffoldMessengerKey,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      home: const TempHomeScreen(),
+      home: const HomScreen(),
     );
   }
 }

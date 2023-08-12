@@ -1,8 +1,8 @@
-import '../../data_source/remote_response.dart';
-import '../../../utils/network/network.dart';
-import '../../../domain/repository/home_repository.dart';
-import '../../data_source/online/home_data_source.dart';
-import '../../../domain/models/home.dart';
+import '../data_source/remote_response.dart';
+import '../../utils/network/network.dart';
+import '../../domain/repository/home_repository.dart';
+import '../data_source/online/home_data_source.dart';
+import '../../domain/models/home.dart';
 
 final homeRepositoryImpl = HomeRepositoryImpl(homeDataSource);
 

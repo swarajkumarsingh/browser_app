@@ -1,20 +1,22 @@
+import '../../domain/models/home/home_fake_news.dart';
 
-
-import '../../domain/models/home.dart';
-
-class HomeDataProvider {
-  List<Home> fakeData = <Home>[
-    const Home(
-        userId: 1,
-        id: 8392,
-        title: "placeat quia et porro iste",
-        body:
-            "quasi excepturi consequatur iste autem temporibus sed molestiae beatae\net quaerat et esse ut\nvoluptatem occaecati et vel explicabo autem\nasperiores pariatur deserunt optio"),
-    const Home(
-        userId: 2,
-        id: 5254,
-        title: "nostrum quis quasi placeat",
-        body:
-            "eos et molestiae\nnesciunt ut a\ndolores perspiciatis repellendus repellat aliquid\nmagnam sint rem ipsum est"),
-  ];
-}
+List<FakeNews> fakeNewsData = [
+  FakeNews(
+      image:
+          "https://akm-img-a-in.tosshub.com/indiatoday/images/media_bank/202308/no-confidence-motion-highlights-080321-16x9_0.jpg?VersionId=Rhsvv7RD4rphXWjD21QMkPv7tZj5E8gB",
+      description:
+          "No-trust motion debate: Who is the winner? Prime Minister Modi today lashed out at the Gandhis, the Congress and the opposition alliance INDIA",
+      redirectUrl: ""),
+  FakeNews(
+      image:
+          "https://www.hindustantimes.com/ht-img/img/2023/06/21/550x309/APTOPIX-India-Modi-Yoga-Diplomacy-0_1687316824320_1687316879637.jpg",
+      description:
+          "Morning brief: 75 US lawmakers urge Biden to raise rights issues with PM Modi; and all the latest news",
+      redirectUrl: ""),
+  FakeNews(
+      image:
+          "https://www.studmentor.com/wp-content/uploads/2023/06/Daily-School-Assembly-Today-News-Headlines-for-03-June-2023-1024x576.jpg",
+      description:
+          "Daily School Assembly Today News Headlines for 03 June 2023",
+      redirectUrl: ""),
+];

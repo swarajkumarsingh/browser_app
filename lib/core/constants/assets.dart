@@ -1,1 +1,4 @@
-const fbIcon = 'assets/images/facebook_ic.png';
+class Assets {
+  Assets._();
+  static String fullLogo = "assets/images/full-logo.png";
+}
