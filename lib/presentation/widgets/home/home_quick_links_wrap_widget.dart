@@ -15,7 +15,7 @@ class HomeQuickLinkWrapWidget extends StatelessWidget {
       spacing: 18,
       runSpacing: 15,
       children: [
-        ...fakeQuickLinks.map(
+        ...fakeFavoriteLinks.map(
           (e) {
             return QuickLinksWidget(
               image: e.imageUrl,

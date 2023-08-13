@@ -44,8 +44,9 @@ dependencies:
 
   # Firebase Packages
   firebase_core: ^2.14.0
-  firebase_crashlytics: ^3.3.3
   firebase_analytics: ^10.4.3
+  firebase_crashlytics: ^3.3.3
+  firebase_performance: ^0.9.2+4
 
   # Device Info package
   device_info_plus: ^9.0.2
@@ -64,10 +65,14 @@ dependencies:
 
   # Get app configurations dynamically
   package_info_plus: ^4.0.2
+
+  # Custom error handler
   sentry_flutter: ^7.9.0
-  firebase_performance: ^0.9.2+4
-  flutter_launcher_icons: ^0.13.1
+
+  # Local no-sql DB
   hive: ^2.2.3
+
+  # Custom icons
   font_awesome_flutter: ^10.5.0
 
 dev_dependencies:
@@ -78,6 +83,9 @@ dev_dependencies:
   build_runner: any
   json_serializable: any
   freezed: any
+
+  # Flutter icons Generator
+  flutter_launcher_icons: ^0.13.1
 
   # Flutter Lints
   flutter_lints: ^2.0.0

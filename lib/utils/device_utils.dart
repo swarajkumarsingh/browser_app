@@ -4,10 +4,11 @@
 ///  description:  设备信息工具类
 
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class JhDeviceUtils {
+class DeviceUtils {
   static bool get isDesktop => !isWeb && (isWindows || isLinux || isMacOS);
 
   static bool get isMobile => isAndroid || isIOS;

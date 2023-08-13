@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Colors {
-  Colors._();
+final colors = _Colors();
 
-  static const Color textFieldColor = Color.fromRGBO(243, 240, 240, 1);
-  static final Color black = Colors.black;
-  static final Color white = Colors.white;
-  static final Color grey = Colors.grey;
-  static final Color blue = Colors.blue;
-  static final Color red = Colors.red;
+class _Colors {
+  Color homeTextFieldColor = const Color.fromARGB(255, 239, 238, 238);
+  Color black = Colors.black;
+  Color white = Colors.white;
+  Color grey = Colors.grey;
+  Color blue = Colors.blue;
+  Color red = Colors.red;
 }

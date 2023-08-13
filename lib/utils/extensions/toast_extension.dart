@@ -8,4 +8,3 @@ extension ScaffoldMessengerStateUtils on ScaffoldMessengerState {
     ));
   }
 }
-

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'dio_constants.dart';
 
+import 'dio_constants.dart';
 import 'interceptors/app_interceptors.dart';
 
 /// Usage [API]

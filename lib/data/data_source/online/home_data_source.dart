@@ -2,10 +2,10 @@ import 'package:firebase_performance/firebase_performance.dart';
 import '../../../core/constants/status_code.dart';
 import '../../../core/event_tracker/event_tracker.dart';
 
+import '../../../domain/models/home/home.dart';
 import '../../service/api_service.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 
-import '../../../domain/models/home.dart';
 import '../remote_response.dart';
 
 final homeDataSource = HomeDataSource();
