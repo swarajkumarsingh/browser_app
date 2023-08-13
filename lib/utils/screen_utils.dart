@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class JhScreenUtils {
+class ScreenUtils {
   static Future<void> init(BuildContext context) async {
     // If the design draft is designed according to the size of iPhone6(iPhone6 750*1334)
     await ScreenUtil.init(context, designSize: const Size(750, 1334));
@@ -51,6 +51,11 @@ class JhScreenUtils {
       WidgetsBinding.instance.platformDispatcher.views.single,
     );
     return mediaQuery.size.height;
+  }
+
+  static double keyBoardHeight(BuildContext context) {
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    return keyboardHeight;
   }
 
   static double get scale {
