@@ -16,15 +16,11 @@ class HomeQuickLinkWrapWidget extends StatelessWidget {
       children: [
         ...fakeFavoriteLinks.map(
           (e) {
-            return SizedBox(
-              height: 80,
-              width: 70,
-              child: SingleChildScrollView(
-                child: QuickLinksWidget(
-                  image: e.imageUrl,
-                  text: e.text,
-                  redirectUrl: e.redirectLink,
-                ),
+            return SingleChildScrollView(
+              child: QuickLinksWidget(
+                image: e.imageUrl,
+                text: e.text,
+                redirectUrl: e.redirectLink,
               ),
             );
           },

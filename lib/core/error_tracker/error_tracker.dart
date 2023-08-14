@@ -28,6 +28,8 @@ class _ErrorTracker {
       }
 
       await initErrorTrackers();
+
+      // track all flutter errors
       FlutterError.onError = errorTracker.onFlutterError;
 
       // capture isolate errors

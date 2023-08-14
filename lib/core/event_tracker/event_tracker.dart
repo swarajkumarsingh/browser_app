@@ -28,7 +28,7 @@ class _EventTracker {
     await _firebaseAnalytics.setUserId(id: null);
   }
 
-  Future<void> logAppOpen(String stationId) async {
+  Future<void> logAppOpen([String stationId = ""]) async {
     await _firebaseAnalytics.logAppOpen();
     await _firebaseAnalytics.setUserProperty(name: 'station', value: stationId);
   }

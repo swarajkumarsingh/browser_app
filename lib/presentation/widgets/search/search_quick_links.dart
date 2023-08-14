@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:browser_app/presentation/widgets/search/search_sub_quick_links.dart';
+import 'search_sub_quick_links.dart';
 
 import '../../../core/common/widgets/spaces.dart';
 import '../../../core/constants/color.dart';

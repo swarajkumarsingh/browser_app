@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-
-
 class QuickLinksWidget extends StatelessWidget {
   const QuickLinksWidget({
     Key? key,
@@ -15,8 +13,8 @@ class QuickLinksWidget extends StatelessWidget {
   final String image;
   final String redirectUrl;
 
-  final double wrapIconHeight = 60.0;
-  final double wrapIconWidth = 60.0;
+  final double wrapIconHeight = 50.0;
+  final double wrapIconWidth = 50.0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +23,16 @@ class QuickLinksWidget extends StatelessWidget {
         SizedBox(
           height: wrapIconHeight,
           width: wrapIconWidth,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: CachedNetworkImage(
-              imageUrl: image,
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CircularProgressIndicator(
-                  value: downloadProgress.progress,
-                ),
+          child: CachedNetworkImage(
+            imageUrl: image,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: CircularProgressIndicator(
+                value: downloadProgress.progress,
               ),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
         Text(text),

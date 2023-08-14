@@ -1,17 +1,17 @@
-import 'dart:io';
 import 'dart:async';
+import 'dart:io';
 
-import 'core/config/firebase_options.dart';
-import 'utils/orientation.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 
-import 'my_app.dart';
-import 'core/di/injection_container.dart';
+import 'core/config/firebase_options.dart';
 import 'core/constants/http_override.dart';
+import 'core/di/injection_container.dart';
 import 'core/error_tracker/error_tracker.dart';
+import 'my_app.dart';
+import 'utils/orientation.dart';
 
 Future<void> main() async => _init();
 
@@ -30,6 +30,7 @@ Future<void> _init() async {
     // add error observers & handle them
     await errorTracker.handleError();
 
+    // Set high re-fresh rate (android only)
     await FlutterDisplayMode.setHighRefreshRate();
 
     // added PreferredOrientations

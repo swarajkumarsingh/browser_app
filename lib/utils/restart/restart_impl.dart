@@ -22,7 +22,10 @@ class RestartClassImpl extends RestartClass {
   void silentRestart([BuildContext? context]) {
     int numOfRetries = 0;
 
-    // Some errors occurs every time, and in that case restart app goes to an infinite loop, to prevent that we take a track of restart and if it exceeds the number, we exit the app
+    /*
+     * Some errors occurs every time, and in that case restart app goes to an infinite loop,
+     * to prevent that we take a track of restart and if it exceeds the number, we exit the app.
+     */
     try {
       if (numOfRetries == maxNumberOfRestartTries ||
           numOfRetries > maxNumberOfRestartTries) {
