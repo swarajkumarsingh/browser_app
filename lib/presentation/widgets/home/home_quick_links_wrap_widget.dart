@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../data/local/fav_links.dart';
 import 'home_quick_links_.dart';
 
-
 class HomeQuickLinkWrapWidget extends StatelessWidget {
   const HomeQuickLinkWrapWidget({
     super.key,
@@ -17,10 +16,16 @@ class HomeQuickLinkWrapWidget extends StatelessWidget {
       children: [
         ...fakeFavoriteLinks.map(
           (e) {
-            return QuickLinksWidget(
-              image: e.imageUrl,
-              text: e.text,
-              redirectUrl: e.redirectLink,
+            return SizedBox(
+              height: 80,
+              width: 70,
+              child: SingleChildScrollView(
+                child: QuickLinksWidget(
+                  image: e.imageUrl,
+                  text: e.text,
+                  redirectUrl: e.redirectLink,
+                ),
+              ),
             );
           },
         ),

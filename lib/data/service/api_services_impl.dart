@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../config.dart';
+import '../../core/config/config.dart';
 import '../../core/dio/api.dart';
 import 'api_service.dart';
 
