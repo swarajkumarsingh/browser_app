@@ -1,5 +1,7 @@
+import 'package:browser_app/presentation/view/webview/webview_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_approuter/flutter_approuter.dart';
 
 class QuickLinksWidget extends StatelessWidget {
   const QuickLinksWidget({
@@ -18,25 +20,30 @@ class QuickLinksWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: wrapIconHeight,
-          width: wrapIconWidth,
-          child: CachedNetworkImage(
-            imageUrl: image,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: CircularProgressIndicator(
-                value: downloadProgress.progress,
+    return GestureDetector(
+      onTap: () {
+        appRouter.push(WebviewScreen(url: redirectUrl));
+      },
+      child: Column(
+        children: [
+          SizedBox(
+            height: wrapIconHeight,
+            width: wrapIconWidth,
+            child: CachedNetworkImage(
+              imageUrl: image,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                ),
               ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
-        ),
-        Text(text),
-      ],
+          Text(text),
+        ],
+      ),
     );
   }
 }

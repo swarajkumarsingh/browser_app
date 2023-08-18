@@ -9,6 +9,27 @@ class PreferencesServiceImpl implements PreferencesService {
   PreferencesServiceImpl({required this.sharedPreferences});
 
   @override
+  bool containsKey(String key) {
+    logger.info("containsKey: key = $key");
+    return sharedPreferences.containsKey(key);
+  }
+
+  @override
+  Future<bool> clear() async {
+    return sharedPreferences.clear();
+  }
+
+  @override
+  Future<void> reload() async {
+    return sharedPreferences.reload();
+  }
+
+  @override
+  Future<bool> remove({required String key}) async {
+    return sharedPreferences.remove(key);
+  }
+
+  @override
   Future<SharedPreferences> provideSharedPreferences() {
     return SharedPreferences.getInstance();
   }
@@ -26,9 +47,21 @@ class PreferencesServiceImpl implements PreferencesService {
   }
 
   @override
+  Future setDouble({required String key, required double value}) {
+    logger.info("setInt: key = $key, value = $value");
+    return sharedPreferences.setDouble(key, value);
+  }
+
+  @override
   Future setString({required String key, required String value}) {
     logger.info("setString: key = $key, value = $value");
     return sharedPreferences.setString(key, value);
+  }
+
+  @override
+  Future setStringList({required String key, required List<String> value}) {
+    logger.info("setString: key = $key, value = $value");
+    return sharedPreferences.setStringList(key, value);
   }
 
   @override
@@ -39,8 +72,15 @@ class PreferencesServiceImpl implements PreferencesService {
 
   @override
   int getInt({required String key, required int defaultValue}) {
+    final res = sharedPreferences.getInt(key) ?? defaultValue;
+    logger.info("getInt: key = $key, value = $res");
+    return res;
+  }
+
+  @override
+  double getDouble({required String key, required double defaultValue}) {
     logger.info("getInt: key = $key, defaultValue = $defaultValue");
-    return sharedPreferences.getInt(key) ?? defaultValue;
+    return sharedPreferences.getDouble(key) ?? defaultValue;
   }
 
   @override
@@ -50,8 +90,9 @@ class PreferencesServiceImpl implements PreferencesService {
   }
 
   @override
-  bool containsKey(String key) {
-    logger.info("containsKey: key = $key");
-    return sharedPreferences.containsKey(key);
+  List<String> getStringValue(
+      {required String key, required List<String> defaultValue}) {
+    logger.info("getString: key = $key, defaultValue = $defaultValue");
+    return sharedPreferences.getStringList(key) ?? defaultValue;
   }
 }

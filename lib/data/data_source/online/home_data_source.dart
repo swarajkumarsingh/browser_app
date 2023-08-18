@@ -1,11 +1,11 @@
+import 'package:browser_app/utils/text_utils.dart';
 import 'package:firebase_performance/firebase_performance.dart';
-import '../../../core/constants/status_code.dart';
-import '../../../core/event_tracker/event_tracker.dart';
-
-import '../../../domain/models/home/home.dart';
-import '../../service/api_service.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 
+import '../../../core/constants/status_code.dart';
+import '../../../core/event_tracker/event_tracker.dart';
+import '../../../domain/models/home/home.dart';
+import '../../service/api_service.dart';
 import '../remote_response.dart';
 
 final homeDataSource = HomeDataSource();
@@ -21,7 +21,7 @@ class HomeDataSource {
       customTrace.setMetric("fetched-api", 1);
 
       if (response.statusCode != STATUS_OK ||
-          response.data.toString().isEmpty ||
+          textUtils.isEmpty(response.data) ||
           response.data == null) {
         return RemoteResponse.somethingWentWrong();
       }

@@ -15,7 +15,7 @@ class HomeSearchTextField extends StatelessWidget {
     return SizedBox(
       height: 100,
       child: GestureDetector(
-        onTap: () => appRouter.pushNamed(SearchScreen.routeName),
+        onTap: () => appRouter.push(const SearchScreen()),
         child: TextField(
           readOnly: true,
           enabled: false,

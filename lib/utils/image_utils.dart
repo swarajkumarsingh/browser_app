@@ -7,6 +7,7 @@
 
 // ignore_for_file: avoid_print
 
+import 'package:browser_app/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -43,7 +44,7 @@ class JhImageUtils {
   /// 加载本地或者URL图片
   static ImageProvider loadImage(String imageUrl,
       {String placeholder = 'ic_placeholder'}) {
-    if (imageUrl.isEmpty) {
+    if (textUtils.isEmpty(imageUrl)) {
       return AssetImage(getImgPath(placeholder));
     }
     return CachedNetworkImageProvider(imageUrl,

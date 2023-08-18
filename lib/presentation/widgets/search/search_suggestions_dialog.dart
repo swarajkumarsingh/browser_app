@@ -1,3 +1,4 @@
+import 'package:browser_app/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/local/search_suggestions.dart';
@@ -13,7 +14,7 @@ class ShowSuggestionsDialog extends StatelessWidget {
       margin: const EdgeInsets.all(8),
       padding: const EdgeInsets.all(12),
       width: double.infinity,
-      height: 370,
+      height: ScreenUtils.screenHeight / 2 - 30,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
@@ -26,6 +27,9 @@ class ShowSuggestionsDialog extends StatelessWidget {
         children: [
           Text(
             "Search Result for $value on web",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            softWrap: true,
             style: const TextStyle(
               fontSize: 18,
             ),

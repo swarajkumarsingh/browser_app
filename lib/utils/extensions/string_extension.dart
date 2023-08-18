@@ -8,6 +8,11 @@ extension StringExtension on String {
 
   String get capitalize =>
       isEmpty ? '' : '${this[0].toUpperCase()}${substring(1)}';
+
+  bool get containsSpaces =>
+      contains(" ") || contains("  ") || contains("   ") ? true : false;
+
+  bool get containsDot => contains(".") ? true : false;
 }
 
 extension Prettify on String {

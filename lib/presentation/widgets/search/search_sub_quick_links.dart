@@ -1,5 +1,7 @@
+import 'package:browser_app/presentation/view/webview/webview_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_approuter/flutter_approuter.dart';
 
 import '../../../core/common/widgets/spaces.dart';
 
@@ -16,23 +18,26 @@ class SubSearchScreenQuickLinks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  SizedBox(
-      height: 80,
-      width: 80,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 20,
-            width: 20,
-            child: CachedNetworkImage(
-              imageUrl: image,
+    return GestureDetector(
+      onTap: () => appRouter.push(WebviewScreen(url: redirectUrl)),
+      child: SizedBox(
+        height: 80,
+        width: 80,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 20,
+              width: 20,
+              child: CachedNetworkImage(
+                imageUrl: image,
+              ),
             ),
-          ),
-          const VerticalSpace(height: 20),
-          Text(name),
-        ],
+            const VerticalSpace(height: 20),
+            Text(name),
+          ],
+        ),
       ),
     );
   }

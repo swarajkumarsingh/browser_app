@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 import 'core/config/firebase_options.dart';
@@ -29,6 +31,8 @@ Future<void> _init() async {
 
     // add error observers & handle them
     await errorTracker.handleError();
+
+    await FlutterDownloader.initialize(debug: kDebugMode, ignoreSsl: true);
 
     // Set high re-fresh rate (android only)
     await FlutterDisplayMode.setHighRefreshRate();

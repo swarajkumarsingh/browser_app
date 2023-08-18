@@ -11,7 +11,7 @@ class AppInterceptors extends Interceptor {
         "Sending ${options.method.toUpperCase()} request to ${options.uri}");
 
     // reject re-try request if user is not connected to internet
-    final bool result = await networkUtils.isNetworkConnected();
+    final bool result = await isNetworkAvailable;
     if (result == false) {
       return handler.reject(
         DioException.connectionError(

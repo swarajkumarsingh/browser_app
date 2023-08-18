@@ -1,9 +1,11 @@
-import 'core/event_tracker/event_tracker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 
+import 'package:browser_app/core/constants/color.dart';
+import 'package:browser_app/presentation/view/home/home_screen.dart';
+
 import 'core/constants/constants.dart';
-import 'presentation/view/home/home_screen.dart';
+import 'core/event_tracker/event_tracker.dart';
 import 'router.dart';
 import 'utils/restart/restart_widget.dart';
 
@@ -44,9 +46,12 @@ class _MyAppState extends State<MyApp> {
       onGenerateRoute: (settings) => generateRoute(settings),
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: colors.white,
+          background: colors.white,
+        ),
       ),
-      home: const HomScreen(),
+      home: const HomeScreen(),
     );
   }
 }

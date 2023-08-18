@@ -1,5 +1,3 @@
-import 'package:flutter_approuter/flutter_approuter.dart';
-
 import '../../../core/event_tracker/event_tracker.dart';
 import 'package:flutter/material.dart';
 
@@ -10,17 +8,16 @@ import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/home/home_news_feed_widget.dart';
 import '../../widgets/home/home_quick_links_wrap_widget.dart';
 import '../../widgets/home/home_search_textfield.dart';
-import '../search/search_screen.dart';
 
-class HomScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
-  const HomScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
-  State<HomScreen> createState() => _HomScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomScreenState extends State<HomScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
@@ -35,34 +32,37 @@ class _HomScreenState extends State<HomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: homeAppBar(),
-      backgroundColor: Colors.white,
       bottomNavigationBar: bottomNavigationBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              /// [Search Textfield]
-              const HomeSearchTextField(),
+      body: homeBody(),
+    );
+  }
 
-              /// [Quick links]
-              const HomeQuickLinkWrapWidget(),
+  SingleChildScrollView homeBody() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            /// [Search Textfield]
+            const HomeSearchTextField(),
 
-              // Spacing
-              const VerticalSpace(height: 20),
+            /// [Quick links]
+            const HomeQuickLinkWrapWidget(),
 
-              /// [News widget]
-              ...fakeNewsData.map(
-                (e) => NewsWidget(
-                  image: e.image,
-                  description: e.description,
-                  redirectUrl: e.redirectUrl,
-                ),
+            // Spacing
+            const VerticalSpace(height: 20),
+
+            /// [News widget]
+            ...fakeNewsData.map(
+              (e) => NewsWidget(
+                image: e.image,
+                description: e.description,
+                redirectUrl: e.redirectUrl,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -71,13 +71,15 @@ class _HomScreenState extends State<HomScreen> {
   AppBar homeAppBar() {
     return AppBar(
       centerTitle: true,
+      elevation: 0,
+      scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
           height: 100,
           width: 100,
-          child: Image.asset(Assets.fullLogo),
+          child: Image.asset(assets.fullLogo),
         ),
       ),
       title: const FittedBox(
@@ -115,38 +117,29 @@ class _HomScreenState extends State<HomScreen> {
   }
 
   BottomNavigationBarItem settingsNavigationBar() {
-    return BottomNavigationBarItem(
-      icon: GestureDetector(
-        onTap: () {
-          appRouter.pushNamed(SearchScreen.routeName);
-        },
-        child: const Icon(Icons.settings),
-      ),
+    return const BottomNavigationBarItem(
+      icon: SettingsIconWidget(),
       label: "Settings",
     );
   }
 
   BottomNavigationBarItem tabsNavigationIcon() {
-    return BottomNavigationBarItem(
-      icon: GestureDetector(onTap: () {}, child: const TabsNavigationIcon()),
+    return const BottomNavigationBarItem(
+      icon: TabsNavigationIcon(),
       label: "Tabs",
     );
   }
 
   BottomNavigationBarItem plusNavigationIcon() {
-    return BottomNavigationBarItem(
-      icon: GestureDetector(onTap: () {}, child: const PlusIconWidget()),
+    return const BottomNavigationBarItem(
+      icon: PlusIconWidget(),
       label: "Add",
     );
   }
 
   BottomNavigationBarItem searchNavigationIcon() {
-    return BottomNavigationBarItem(
-      icon: GestureDetector(
-          onTap: () {
-            appRouter.pushNamed(SearchScreen.routeName);
-          },
-          child: const SearchNavigationIcon()),
+    return const BottomNavigationBarItem(
+      icon: SearchNavigationIcon(),
       label: "Search",
     );
   }

@@ -1,14 +1,20 @@
+import 'package:browser_app/utils/browser/browser_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_approuter/flutter_approuter.dart';
 
 import '../../../core/constants/color.dart';
 import '../../../core/event_tracker/event_tracker.dart';
 import '../../../data/local/search_quick_links.dart';
+import '../../../utils/text_utils.dart';
 import '../../widgets/search/search_quick_links.dart';
 import '../../widgets/search/search_suggestions_dialog.dart';
+import '../webview/webview_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = '/search-screen';
+
   final bool focusTextfield;
+
   const SearchScreen({
     Key? key,
     this.focusTextfield = true,
@@ -32,6 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     _textEditingController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -39,7 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
     await eventTracker.screen("search-screen");
   }
 
-  void showKeyboard(BuildContext context) {
+  void _showKeyboard(BuildContext context) {
     if (widget.focusTextfield == true) {
       FocusScope.of(context).requestFocus(_focusNode);
     }
@@ -47,37 +54,41 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    showKeyboard(context);
+    _showKeyboard(context);
 
     return Scaffold(
       appBar: searchScreenAppBar(_textEditingController),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _showSuggestions
-                ? ShowSuggestionsDialog(
-                    value: _textEditingController.text,
-                  )
-                : const SizedBox(),
-            Column(
-              children: [
-                SearchScreenQuickLinks(
-                    tag: "Most Visited", quickLinks: fakeRecentQuickLinks),
-                SearchScreenQuickLinks(
-                    tag: "Shopping", quickLinks: fakeRecentQuickLinks),
-                SearchScreenQuickLinks(
-                    tag: "News", quickLinks: fakeRecentQuickLinks),
-              ],
-            ),
-          ],
-        ),
+      body: searchScreenBody(),
+    );
+  }
+
+  SingleChildScrollView searchScreenBody() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _showSuggestions
+              ? ShowSuggestionsDialog(
+                  value: _textEditingController.text,
+                )
+              : const SizedBox(),
+          Column(
+            children: [
+              SearchScreenQuickLinks(
+                  tag: "Most Visited", quickLinks: fakeRecentQuickLinks),
+              SearchScreenQuickLinks(
+                  tag: "Shopping", quickLinks: fakeRecentQuickLinks),
+              SearchScreenQuickLinks(
+                  tag: "News", quickLinks: fakeRecentQuickLinks),
+            ],
+          ),
+        ],
       ),
     );
   }
 
   AppBar searchScreenAppBar(TextEditingController _textEditingController) {
     void _onChanged(String value) {
-      if (value.toString().isEmpty) {
+      if (value.isEmpty) {
         setState(() {
           _showSuggestions = false;
         });
@@ -86,6 +97,27 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         _showSuggestions = true;
       });
+    }
+
+    void _onSubmitted(String prompt) {
+      FocusScope.of(context).unfocus();
+
+      // Url
+      if (textUtils.promptIsUrl(prompt)) {
+        appRouter.push(WebviewScreen(
+          url: browserUtils.addHttpToDomain(prompt),
+          prompt: "",
+        ));
+        return;
+      }
+
+      // Query
+      prompt = textUtils.replaceSpaces(prompt);
+
+      appRouter.push(WebviewScreen(
+        url: browserUtils.addQueryToGoogle(prompt),
+        prompt: prompt,
+      ));
     }
 
     void _onTap() {
@@ -99,14 +131,15 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return AppBar(
       elevation: 0,
-      centerTitle: true,
-      toolbarHeight: 80,
       leadingWidth: 30,
+      toolbarHeight: 80,
+      centerTitle: true,
       scrolledUnderElevation: 0,
       backgroundColor: colors.white,
       title: TextField(
         focusNode: _focusNode,
         onChanged: _onChanged,
+        onSubmitted: _onSubmitted,
         controller: _textEditingController,
         decoration: InputDecoration(
           filled: true,

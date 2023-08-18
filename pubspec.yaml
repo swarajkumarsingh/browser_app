@@ -20,7 +20,7 @@ dependencies:
 
   # Custom util package
   flutter_approuter: ^3.0.1
-  flutter_logger_plus: ^4.0.0
+  flutter_logger_plus: ^4.0.2
   flutter_encrypt_plus: ^2.0.0
 
   # Restart app
@@ -74,6 +74,11 @@ dependencies:
 
   # Custom icons
   font_awesome_flutter: ^10.5.0
+
+  # Webview
+  webview_flutter: ^4.2.2
+  flutter_downloader: ^1.11.1
+  path_provider: ^2.1.0
 
 dev_dependencies:
   flutter_test:
