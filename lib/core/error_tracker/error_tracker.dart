@@ -68,11 +68,18 @@ class _ErrorTracker {
         await FirebaseCrashlytics.instance.recordError(error, stackTrace);
         await Sentry.captureException(error,
             stackTrace: stackTrace, hint: hint);
-            return;
+        return;
       }
 
+      final flutterErrorDetails = FlutterErrorDetails(
+        exception: error.toString(),
+        stack: stackTrace,
+        library: "firebase-crash-analysis",
+      );
+
       await Future.wait([
-        FirebaseCrashlytics.instance.recordFlutterFatalError(error),
+        FirebaseCrashlytics.instance
+            .recordFlutterFatalError(flutterErrorDetails),
         Sentry.captureException(error, stackTrace: stackTrace, hint: hint),
       ]);
     } catch (e) {

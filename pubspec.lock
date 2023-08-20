@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.13.0"
+  android_path_provider:
+    dependency: "direct main"
+    description:
+      name: android_path_provider
+      sha256: "398fb6f83476ba2c6b0930d997ca19376a242d3264c615d3f09ea77382fa09c3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   archive:
     dependency: transitive
     description:
@@ -410,10 +418,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_approuter
-      sha256: a576f0a18f2cf1aea63f5e9c378d4d4c9696e95954d74d1b646c37a84670819f
+      sha256: "575c6577ba28a42176a2361b4108f7f421af5ba3ccfa07dfeaf71fc20fe9b156"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "3.0.3"
   flutter_blurhash:
     dependency: transitive
     description:
@@ -446,14 +454,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
-  flutter_encrypt_plus:
-    dependency: "direct main"
-    description:
-      name: flutter_encrypt_plus
-      sha256: db0f7c343c570b827a91e5eb896bfe7e5bae30b9640dd58e4fb7d94bae454781
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -496,6 +496,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      sha256: "474f7d506230897a3cd28c965ec21c5328ae5605fc9c400cd330e9e9d6ac175c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.2.2"
   font_awesome_flutter:
     dependency: "direct main"
     description:

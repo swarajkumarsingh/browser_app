@@ -29,7 +29,7 @@ List<QuickLinks> fakeRecentQuickLinks = [
     text: "Amazon",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/2500px-Amazon_icon.svg.png",
-    redirectLink: "http://amazon.in/",
+    redirectLink: "https://amazon.in/",
   ),
   QuickLinks(
     text: "Facebook",

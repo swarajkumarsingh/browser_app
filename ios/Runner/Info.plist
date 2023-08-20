@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSIncludesSubdomains</key>
+    <true/>
+    <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+    <true/>
+    <key>NSAllowsArbitraryLoads</key><true/>
+    <key>NSTemporaryExceptionMinimumTLSVersion</key>
+    <string>TLSv1.1</string>
+	<key>FDMaximumConcurrentTasks</key>
+	<integer>5</integer>
+	<key>FDAllFilesDownloadedMessage</key>
+	<string>All files have been downloaded</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

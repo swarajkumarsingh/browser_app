@@ -4,7 +4,6 @@ import 'package:browser_app/utils/clipboard.dart';
 import 'package:browser_app/utils/extensions/string_extension.dart';
 import 'package:browser_app/utils/text_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -32,9 +31,8 @@ class SearchScreenWebview extends StatefulWidget {
 }
 
 class _SearchScreenWebviewState extends State<SearchScreenWebview> {
-  bool _showMic = false;
   bool _showSuggestions = false;
-  ClipboardData? clipboardData;
+  String copiedUrl = "";
 
   final FocusNode _focusNode = FocusNode();
   final _textEditingController = TextEditingController();
@@ -48,19 +46,16 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
   @override
   void dispose() {
     _textEditingController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
   void _init() async {
     _textEditingController.text = widget.url;
-    if (_textEditingController.text != "") {
-      setState(() {
-        _showMic = false;
-      });
-    }
-    final _clipboardData = await Clipboard.getData("text/plain");
+
+    final _copiedUrl = await clipBoard.getData();
     setState(() {
-      clipboardData = _clipboardData;
+      copiedUrl = _copiedUrl;
     });
     await eventTracker.screen("search-screen-webview", {
       "url": widget.url,
@@ -107,6 +102,7 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
 
   ListTile copiedTextListTile() {
     return ListTile(
+      onTap: () => appRouter.push(WebviewScreen(url: copiedUrl)),
       leading: const Icon(FontAwesomeIcons.globe, size: 20),
       contentPadding: const EdgeInsets.only(left: 12, right: 10),
       title: const Text(
@@ -115,8 +111,9 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
         overflow: TextOverflow.ellipsis,
         softWrap: true,
       ),
+      
       subtitle: Text(
-        clipboardData == null ? "" : clipboardData!.text.toString(),
+        textUtils.isEmpty(copiedUrl) ? widget.url : copiedUrl,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         softWrap: true,
@@ -149,16 +146,21 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
           children: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
             IconButton(
-                onPressed: () async {
-                  await clipBoard.setData(widget.url);
-                  showSnackBar("Copied to Clipboard");
-                },
-                icon: const Icon(Icons.copy)),
+              onPressed: () async {
+                await clipBoard.setData(widget.url);
+                setState(() {
+                  copiedUrl = widget.url;
+                });
+                showSnackBar("Copied to Clipboard");
+              },
+              icon: const Icon(Icons.copy),
+            ),
             IconButton(
-                onPressed: () {
-                  showKeyboard(context);
-                },
-                icon: const Icon(Icons.edit)),
+              onPressed: () {
+                showKeyboard(context);
+              },
+              icon: const Icon(Icons.edit),
+            ),
           ],
         ),
       ),
@@ -169,14 +171,12 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
     void _onChanged(String value) {
       if (textUtils.isEmpty(value)) {
         setState(() {
-          _showMic = true;
           _showSuggestions = false;
         });
         return;
       }
 
       setState(() {
-        _showMic = false;
         _showSuggestions = true;
       });
     }
@@ -202,11 +202,8 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
     }
 
     void _onTap() {
-      if (!_showMic) {
+      if (_showSuggestions) {
         _textEditingController.clear();
-        setState(() {
-          _showMic = true;
-        });
       }
     }
 
@@ -231,7 +228,7 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
               const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
           suffixIcon: InkWell(
             onTap: _onTap,
-            child: Icon(_showMic ? Icons.mic : Icons.clear_outlined),
+            child: Icon(!_showSuggestions ? Icons.mic : Icons.clear_outlined),
           ),
           border: const OutlineInputBorder(
             borderSide: BorderSide.none,

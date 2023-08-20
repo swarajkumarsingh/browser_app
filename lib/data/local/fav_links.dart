@@ -5,7 +5,8 @@ List<FavoriteLinks> fakeFavoriteLinks = [
     text: "Google",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2008px-Google_%22G%22_Logo.svg.png",
-    redirectLink: "https://google.com/",
+    redirectLink:
+        "https://www.pexels.com/photo/medium-short-coated-white-dog-on-white-textile-2607544/",
   ),
   FavoriteLinks(
     text: "Instagram",
@@ -29,7 +30,7 @@ List<FavoriteLinks> fakeFavoriteLinks = [
     text: "Amazon",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/2500px-Amazon_icon.svg.png",
-    redirectLink: "http://amazon.in/",
+    redirectLink: "https://amazon.in/",
   ),
   FavoriteLinks(
     text: "Facebook",

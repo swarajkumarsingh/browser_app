@@ -19,9 +19,8 @@ dependencies:
   shared_preferences: ^2.2.0
 
   # Custom util package
-  flutter_approuter: ^3.0.1
+  flutter_approuter: ^3.0.3
   flutter_logger_plus: ^4.0.2
-  flutter_encrypt_plus: ^2.0.0
 
   # Restart app
   restart_app: ^1.2.1
@@ -77,8 +76,14 @@ dependencies:
 
   # Webview
   webview_flutter: ^4.2.2
+
+  # Flutter downloader
   flutter_downloader: ^1.11.1
+
+  # Path provider
   path_provider: ^2.1.0
+  fluttertoast: ^8.2.2
+  android_path_provider: ^0.3.0
 
 dev_dependencies:
   flutter_test:
