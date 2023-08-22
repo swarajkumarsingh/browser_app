@@ -1,14 +1,14 @@
+import 'package:browser_app/domain/models/common/site_model.dart';
 import 'package:flutter/material.dart';
 
 import 'search_sub_quick_links.dart';
 
 import '../../../core/common/widgets/spaces.dart';
 import '../../../core/constants/color.dart';
-import '../../../domain/models/search/search_quick_links.dart';
 
 class SearchScreenQuickLinks extends StatelessWidget {
   final String tag;
-  final List<QuickLinks> quickLinks;
+  final List<Site> quickLinks;
   const SearchScreenQuickLinks({
     Key? key,
     required this.tag,

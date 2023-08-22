@@ -9,7 +9,7 @@ class _DownloaderUtils {
     const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
     final String randomString = String.fromCharCodes(Iterable.generate(
         10, (_) => characters.codeUnitAt(random.nextInt(characters.length))));
-    return 'image_$randomString';
+    return 'browser_$randomString';
   }
 
   bool checkIfFileExistsWithExtensions(

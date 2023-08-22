@@ -34,7 +34,6 @@ Future<void> _init() async {
     await errorTracker.handleError();
 
     // Permission request
-    // await permissionHandler.storage();
     await Permission.storage.request();
 
     await FlutterDownloader.initialize(debug: kDebugMode, ignoreSsl: true);

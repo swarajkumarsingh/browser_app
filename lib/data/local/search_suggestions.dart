@@ -1,4 +1,4 @@
-import '../../domain/models/search/search_suggestions.dart';
+import '../../domain/models/search/search_suggestions_model.dart';
 
 List<SearchSuggestions> fakeSearchSuggestions = [
   SearchSuggestions(result: "coding ninjas", redirectUrl: ""),

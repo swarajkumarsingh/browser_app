@@ -1,62 +1,62 @@
-import '../../domain/models/home/home_favorite_links.dart';
+import '../../domain/models/common/site_model.dart';
 
-List<FavoriteLinks> fakeFavoriteLinks = [
-  FavoriteLinks(
+List<Site> fakeFavoriteLinks = [
+  Site(
     text: "Google",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2008px-Google_%22G%22_Logo.svg.png",
     redirectLink:
         "https://www.pexels.com/photo/medium-short-coated-white-dog-on-white-textile-2607544/",
   ),
-  FavoriteLinks(
+  Site(
     text: "Instagram",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png",
     redirectLink: "https://instagram.com/",
   ),
-  FavoriteLinks(
+  Site(
     text: "Netflix",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Netflix_2015_N_logo.svg/1128px-Netflix_2015_N_logo.svg.png",
     redirectLink: "https://www.netflix.com/in/",
   ),
-  FavoriteLinks(
+  Site(
     text: "Facebook",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/2048px-Facebook_icon.svg.png",
     redirectLink: "https://www.facebook.com/",
   ),
-  FavoriteLinks(
+  Site(
     text: "Amazon",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Amazon_icon.svg/2500px-Amazon_icon.svg.png",
     redirectLink: "https://amazon.in/",
   ),
-  FavoriteLinks(
+  Site(
     text: "Facebook",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/2048px-Facebook_icon.svg.png",
     redirectLink: "https://www.facebook.com/",
   ),
-  FavoriteLinks(
+  Site(
     text: "Flipkart",
     imageUrl:
         "https://e7.pngegg.com/pngimages/946/191/png-clipart-flipkart-e-commerce-logo-bangalore-chief-executive-others-miscellaneous-blue.png",
     redirectLink: "https://flipkart.com/",
   ),
-  FavoriteLinks(
+  Site(
     text: "Facebook",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/2048px-Facebook_icon.svg.png",
     redirectLink: "https://www.facebook.com/",
   ),
-  FavoriteLinks(
+  Site(
     text: "Google",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2008px-Google_%22G%22_Logo.svg.png",
     redirectLink: "https://google.com/",
   ),
-  FavoriteLinks(
+  Site(
     text: "Instagram",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png",

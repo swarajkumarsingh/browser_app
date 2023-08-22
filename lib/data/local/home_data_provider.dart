@@ -1,4 +1,4 @@
-import '../../domain/models/home/home_fake_news.dart';
+import '../../domain/models/home/home_fake_news_model.dart';
 
 List<FakeNews> fakeNewsData = [
   FakeNews(

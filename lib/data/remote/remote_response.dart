@@ -9,10 +9,6 @@ class RemoteResponse<T> {
     return RemoteResponse<T>(true, data, "Data fetched successfully");
   }
 
-  static RemoteResponse<T> defaultValue<T>() {
-    return RemoteResponse<T>(false, null, "Default value");
-  }
-
   static RemoteResponse<T> internetConnectionError<T>() {
     return RemoteResponse<T>(false, null, "Internet Connection Down.");
   }

@@ -10,6 +10,9 @@ const String sentryDSN =
     "https://eed1da5969630f389c729af90d2b3ae3@o4505619587989504.ingest.sentry.io/4505619589038080";
 const int maxNumberOfRestartTries = 3;
 
+const apkDownloadLink = "https://files.an1.co/minecraft-mod_1.20.15.01-an1.com.apk";
+const imageUrlLink = "https://images.pexels.com/photos/895259/pexels-photo-895259.jpeg?cs=srgb&dl=pexels-dominika-roseclay-895259.jpg&fm=jpg";
+
 class Constants {
   Constants._();
 

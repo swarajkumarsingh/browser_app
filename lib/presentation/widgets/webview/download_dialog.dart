@@ -48,12 +48,11 @@ void showDownloadDialog(
                 children: [
                   const Icon(Icons.edit),
                   const HorizontalSpace(width: 10),
-                  Wrap(
-                    children: [
-                      Text(
-                        storageLocation,
-                      ),
-                    ],
+                  Text(
+                    maxLines: 3,
+                    softWrap: true,
+                    storageLocation,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

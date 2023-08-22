@@ -15,12 +15,6 @@ import 'interceptors/app_interceptors.dart';
 class Api {
   final dio = createDio();
 
-  Api._internal();
-
-  static final _singleton = Api._internal();
-
-  factory Api() => _singleton;
-
   static Dio createDio() {
     final Dio dio = Dio(
       BaseOptions(
@@ -31,6 +25,7 @@ class Api {
     );
 
     dio.interceptors.addAll({
+      // LoggerInterceptor(),
       AppInterceptors(),
       // BearerAuthInterceptor(),
       RetryInterceptor(dio: dio, retries: dioConstants.maxRetries),

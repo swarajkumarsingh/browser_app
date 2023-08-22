@@ -4,8 +4,14 @@ import 'package:browser_app/utils/url_utils.dart';
 final textUtils = _TextUtils();
 
 class _TextUtils {
-  bool promptIsUrl(String url) {
+  bool isValidUrl(String url) {
     if (!url.containsSpaces && url.containsDot && URLUtil.isValidUrl(url)) {
+      return true;
+    }
+    return false;
+  }
+  bool isNotValidUrl(String url) {
+    if (!isValidUrl(url)) {
       return true;
     }
     return false;
@@ -13,6 +19,13 @@ class _TextUtils {
 
   bool isEmpty(String? value) {
     if (value == null || value.toString().isEmpty) {
+      return true;
+    }
+    return false;
+  }
+
+  bool isNotEmpty(String? value) {
+    if (!isEmpty(value)) {
       return true;
     }
     return false;

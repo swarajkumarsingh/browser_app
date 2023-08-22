@@ -1,8 +1,8 @@
-class QuickLinks {
+class Site {
   String text;
   String imageUrl;
   String redirectLink;
-  QuickLinks({
+  Site({
     required this.text,
     required this.imageUrl,
     required this.redirectLink,

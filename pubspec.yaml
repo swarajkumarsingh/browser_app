@@ -20,7 +20,7 @@ dependencies:
 
   # Custom util package
   flutter_approuter: ^3.0.3
-  flutter_logger_plus: ^4.0.2
+  flutter_logger_plus: ^4.0.3
 
   # Restart app
   restart_app: ^1.2.1
@@ -82,7 +82,11 @@ dependencies:
 
   # Path provider
   path_provider: ^2.1.0
+
+  # Custom Toast
   fluttertoast: ^8.2.2
+
+  # Android path provider(downloads dir)
   android_path_provider: ^0.3.0
 
 dev_dependencies:

@@ -56,7 +56,7 @@ class AdBlocker {
 
   Future<int> _getRemoteFileSize(String url) async {
     try {
-      if (!textUtils.isEmpty(url) || textUtils.promptIsUrl(url)) {
+      if (!textUtils.isEmpty(url) || textUtils.isValidUrl(url)) {
         return 0;
       }
 

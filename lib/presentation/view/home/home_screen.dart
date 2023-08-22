@@ -1,10 +1,10 @@
-
 import '../../../core/event_tracker/event_tracker.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/common/widgets/spaces.dart';
 import '../../../core/constants/assets.dart';
 import '../../../data/local/home_data_provider.dart';
+
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/home/home_news_feed_widget.dart';
 import '../../widgets/home/home_quick_links_wrap_widget.dart';

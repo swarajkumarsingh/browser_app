@@ -131,4 +131,91 @@ class _BrowserConstants {
     ".zip",
     ".zip"
   ];
+
+  
+
+
+  Map<String, String> fileExtensionWithContentType = {
+    "video/3gpp": ".3gp",
+    "application/x-7z-compressed": ".7z",
+    "application/postscript": ".ps",
+    "audio/x-aiff": ".aif",
+    "application/vnd.android.package-archive": ".apk",
+    "text/html": ".html",
+    "video/x-msvideo": ".avi",
+    "image/bmp": ".bmp",
+    "application/x-bzip2": ".bz2",
+    "application/vnd.ms-cab-compressed": ".cab",
+    "text/css": ".css",
+    "text/csv": ".csv",
+    "application/vnd.debian.binary-package": ".deb",
+    "application/x-apple-diskimage": ".dmg",
+    "application/msword": ".dot",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        ".docx",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.template":
+        ".dotx",
+    "image/vnd.dwg": ".dwg",
+    "image/vnd.dxf": ".dxf",
+    "application/vnd.ms-fontobject": ".eot",
+    "application/octet-stream": ".ipa",
+    "audio/x-flac": ".flac",
+    "video/x-flv": ".flv",
+    "image/gif": ".gif",
+    "application/gzip": ".tar.gz",
+    "image/vnd.microsoft.icon": ".ico",
+    "application/x-indesign": ".indd",
+    "application/x-iso9660-image": ".iso",
+    "application/java-archive": ".jar",
+    "image/jpeg": ".jpg",
+    "application/javascript": ".js",
+    "application/json": ".json",
+    "audio/mp4": ".m4a",
+    "video/x-matroska": ".mkv",
+    "video/quicktime": ".mov",
+    "audio/mpeg": ".mp3",
+    "video/mp4": ".mp4",
+    "video/mpeg": ".mpg",
+    "application/x-msdownload": ".msi",
+    "application/vnd.oasis.opendocument.spreadsheet": ".ods",
+    "application/vnd.oasis.opendocument.text": ".odt",
+    "audio/ogg": ".ogg",
+    "font/otf": ".otf",
+    "application/vnd.oasis.opendocument.text-template": ".ott",
+    "application/pdf": ".pdf",
+    "text/php": ".php",
+    "image/png": ".png",
+    "application/vnd.openxmlformats-officedocument.presentationml.template":
+        ".potx",
+    "application/vnd.ms-powerpoint": ".ppt",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+        ".pptx",
+    "image/vnd.adobe.photoshop": ".psd",
+    "application/x-rar-compressed": ".rar",
+    "application/x-redhat-package-manager": ".rpm",
+    "application/vnd.openxmlformats-officedocument.presentationml.slide":
+        ".sldx",
+    "image/svg+xml": ".svg",
+    "image/svg+xml-compressed": ".svgz",
+    "application/x-shockwave-flash": ".swf",
+    "application/x-bittorrent": ".torrent",
+    "font/ttf": ".ttf",
+    "text/plain": ".txt",
+    "application/vnd.visio": ".vsd",
+    "application/vnd.visio2013": ".vsdx",
+    "audio/wav": ".wav",
+    "video/webm": ".webm",
+    "audio/x-ms-wma": ".wma",
+    "video/x-ms-wmv": ".wmv",
+    "font/woff": ".woff",
+    "font/woff2": ".woff2",
+    "application/vnd.ms-excel": ".xls",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        ".xlsx",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.template":
+        ".xltx",
+    "application/xml": ".xml",
+    "application/zip": ".zip",
+  };
+
 }

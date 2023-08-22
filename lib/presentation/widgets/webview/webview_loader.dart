@@ -5,9 +5,8 @@ import '../../../core/constants/color.dart';
 import '../../../utils/screen_utils.dart';
 
 class WebviewLoader extends StatelessWidget {
-  final double bottomNavigationBarHeight;
   const WebviewLoader({
-    super.key, required this.bottomNavigationBarHeight,
+    super.key,
   });
 
   @override
@@ -15,7 +14,7 @@ class WebviewLoader extends StatelessWidget {
     return SingleChildScrollView(
       child: Container(
         color: colors.white,
-        width: ScreenUtils.screenHeight - bottomNavigationBarHeight,
+        width: ScreenUtils.screenWidth,
         height: ScreenUtils.screenHeight,
         child: Center(
           child: SizedBox(

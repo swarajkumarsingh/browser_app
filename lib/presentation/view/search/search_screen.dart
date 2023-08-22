@@ -103,7 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
       FocusScope.of(context).unfocus();
 
       // Url
-      if (textUtils.promptIsUrl(prompt)) {
+      if (textUtils.isValidUrl(prompt)) {
         appRouter.push(WebviewScreen(
           url: browserUtils.addHttpToDomain(prompt),
           prompt: "",

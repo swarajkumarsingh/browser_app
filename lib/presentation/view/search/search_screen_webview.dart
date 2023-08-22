@@ -1,7 +1,6 @@
 import 'package:browser_app/core/common/snackbar/show_snackbar.dart';
 import 'package:browser_app/utils/browser/browser_utils.dart';
 import 'package:browser_app/utils/clipboard.dart';
-import 'package:browser_app/utils/extensions/string_extension.dart';
 import 'package:browser_app/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
@@ -34,7 +33,6 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
   bool _showSuggestions = false;
   String copiedUrl = "";
 
-  final FocusNode _focusNode = FocusNode();
   final _textEditingController = TextEditingController();
 
   @override
@@ -46,7 +44,6 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
   @override
   void dispose() {
     _textEditingController.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -63,16 +60,8 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
     });
   }
 
-  void showKeyboard(BuildContext context) {
-    if (widget.focusTextfield == true) {
-      FocusScope.of(context).requestFocus(_focusNode);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    showKeyboard(context);
-
     return Scaffold(
       appBar: searchScreenAppBar(),
       body: searchScreenBody(),
@@ -102,7 +91,24 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
 
   ListTile copiedTextListTile() {
     return ListTile(
-      onTap: () => appRouter.push(WebviewScreen(url: copiedUrl)),
+      onTap: () { 
+        // Url
+        if (textUtils.isValidUrl(copiedUrl)) {
+          appRouter.push(WebviewScreen(
+            url: browserUtils.addHttpToDomain(copiedUrl),
+            prompt: "",
+          ));
+          return;
+        }
+
+        // Query
+        final prompt = textUtils.replaceSpaces(copiedUrl);
+
+        appRouter.push(WebviewScreen(
+          url: browserUtils.addQueryToGoogle(prompt),
+          prompt: prompt,
+        ));
+      },
       leading: const Icon(FontAwesomeIcons.globe, size: 20),
       contentPadding: const EdgeInsets.only(left: 12, right: 10),
       title: const Text(
@@ -111,7 +117,6 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
         overflow: TextOverflow.ellipsis,
         softWrap: true,
       ),
-      
       subtitle: Text(
         textUtils.isEmpty(copiedUrl) ? widget.url : copiedUrl,
         maxLines: 1,
@@ -125,8 +130,9 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
     return ListTile(
       leading: const Icon(FontAwesomeIcons.google, size: 20),
       contentPadding: const EdgeInsets.only(left: 12, right: 10),
+      onTap: () => appRouter.pop(),
       title: Text(
-        "${widget.prompt.capitalize} - Google Search",
+        "${widget.prompt} - Google Search",
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         softWrap: true,
@@ -156,9 +162,7 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
               icon: const Icon(Icons.copy),
             ),
             IconButton(
-              onPressed: () {
-                showKeyboard(context);
-              },
+              onPressed: () {},
               icon: const Icon(Icons.edit),
             ),
           ],
@@ -185,7 +189,7 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
       FocusScope.of(context).unfocus();
 
       // Url
-      if (textUtils.promptIsUrl(prompt)) {
+      if (textUtils.isValidUrl(prompt)) {
         appRouter.push(WebviewScreen(
           url: browserUtils.addHttpToDomain(prompt),
         ));
@@ -215,7 +219,7 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
       scrolledUnderElevation: 0,
       backgroundColor: colors.white,
       title: TextField(
-        focusNode: _focusNode,
+        autofocus: true,
         onChanged: _onChanged,
         onSubmitted: _onSubmitted,
         controller: _textEditingController,

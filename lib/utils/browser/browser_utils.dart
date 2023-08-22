@@ -1,5 +1,23 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:flutter/material.dart';
+import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_logger_plus/flutter_logger_plus.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import 'package:browser_app/core/dio/api.dart';
+import 'package:browser_app/domain/models/download/download_request_model.dart';
+import 'package:browser_app/domain/repository/webview_repository.dart';
 import 'package:browser_app/utils/browser/browser_constants.dart';
-import 'package:dio/dio.dart';
+import 'package:browser_app/utils/clipboard.dart';
+import 'package:browser_app/utils/text_utils.dart';
+
+import '../../core/common/snackbar/show_snackbar.dart';
+import '../../core/common/widgets/toast.dart';
+import '../../domain/models/webview/url_data_model.dart';
+import '../../presentation/widgets/webview/download_dialog.dart';
+import '../download/downloader.dart';
+import '../download/downloader_constants.dart';
 
 final browserUtils = _BrowserUtils();
 
@@ -23,20 +41,121 @@ class _BrowserUtils {
     return keyword.startsWith("data:image");
   }
 
-  Future<bool> isDownloadRequest(String url) async {
-    bool result =
+  Future<NavigationDecision> onNavigationRequest({
+    required NavigationRequest request,
+    required BuildContext context,
+    required TextEditingController fileNameController,
+    required bool mounted,
+  }) async {
+    await clipBoard.setData(request.url);
+    final downloadRequest = await browserUtils.isDownloadRequest(request.url);
+
+    if (!downloadRequest.isDownloadRequest) {
+      return NavigationDecision.navigate;
+    }
+
+    if (textUtils.isEmpty(downloadRequest.fileExtension)) {
+      logger.error("Unable to download the file");
+      return NavigationDecision.prevent;
+    }
+
+    final downloadDir = await downloaderConstants.getDownloadDir();
+
+    showDownloadDialog(
+      fileSize: "0",
+      context: context,
+      controller: fileNameController,
+      fileType: downloadRequest.fileExtension!,
+      storageLocation: downloadDir,
+      function: () async {
+        final res = await downloader.downloadFile(
+          url: request.url,
+          imageContentType: downloadRequest.fileExtension!,
+          savedDir: downloadDir,
+          fileName: fileNameController.text,
+        );
+
+        if (!res.success) {
+          showSnackBar(res.message);
+          return;
+        }
+
+        showToast(res.message);
+
+        if (mounted) appRouter.pop();
+        return;
+      },
+    );
+    return NavigationDecision.prevent;
+  }
+
+  Future<UrlData> getUrlData(String url) async {
+    try {
+      final res = await webviewRepository.getUrlData(url: url);
+
+      if (!res.successBool ||
+          textUtils.isEmpty(res.data!.contentType) ||
+          textUtils.isEmpty(res.data!.size)) {
+        return UrlData(success: false, url: "", size: "", contentType: "");
+      }
+
+      return UrlData(
+        success: res.successBool,
+        url: url,
+        size: res.data!.size,
+        contentType: res.data!.contentType,
+      );
+    } catch (e) {
+      return UrlData(success: false, url: "", size: "", contentType: "");
+    }
+  }
+
+  String getImageSizeInMB(String value) {
+    try {
+      final int number = int.parse(value);
+      final double result = number / 1048576;
+      final String formattedResult = result.toStringAsFixed(2);
+      return formattedResult;
+    } catch (_) {
+      return "0";
+    }
+  }
+
+  String getImageSizeInKB(String value) {
+    try {
+      final int number = int.parse(value);
+      final double result = number / 1024;
+      final String formattedResult = result.toStringAsFixed(2);
+      return formattedResult;
+    } catch (_) {
+      return "0";
+    }
+  }
+
+  Future<DownloadedRequestModel> isDownloadRequest(String url) async {
+    DownloadedRequestModel result =
         _checkUrlEndsWithAnyExtension(url, browserConstants.fileExtensions);
-    if (result) return result;
+    if (result.isDownloadRequest) {
+      return DownloadedRequestModel(
+          isDownloadRequest: true, fileExtension: result.fileExtension);
+    }
 
     // check if the url contains specific keyword
     result = _checkForKeywordsInUrl(url);
-    if (result) return result;
+    if (result.isDownloadRequest) {
+      return DownloadedRequestModel(
+          isDownloadRequest: true, fileExtension: result.fileExtension);
+    }
 
     // check the headers of the url
-    result = await _checkIfUrlContainsDownloadableHeader(url);
-    if (result) return result;
+    result = await checkIfUrlContainsDownloadableHeader(url);
+    if (result.isDownloadRequest) {
+      return DownloadedRequestModel(
+          isDownloadRequest: true, fileExtension: result.fileExtension);
+    }
 
-    return false;
+    return DownloadedRequestModel(
+        isDownloadRequest: false, fileExtension: null);
   }
 
   String removeQueryFromUrl(String url) {
@@ -46,8 +165,17 @@ class _BrowserUtils {
     return a;
   }
 
-  bool _checkUrlEndsWithAnyExtension(String url, List<String> extensions) {
-    return hashSearch(searchItem: removeQueryFromUrl(url), sortedList: extensions);
+  DownloadedRequestModel _checkUrlEndsWithAnyExtension(
+      String url, List<String> extensions) {
+    for (final extension in extensions) {
+      if (url.contains(extension)) {
+        final _ = extension.replaceAll(".", "");
+        return DownloadedRequestModel(
+            isDownloadRequest: true, fileExtension: _);
+      }
+    }
+    return DownloadedRequestModel(
+        isDownloadRequest: false, fileExtension: null);
   }
 
   bool isSaveAbleUrl(String url) {
@@ -66,8 +194,24 @@ class _BrowserUtils {
     return itemHashes.contains(urlHash);
   }
 
-  bool _checkForKeywordsInUrl(String url) {
-    return hashSearch(searchItem: url, sortedList: browserConstants.keywords);
+  DownloadedRequestModel _checkForKeywordsInUrl(String url) {
+    final found =
+        hashSearch(searchItem: url, sortedList: browserConstants.keywords);
+    if (!found) {
+      return DownloadedRequestModel(
+          isDownloadRequest: false, fileExtension: null);
+    }
+    final extension = _getExtensionFromGoogleImageProvider(url);
+    return DownloadedRequestModel(
+        isDownloadRequest: true, fileExtension: extension);
+  }
+
+  String _getExtensionFromGoogleImageProvider(String url) {
+    final List<String> parts = url.split(',');
+    final String mimeType = parts[0].split(':')[1];
+    final String extensionWithBase = mimeType.split('/')[1];
+    final String extension = extensionWithBase.replaceAll(";base64", "");
+    return extension;
   }
 
   bool containsBlockedSites(String url) {
@@ -77,28 +221,28 @@ class _BrowserUtils {
     return false;
   }
 
-  Future<bool> _checkIfUrlContainsDownloadableHeader(String url) async {
-    final dio = Dio();
-
+  Future<DownloadedRequestModel> checkIfUrlContainsDownloadableHeader(
+      String url) async {
     try {
-      final response = await dio.head(
-        url,
-        options: Options(
-          responseType: ResponseType.bytes, // Set the responseType to bytes
-        ),
-      );
+      final response = await Api().head(url);
 
-      // Check if the Content-Disposition header exists
-      final contentDisposition = response.headers.value('content-disposition');
-      if (contentDisposition != null) {
-        if (contentDisposition.contains('attachment')) {
-          return true;
+      final contentType = response.headers.value("content-type") ?? "";
+
+      for (final key in browserConstants.fileExtensionWithContentType.keys) {
+        if (contentType == key) {
+          return DownloadedRequestModel(
+            isDownloadRequest: true,
+            fileExtension: browserConstants.fileExtensionWithContentType[key],
+          );
         }
       }
+
+      return DownloadedRequestModel(
+          isDownloadRequest: false, fileExtension: null);
     } catch (error) {
-      return false;
+      return DownloadedRequestModel(
+          isDownloadRequest: false, fileExtension: null);
     }
-    return false;
   }
 
   bool isGoogleAdUrl(String dataString) {
@@ -116,21 +260,3 @@ class _BrowserUtils {
     return false;
   }
 }
-
-
-//           fun getDefaultBookMarkList() = arrayListOf(
-//             Site("Google", R.drawable.site_google, null, "https://google.com", TopSitesViewPager.VIEW_TYPE_SPEED_DIAL ),
-//             Site("Amazon", R.drawable.ic_site_amazon_icon, null, "https://amzn.to/3mQp384", TopSitesViewPager.VIEW_TYPE_SPEED_DIAL ),
-//             Site("FlipKart", R.drawable.flipcart_sale_icon, null, "https://ww55.siteplug.com/sssdomweb?enk=ff4496bc59b25659cac2a55d00c1ee86d6c36a84e523c17b951b103acbf5f1a7ef2c530cc0fe75dcee32f77628e1480a3acec33b49c3549d2eb2f663d65f3654&di={device_identifier}&subid={subid}", TopSitesViewPager.VIEW_TYPE_SPEED_DIAL ),
-//             Site("Facebook", R.drawable.facebook_home_slider, null, "https://m.facebook.com", TopSitesViewPager.VIEW_TYPE_SPEED_DIAL ),
-//             Site("YouTube", R.drawable.youtube_home_slider,  null, "https://m.youtube.com", TopSitesViewPager.VIEW_TYPE_SPEED_DIAL ),
-//             Site("Play Games", R.drawable.ic_game_home,  null, "https://magtapp.game.com", TopSitesViewPager.VIEW_TYPE_SPEED_DIAL ),
-//             Site("Viral Videos",null,"https://mtapp-resources.s3.ap-south-1.amazonaws.com/android-images/browser/viral_video.webp", "https://fw.tv/magtapp/top-viral-videos.html", TopSitesViewPager.VIEW_TYPE_MAGTAPP_SITE),
-//             Site("News Videos",null,"https://mtapp-resources.s3.ap-south-1.amazonaws.com/android-images/browser/viral_news.webp", "https://fw.tv/magtapp/news.html", TopSitesViewPager.VIEW_TYPE_MAGTAPP_SITE),
-// //            Site("Times of India",null,"https://magtapp.com/wp_mt_media_uploads/2020/10/times_of_india_VvI9e0xgrK.jpeg", "https://timesofindia.indiatimes.com/", TopSitesViewPager.VIEW_TYPE_MAGTAPP_SITE),
-// //            Site("Hindustan Times",null,"https://magtapp.com/wp_mt_media_uploads/2020/10/hindustan_ODZ_jtPRS.png", "https://www.hindustantimes.com/", TopSitesViewPager.VIEW_TYPE_MAGTAPP_SITE),
-//             Site("The Hindu",null,"https://magtapp.com/wp_mt_media_uploads/2020/10/the_hindu_LLCzqF1qw.jpg", "https://www.thehindu.com/", TopSitesViewPager.VIEW_TYPE_MAGTAPP_SITE),
-//             Site("Speed Test",null,"https://magtapp.com/wp_mt_media_uploads/2020/10/fast_speed_test_-k_3Ih_oC.png", "https://fast.com/", TopSitesViewPager.VIEW_TYPE_MAGTAPP_SITE),
-//             Site("DailyHunt",null,"https://magtapp.com/wp_mt_media_uploads/2020/10/dailyhunt_hY6GOUnd6S.png", "https://m.dailyhunt.in/news/india/english", TopSitesViewPager.VIEW_TYPE_MAGTAPP_SITE),
-//             Site("Jagran Josh",null,"https://magtapp.com/wp_mt_media_uploads/2020/10/jagran-min_j_7czi__H.jpg", "https://www.jagranjosh.com/", TopSitesViewPager.VIEW_TYPE_MAGTAPP_SITE)
-//         )

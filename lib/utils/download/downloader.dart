@@ -19,7 +19,6 @@ class Downloader {
   Future<DownloadModel> downloadFile({
     required String url,
     String? fileName,
-    required String imageSize,
     required String imageContentType,
     Map<String, String>? headers,
     String? savedDir,
@@ -61,9 +60,6 @@ class Downloader {
       final downloadsDir = await downloaderConstants.getDownloadDir();
       final fileLocation = "$downloadsDir/$fileName.$imageContentType";
 
-      logger.error(downloadsDir);
-      logger.error(fileLocation);
-
       if (await doesFileExist(fileLocation)) {
         fileName = "$fileName$_randomImageName";
       }
@@ -88,7 +84,7 @@ class Downloader {
       );
     } catch (e) {
       logger.error(e);
-      return DownloadModel(message: e.toString(), taskId: null, success: false);
+      return DownloadModel(success: false, message: e.toString(), taskId: null);
     }
   }
 

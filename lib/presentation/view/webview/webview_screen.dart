@@ -1,32 +1,19 @@
 // ignore_for_file: public_member_api_docs, depend_on_referenced_packages, use_build_context_synchronously, unawaited_futures, unused_local_variable, prefer_final_locals
 
-import 'dart:isolate';
-import 'dart:ui';
-
-import 'package:browser_app/core/common/snackbar/show_snackbar.dart';
-import 'package:browser_app/core/constants/constants.dart';
-import 'package:browser_app/utils/browser/browser_utils.dart';
-import 'package:browser_app/utils/download/downloader_constants.dart';
-import 'package:browser_app/utils/preferences/preferences_service.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-import '../../../core/common/widgets/toast.dart';
+import 'package:browser_app/presentation/viewModel/webview/webview_view_model.dart';
+
 import '../../../core/constants/color.dart';
-import '../../../core/dio/api.dart';
 import '../../../core/event_tracker/event_tracker.dart';
-import '../../../utils/download/downloader.dart';
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/search/search_navigation_icons.dart';
-import '../../widgets/webview/download_dialog.dart';
 import '../../widgets/webview/webview_loader.dart';
-import '../home/home_screen.dart';
 import '../search/search_screen_webview.dart';
 
 class WebviewScreen extends StatefulWidget {
@@ -41,73 +28,20 @@ class WebviewScreen extends StatefulWidget {
 
 class _WebviewScreenState extends State<WebviewScreen> {
   bool _isLoading = false;
-
   WebViewController? _controller;
   late TextEditingController textController;
-  final locationController = TextEditingController();
-
-  final ReceivePort _port = ReceivePort();
+  final _fileNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-
-    try {
-      IsolateNameServer.registerPortWithName(
-          _port.sendPort, 'downloader_send_port');
-      _port.listen((dynamic data) {
-        String id = data[0];
-        DownloadTaskStatus status = DownloadTaskStatus.fromInt(data[1]);
-        int progress = data[2];
-
-        logger.success(status);
-        logger.success(progress);
-
-        if (progress == 100 || status == DownloadTaskStatus.complete) {
-          showToast("File downloaded successfully");
-          setState(() {});
-          return;
-        }
-        if (status == DownloadTaskStatus.failed) {
-          showToast("File downloading failed");
-          setState(() {});
-          return;
-        }
-        if (status == DownloadTaskStatus.paused) {
-          showToast("File downloading paused");
-          setState(() {});
-          return;
-        }
-        if (status == DownloadTaskStatus.undefined) {
-          showToast("Downloaded file is unknown/corrupted");
-          setState(() {});
-          return;
-        }
-        if (status == DownloadTaskStatus.canceled) {
-          showToast("File downloading canceled");
-          setState(() {});
-          return;
-        }
-      });
-
-      FlutterDownloader.registerCallback(downloadCallback);
-    } catch (e) {
-      rethrow;
-    }
     _init();
   }
 
   @override
   void dispose() {
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
     super.dispose();
-  }
-
-  static void downloadCallback(String id, int status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
-
-    send!.send([id, status, progress]);
+    textController.dispose();
   }
 
   void _init() async {
@@ -143,68 +77,22 @@ class _WebviewScreenState extends State<WebviewScreen> {
               _isLoading = false;
             });
           },
-          onPageStarted: (String url) async {
-            logger.info('Page started loading: $url');
-          },
+          onPageStarted: (String url) => webviewViewModel.onPageStarted,
           onPageFinished: (String url) {
             setState(() {
               _isLoading = false;
             });
             logger.info('Page finished loading: $url');
           },
-          onWebResourceError: (WebResourceError error) {
-            logger.error('''
-              Page resource error:
-              code: ${error.errorCode}
-              description: ${error.description}
-              errorType: ${error.errorType}
-              isForMainFrame: ${error.isForMainFrame}
-          ''');
-            showSnackBar("Something went wrong");
-          },
-          onNavigationRequest: (NavigationRequest request) async {
-            if (await browserUtils.isDownloadRequest(request.url)) {
-              final imageData = await Api().head(request.url);
-              final type = imageData.headers[Headers.contentTypeHeader]![0]
-                  .replaceAll("image/", "");
-              final size = (int.parse(
-                          imageData.headers[Headers.contentLengthHeader]![0]) /
-                      1048576)
-                  .toStringAsExponential(2);
-
-              logger.success(size);
-
-              showDownloadDialog(
-                context: context,
-                fileType: type,
-                storageLocation: await downloaderConstants.getDownloadDir(),
-                fileSize: size,
-                function: () async {
-                  try {
-                    final res = await downloader.downloadFile(
-                      url: request.url,
-                      imageContentType: type,
-                      imageSize: size,
-                      savedDir: await downloaderConstants.prepareSaveDir(),
-                      fileName: locationController.text,
-                    );
-
-                    showToast(res.message);
-                    if (mounted) appRouter.pop();
-                    return;
-                  } catch (e) {
-                    logger.error(e);
-                    rethrow;
-                  }
-                },
-                controller: locationController,
-              );
-            }
-
-            await preferenceUtils.remove(
-                key: Constants.PREF_WEBVIEW_MAX_RE_TRIES);
-            return NavigationDecision.prevent;
-          },
+          onWebResourceError: (WebResourceError error) async =>
+              webviewViewModel.onWebResourceError,
+          onNavigationRequest: (NavigationRequest request) =>
+              webviewViewModel.onNavigationRequest(
+            request: request,
+            context: context,
+            fileNameController: _fileNameController,
+            mounted: mounted,
+          ),
           onUrlChange: (UrlChange change) async {
             logger.info('url change to ${change.url}');
 
@@ -216,11 +104,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
       )
       ..addJavaScriptChannel(
         'Toaster',
-        onMessageReceived: (JavaScriptMessage message) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message.message)),
-          );
-        },
+        onMessageReceived: (JavaScriptMessage message) => webviewViewModel.onMessageReceived(context, message),
       )
       ..loadRequest(Uri.parse(widget.url));
 
@@ -240,24 +124,24 @@ class _WebviewScreenState extends State<WebviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: bottomNavigationBar(),
-      appBar: webviewScreenAppBar(),
-      body: webviewScreenBody(),
+    return WillPopScope(
+      onWillPop: () async => webviewViewModel.onWillPop(_controller),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        bottomNavigationBar: bottomNavigationBar(),
+        appBar: webviewScreenAppBar(),
+        body: webviewScreenBody(),
+      ),
     );
   }
 
   Stack webviewScreenBody() {
     return Stack(
       children: [
-       _controller != null ? WebViewWidget(controller: _controller!) :  WebviewLoader(
-            bottomNavigationBarHeight: MediaQuery.of(context).padding.bottom,
-          ),
-        if (_isLoading)
-          WebviewLoader(
-            bottomNavigationBarHeight: MediaQuery.of(context).padding.bottom,
-          ),
+        _controller != null
+            ? WebViewWidget(controller: _controller!)
+            : const WebviewLoader(),
+        if (_isLoading) const WebviewLoader(),
       ],
     );
   }
@@ -267,9 +151,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
       leadingWidth: 30,
       elevation: 0,
       leading: IconButton(
-        onPressed: () {
-          appRouter.push(const HomeScreen());
-        },
+        onPressed: () => webviewViewModel.navigateToHomeScreen(),
         icon: const Icon(
           Icons.home_outlined,
           color: Colors.black,
@@ -294,8 +176,9 @@ class _WebviewScreenState extends State<WebviewScreen> {
           );
         },
         child: TextField(
-          onChanged: (value) {},
-          // readOnly: true,
+          onChanged: (value) {
+            // TODO: Implement google search
+          },
           enabled: false,
           canRequestFocus: false,
           keyboardType: TextInputType.none,
@@ -316,7 +199,9 @@ class _WebviewScreenState extends State<WebviewScreen> {
             ),
             border: const OutlineInputBorder(
               borderSide: BorderSide.none,
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+              borderRadius: BorderRadius.all(
+                Radius.circular(8),
+              ),
             ),
           ),
         ),

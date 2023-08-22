@@ -474,10 +474,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_logger_plus
-      sha256: "6c37f896cf4e83a1bc68c140ebcb870a8527ddbb746ad433f3340c0bcc010464"
+      sha256: "4a882fd1529e815cd9d200974ae69c4de02e5a1cbe2e6c1ac043bf9829f81f98"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.2"
+    version: "4.0.3"
   flutter_screenutil:
     dependency: "direct main"
     description:

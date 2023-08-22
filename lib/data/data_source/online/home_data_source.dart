@@ -6,7 +6,7 @@ import '../../../core/constants/status_code.dart';
 import '../../../core/event_tracker/event_tracker.dart';
 import '../../../domain/models/home/home.dart';
 import '../../service/api_service.dart';
-import '../remote_response.dart';
+import '../../remote/remote_response.dart';
 
 final homeDataSource = HomeDataSource();
 
