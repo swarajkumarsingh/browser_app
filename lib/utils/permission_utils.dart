@@ -1,5 +1,6 @@
-import 'package:browser_app/core/common/snackbar/show_snackbar.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../core/common/snackbar/show_snackbar.dart';
 
 final permissionHandler = _PermissionHandler();
 

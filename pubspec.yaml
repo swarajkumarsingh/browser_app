@@ -19,7 +19,7 @@ dependencies:
   shared_preferences: ^2.2.0
 
   # Custom util package
-  flutter_approuter: ^3.0.3
+  flutter_approuter: ^3.0.4
   flutter_logger_plus: ^4.0.3
 
   # Restart app
@@ -63,13 +63,10 @@ dependencies:
   cached_network_image: ^3.2.3
 
   # Get app configurations dynamically
-  package_info_plus: ^4.0.2
+  # package_info_plus: ^4.0.2
 
   # Custom error handler
   sentry_flutter: ^7.9.0
-
-  # Local no-sql DB
-  hive: ^2.2.3
 
   # Custom icons
   font_awesome_flutter: ^10.5.0
@@ -88,6 +85,14 @@ dependencies:
 
   # Android path provider(downloads dir)
   android_path_provider: ^0.3.0
+
+  # State management
+  flutter_riverpod: ^2.3.7
+
+  # Local DB
+  hive_flutter: ^1.1.0
+  share_plus: ^7.1.0
+
 
 dev_dependencies:
   flutter_test:

@@ -1,157 +1,88 @@
-// ignore_for_file: public_member_api_docs, depend_on_referenced_packages, use_build_context_synchronously, unawaited_futures, unused_local_variable, prefer_final_locals
-
 import 'package:flutter/material.dart';
-import 'package:flutter_approuter/flutter_approuter.dart';
-import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-
-import 'package:browser_app/presentation/viewModel/webview/webview_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_approuter/flutter_approuter.dart';
 
 import '../../../core/constants/color.dart';
-import '../../../core/event_tracker/event_tracker.dart';
+import '../search/search_screen_webview.dart';
+import '../../viewModel/webview_view_model.dart';
+import '../../widgets/webview/webview_loader.dart';
+import '../../../data/provider/state_providers.dart';
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/search/search_navigation_icons.dart';
-import '../../widgets/webview/webview_loader.dart';
-import '../search/search_screen_webview.dart';
 
-class WebviewScreen extends StatefulWidget {
+class WebviewScreen extends ConsumerStatefulWidget {
   final String url;
   final String prompt;
   static const String routeName = '/webview-screen';
   const WebviewScreen({super.key, required this.url, this.prompt = ""});
 
   @override
-  State<WebviewScreen> createState() => _WebviewScreenState();
+  ConsumerState<WebviewScreen> createState() => _WebviewScreenState();
 }
 
-class _WebviewScreenState extends State<WebviewScreen> {
-  bool _isLoading = false;
-  WebViewController? _controller;
-  late TextEditingController textController;
-  final _fileNameController = TextEditingController();
-
+class _WebviewScreenState extends ConsumerState<WebviewScreen> {
   @override
   void initState() {
     super.initState();
-    _init();
+    Future(() async {
+      await webviewViewModel.init(
+        context: context,
+        ref: ref,
+        url: widget.url,
+        prompt: widget.prompt,
+        mounted: mounted,
+      );
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    textController.dispose();
-  }
-
-  void _init() async {
-    textController = TextEditingController(text: widget.url);
-
-    late final PlatformWebViewControllerCreationParams params;
-    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-      params = WebKitWebViewControllerCreationParams(
-        allowsInlineMediaPlayback: true,
-        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-      );
-    } else {
-      params = const PlatformWebViewControllerCreationParams();
-    }
-
-    final WebViewController controller =
-        WebViewController.fromPlatformCreationParams(params);
-
-    controller
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.white)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            logger.info('WebView is loading (progress : $progress%)');
-            if (progress < 70) {
-              setState(() {
-                _isLoading = true;
-              });
-              return;
-            }
-            setState(() {
-              _isLoading = false;
-            });
-          },
-          onPageStarted: (String url) => webviewViewModel.onPageStarted,
-          onPageFinished: (String url) {
-            setState(() {
-              _isLoading = false;
-            });
-            logger.info('Page finished loading: $url');
-          },
-          onWebResourceError: (WebResourceError error) async =>
-              webviewViewModel.onWebResourceError,
-          onNavigationRequest: (NavigationRequest request) =>
-              webviewViewModel.onNavigationRequest(
-            request: request,
-            context: context,
-            fileNameController: _fileNameController,
-            mounted: mounted,
-          ),
-          onUrlChange: (UrlChange change) async {
-            logger.info('url change to ${change.url}');
-
-            setState(() {
-              textController.text = change.url ?? textController.text;
-            });
-          },
-        ),
-      )
-      ..addJavaScriptChannel(
-        'Toaster',
-        onMessageReceived: (JavaScriptMessage message) => webviewViewModel.onMessageReceived(context, message),
-      )
-      ..loadRequest(Uri.parse(widget.url));
-
-    if (controller.platform is AndroidWebViewController) {
-      AndroidWebViewController.enableDebugging(true);
-      (controller.platform as AndroidWebViewController)
-          .setMediaPlaybackRequiresUserGesture(false);
-    }
-
-    _controller = controller;
-
-    await eventTracker.screen("webview-screen", {
-      "url": widget.url,
-      "prompt": widget.prompt,
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final controller = ref.watch(webviewControllerProvider);
+
     return WillPopScope(
-      onWillPop: () async => webviewViewModel.onWillPop(_controller),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        bottomNavigationBar: bottomNavigationBar(),
-        appBar: webviewScreenAppBar(),
-        body: webviewScreenBody(),
-      ),
+      onWillPop: () async => webviewViewModel.onWillPop(controller),
+      child: scaffold(),
     );
   }
 
-  Stack webviewScreenBody() {
+  Scaffold scaffold() {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: appBar(),
+      body: body(),
+      bottomNavigationBar: bottomNavigationBar(),
+    );
+  }
+
+  Stack body() {
+    final webviewScreenLoading = ref.watch(webviewScreenLoadingProvider);
+    final controller = ref.watch(webviewControllerProvider);
+
     return Stack(
       children: [
-        _controller != null
-            ? WebViewWidget(controller: _controller!)
+        controller != null
+            ? WebViewWidget(controller: controller)
             : const WebviewLoader(),
-        if (_isLoading) const WebviewLoader(),
+        if (webviewScreenLoading) const WebviewLoader(),
       ],
     );
   }
 
-  AppBar webviewScreenAppBar() {
+  AppBar appBar() {
+    final searchTextController = ref.watch(webviewSearchTextControllerProvider);
+    final controller = ref.watch(webviewControllerProvider);
+
     return AppBar(
       leadingWidth: 30,
       elevation: 0,
       leading: IconButton(
-        onPressed: () => webviewViewModel.navigateToHomeScreen(),
+        onPressed: webviewViewModel.navigateToHomeScreen,
         icon: const Icon(
           Icons.home_outlined,
           color: Colors.black,
@@ -182,7 +113,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
           enabled: false,
           canRequestFocus: false,
           keyboardType: TextInputType.none,
-          controller: textController,
+          controller: searchTextController,
           decoration: InputDecoration(
             filled: true,
             hintMaxLines: 1,
@@ -193,7 +124,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
             prefixIcon: const Icon(Icons.privacy_tip_outlined),
             suffixIcon: InkWell(
               onTap: () async {
-                await _controller!.reload();
+                await controller!.reload();
               },
               child: const Icon(Icons.refresh_outlined),
             ),
@@ -231,22 +162,28 @@ class _WebviewScreenState extends State<WebviewScreen> {
   }
 
   BottomNavigationBarItem leftNavigationIcon() {
+    final controller = ref.watch(webviewControllerProvider);
+
     return BottomNavigationBarItem(
-      icon: LeftIconWidget(controller: _controller),
+      icon: LeftIconWidget(controller: controller),
       label: "Back",
     );
   }
 
   BottomNavigationBarItem rightNavigationIcon() {
+    final controller = ref.watch(webviewControllerProvider);
+
     return BottomNavigationBarItem(
-      icon: RightIconWidget(controller: _controller),
+      icon: RightIconWidget(controller: controller),
       label: "Forward",
     );
   }
 
   BottomNavigationBarItem playNavigationIcon() {
+    final controller = ref.watch(webviewControllerProvider);
+
     return BottomNavigationBarItem(
-      icon: PlayIconWidget(controller: _controller),
+      icon: PlayIconWidget(controller: controller),
       label: "Play",
     );
   }

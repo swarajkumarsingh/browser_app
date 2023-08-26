@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_approuter/flutter_approuter.dart';
 
-import '../../view/search/search_screen.dart';
+import '../../viewModel/home_view_model.dart';
 
 class PlusIconWidget extends StatelessWidget {
   const PlusIconWidget({
@@ -11,6 +10,7 @@ class PlusIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {},
       child: const Icon(
         Icons.add_circle_outlined,
         color: Colors.blue,
@@ -58,9 +58,7 @@ class SearchNavigationIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        appRouter.pushNamed(SearchScreen.routeName);
-      },
+      onTap: homeViewModel.navigateToSearchScreen,
       child: const Icon(
         Icons.search,
         size: 28,
@@ -77,9 +75,7 @@ class SettingsIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        appRouter.pushNamed(SearchScreen.routeName);
-      },
+      onTap: homeViewModel.navigateToHistoryScreen,
       child: const Icon(Icons.settings),
     );
   }

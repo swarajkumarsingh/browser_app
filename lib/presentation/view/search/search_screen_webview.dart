@@ -1,17 +1,15 @@
-import 'package:browser_app/core/common/snackbar/show_snackbar.dart';
-import 'package:browser_app/utils/browser/browser_utils.dart';
-import 'package:browser_app/utils/clipboard.dart';
-import 'package:browser_app/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../core/constants/color.dart';
-import '../../../core/event_tracker/event_tracker.dart';
+import '../../../data/provider/state_providers.dart';
+import '../../../utils/text_utils.dart';
+import '../../viewModel/search_screen_webview_view_model.dart';
 import '../../widgets/search/search_suggestions_dialog.dart';
-import '../webview/webview_screen.dart';
 
-class SearchScreenWebview extends StatefulWidget {
+class SearchScreenWebview extends ConsumerStatefulWidget {
   static const String routeName = '/search-screen-webview';
 
   final String url;
@@ -26,13 +24,11 @@ class SearchScreenWebview extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SearchScreenWebview> createState() => _SearchScreenWebviewState();
+  ConsumerState<SearchScreenWebview> createState() =>
+      _SearchScreenWebviewState();
 }
 
-class _SearchScreenWebviewState extends State<SearchScreenWebview> {
-  bool _showSuggestions = false;
-  String copiedUrl = "";
-
+class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
   final _textEditingController = TextEditingController();
 
   @override
@@ -50,14 +46,11 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
   void _init() async {
     _textEditingController.text = widget.url;
 
-    final _copiedUrl = await clipBoard.getData();
-    setState(() {
-      copiedUrl = _copiedUrl;
+    await Future(() {
+      ref.read(clipBoardProvider.notifier).update((state) => "");
     });
-    await eventTracker.screen("search-screen-webview", {
-      "url": widget.url,
-      "prompt": widget.prompt,
-    });
+
+    await searchScreenWebviewViewModel.logScreen(widget.url, widget.prompt);
   }
 
   @override
@@ -69,14 +62,16 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
   }
 
   SingleChildScrollView searchScreenBody() {
+    final _showSuggestions =
+        ref.watch(searchScreenWebviewShowSuggestionsProvider);
+
     return SingleChildScrollView(
       child: Column(
         children: [
-          _showSuggestions
-              ? ShowSuggestionsDialog(
-                  value: _textEditingController.text,
-                )
-              : const SizedBox(),
+          if (_showSuggestions)
+            ShowSuggestionsDialog(
+              value: _textEditingController.text,
+            ),
           Column(
             children: [
               recentSearchListTile(),
@@ -90,25 +85,10 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
   }
 
   ListTile copiedTextListTile() {
+    final clipBoardText = ref.watch(clipBoardProvider);
     return ListTile(
-      onTap: () { 
-        // Url
-        if (textUtils.isValidUrl(copiedUrl)) {
-          appRouter.push(WebviewScreen(
-            url: browserUtils.addHttpToDomain(copiedUrl),
-            prompt: "",
-          ));
-          return;
-        }
-
-        // Query
-        final prompt = textUtils.replaceSpaces(copiedUrl);
-
-        appRouter.push(WebviewScreen(
-          url: browserUtils.addQueryToGoogle(prompt),
-          prompt: prompt,
-        ));
-      },
+      onTap: () =>
+          searchScreenWebviewViewModel.navigateToWebviewScreen(clipBoardText),
       leading: const Icon(FontAwesomeIcons.globe, size: 20),
       contentPadding: const EdgeInsets.only(left: 12, right: 10),
       title: const Text(
@@ -118,7 +98,7 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
         softWrap: true,
       ),
       subtitle: Text(
-        textUtils.isEmpty(copiedUrl) ? widget.url : copiedUrl,
+        textUtils.isEmpty(clipBoardText) ? widget.url : clipBoardText,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         softWrap: true,
@@ -150,15 +130,13 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
             IconButton(
-              onPressed: () async {
-                await clipBoard.setData(widget.url);
-                setState(() {
-                  copiedUrl = widget.url;
-                });
-                showSnackBar("Copied to Clipboard");
-              },
+                onPressed: () async =>
+                    searchScreenWebviewViewModel.shareUrl(widget.url),
+                icon: const Icon(Icons.share)),
+            IconButton(
+              onPressed: () => searchScreenWebviewViewModel
+                  .updateClipBoardState(ref, widget.url),
               icon: const Icon(Icons.copy),
             ),
             IconButton(
@@ -172,44 +150,8 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
   }
 
   AppBar searchScreenAppBar() {
-    void _onChanged(String value) {
-      if (textUtils.isEmpty(value)) {
-        setState(() {
-          _showSuggestions = false;
-        });
-        return;
-      }
-
-      setState(() {
-        _showSuggestions = true;
-      });
-    }
-
-    void _onSubmitted(String prompt) {
-      FocusScope.of(context).unfocus();
-
-      // Url
-      if (textUtils.isValidUrl(prompt)) {
-        appRouter.push(WebviewScreen(
-          url: browserUtils.addHttpToDomain(prompt),
-        ));
-        return;
-      }
-
-      // Query
-      prompt = textUtils.replaceSpaces(prompt);
-
-      appRouter.push(WebviewScreen(
-        url: browserUtils.addQueryToGoogle(prompt),
-        prompt: prompt,
-      ));
-    }
-
-    void _onTap() {
-      if (_showSuggestions) {
-        _textEditingController.clear();
-      }
-    }
+    final _showSuggestions =
+        ref.watch(searchScreenWebviewShowSuggestionsProvider);
 
     return AppBar(
       elevation: 0,
@@ -219,9 +161,10 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
       scrolledUnderElevation: 0,
       backgroundColor: colors.white,
       title: TextField(
-        autofocus: true,
-        onChanged: _onChanged,
-        onSubmitted: _onSubmitted,
+        autofocus: false,
+        onChanged: (String _) => searchScreenWebviewViewModel.onChanged(ref, _),
+        onSubmitted: (String prompt) =>
+            searchScreenWebviewViewModel.onSubmitted(context, prompt),
         controller: _textEditingController,
         decoration: InputDecoration(
           filled: true,
@@ -231,7 +174,8 @@ class _SearchScreenWebviewState extends State<SearchScreenWebview> {
           contentPadding:
               const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
           suffixIcon: InkWell(
-            onTap: _onTap,
+            onTap: () => searchScreenWebviewViewModel.onTap(
+                _showSuggestions, _textEditingController),
             child: Icon(!_showSuggestions ? Icons.mic : Icons.clear_outlined),
           ),
           border: const OutlineInputBorder(

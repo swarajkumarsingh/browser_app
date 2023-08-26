@@ -1,14 +1,14 @@
-import '../../domain/models/search/search_suggestions_model.dart';
+import '../../domain/models/search_suggestions_model.dart';
 
-List<SearchSuggestions> fakeSearchSuggestions = [
-  SearchSuggestions(result: "coding ninjas", redirectUrl: ""),
-  SearchSuggestions(result: "coding", redirectUrl: ""),
-  SearchSuggestions(result: "coding invaders", redirectUrl: ""),
-  SearchSuggestions(result: "coding invaders", redirectUrl: ""),
-  SearchSuggestions(result: "coding classes bangalore", redirectUrl: ""),
-  SearchSuggestions(result: "codingbat", redirectUrl: ""),
-  SearchSuggestions(result: "codingal", redirectUrl: ""),
-  SearchSuggestions(result: "coding ninjas slayground", redirectUrl: ""),
-  SearchSuggestions(result: "coding course", redirectUrl: ""),
-  SearchSuggestions(result: "coding decoding questions", redirectUrl: ""),
+List<SearchSuggestionsModel> fakeSearchSuggestions = [
+  SearchSuggestionsModel(result: "coding ninjas", redirectUrl: ""),
+  SearchSuggestionsModel(result: "coding", redirectUrl: ""),
+  SearchSuggestionsModel(result: "coding invaders", redirectUrl: ""),
+  SearchSuggestionsModel(result: "coding invaders", redirectUrl: ""),
+  SearchSuggestionsModel(result: "coding classes bangalore", redirectUrl: ""),
+  SearchSuggestionsModel(result: "codingbat", redirectUrl: ""),
+  SearchSuggestionsModel(result: "codingal", redirectUrl: ""),
+  SearchSuggestionsModel(result: "coding ninjas slayground", redirectUrl: ""),
+  SearchSuggestionsModel(result: "coding course", redirectUrl: ""),
+  SearchSuggestionsModel(result: "coding decoding questions", redirectUrl: ""),
 ];

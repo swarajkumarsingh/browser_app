@@ -1,4 +1,4 @@
-import '../../domain/models/home/home.dart';
+import '../../domain/models/home.dart';
 import '../../domain/repository/home_repository.dart';
 import '../../utils/network/network.dart';
 import '../data_source/online/home_data_source.dart';

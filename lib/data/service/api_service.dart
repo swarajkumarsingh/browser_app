@@ -6,4 +6,5 @@ import 'api_services_impl.dart';
 final ApiService apiService = ApiServiceImpl(Api());
 abstract class ApiService {
   Future<Response> getHomeData();
+  Future<Response> getImageHead(String url);
 }

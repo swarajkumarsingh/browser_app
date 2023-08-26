@@ -1,14 +1,13 @@
-import '../../../core/event_tracker/event_tracker.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/common/widgets/spaces.dart';
 import '../../../core/constants/assets.dart';
+import '../../viewModel/home_view_model.dart';
+import '../../../core/common/widgets/spaces.dart';
 import '../../../data/local/home_data_provider.dart';
-
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/home/home_news_feed_widget.dart';
-import '../../widgets/home/home_quick_links_wrap_widget.dart';
 import '../../widgets/home/home_search_textfield.dart';
+import '../../widgets/home/home_quick_links_wrap_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
@@ -26,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _init() async {
-    await eventTracker.screen("home-screen");
+    await homeViewModel.logScreen();
   }
 
   @override

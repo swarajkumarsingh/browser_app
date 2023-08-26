@@ -1,4 +1,4 @@
-import 'package:browser_app/domain/models/common/site_model.dart';
+import '../../domain/models/site_model.dart';
 
 
 List<Site> fakeRecentQuickLinks = [

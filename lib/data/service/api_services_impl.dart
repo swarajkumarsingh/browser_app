@@ -10,4 +10,7 @@ class ApiServiceImpl extends ApiService {
 
   @override
   Future<Response> getHomeData() async => _api.get(Config.baseUrl);
+  
+  @override
+  Future<Response> getImageHead(String url) async => _api.head(url);
 }

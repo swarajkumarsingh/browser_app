@@ -1,4 +1,4 @@
-import 'package:browser_app/utils/screen_utils.dart';
+import '../../../utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/local/search_suggestions.dart';

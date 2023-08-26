@@ -1,8 +1,8 @@
-class FakeNews {
+class FakeNewsModel {
   String image;
   String description;
   String redirectUrl;
-  FakeNews({
+  FakeNewsModel({
     required this.image,
     required this.description,
     required this.redirectUrl,

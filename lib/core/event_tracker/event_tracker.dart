@@ -33,7 +33,7 @@ class _EventTracker {
     await _firebaseAnalytics.setUserProperty(name: 'station', value: stationId);
   }
 
-  Trace startTrace(String trace)  {
+  Trace startTrace(String trace) {
     return FirebasePerformance.instance.newTrace(trace);
   }
 
@@ -45,7 +45,7 @@ class _EventTracker {
     String? method,
   }) async {
     final Map<String, dynamic> params = {
-      for (var p in (aParams ?? {}).entries) p.key: p.value,
+      for (final p in (aParams ?? {}).entries) p.key: p.value,
       'id': itemId,
       'type': contentType,
     };

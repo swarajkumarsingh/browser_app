@@ -1,20 +1,18 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:browser_app/domain/models/download_request_model.dart';
+import 'package:browser_app/domain/repository/webview_repository.dart';
+import 'package:browser_app/utils/browser/browser_constants.dart';
+import 'package:browser_app/utils/clipboard.dart';
+import 'package:browser_app/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'package:browser_app/core/dio/api.dart';
-import 'package:browser_app/domain/models/download/download_request_model.dart';
-import 'package:browser_app/domain/repository/webview_repository.dart';
-import 'package:browser_app/utils/browser/browser_constants.dart';
-import 'package:browser_app/utils/clipboard.dart';
-import 'package:browser_app/utils/text_utils.dart';
-
 import '../../core/common/snackbar/show_snackbar.dart';
 import '../../core/common/widgets/toast.dart';
-import '../../domain/models/webview/url_data_model.dart';
+import '../../domain/models/url_data_model.dart';
 import '../../presentation/widgets/webview/download_dialog.dart';
 import '../download/downloader.dart';
 import '../download/downloader_constants.dart';
@@ -38,7 +36,7 @@ class _BrowserUtils {
   }
 
   bool isDataURL(String keyword) {
-    return keyword.startsWith("data:image");
+    return keyword.contains("data:image");
   }
 
   Future<NavigationDecision> onNavigationRequest({
@@ -89,24 +87,28 @@ class _BrowserUtils {
     return NavigationDecision.prevent;
   }
 
-  Future<UrlData> getUrlData(String url) async {
+  Future<UrlDataModel> getUrlData(String url) async {
     try {
       final res = await webviewRepository.getUrlData(url: url);
 
-      if (!res.successBool ||
-          textUtils.isEmpty(res.data!.contentType) ||
-          textUtils.isEmpty(res.data!.size)) {
-        return UrlData(success: false, url: "", size: "", contentType: "");
+      if (!res.successBool) {
+        return UrlDataModel(success: false, url: "", size: "", contentType: "");
       }
 
-      return UrlData(
+      if (!res.successBool ||
+          textUtils.isEmpty(res.data!.data!.contentType) ||
+          textUtils.isEmpty(res.data!.data!.size)) {
+        return UrlDataModel(success: false, url: "", size: "", contentType: "");
+      }
+
+      return UrlDataModel(
         success: res.successBool,
         url: url,
-        size: res.data!.size,
-        contentType: res.data!.contentType,
+        size: res.data!.data!.size,
+        contentType: res.data!.data!.contentType,
       );
     } catch (e) {
-      return UrlData(success: false, url: "", size: "", contentType: "");
+      return UrlDataModel(success: false, url: "", size: "", contentType: "");
     }
   }
 
@@ -224,9 +226,14 @@ class _BrowserUtils {
   Future<DownloadedRequestModel> checkIfUrlContainsDownloadableHeader(
       String url) async {
     try {
-      final response = await Api().head(url);
+      final response = await webviewRepository.getUrlData(url: url);
 
-      final contentType = response.headers.value("content-type") ?? "";
+      if (!response.successBool) {
+        return DownloadedRequestModel(
+            isDownloadRequest: false, fileExtension: null);
+      }
+
+      final contentType = response.data!.headers.value("content-type") ?? "";
 
       for (final key in browserConstants.fileExtensionWithContentType.keys) {
         if (contentType == key) {

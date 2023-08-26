@@ -1,9 +1,9 @@
-import 'package:browser_app/presentation/view/webview/webview_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 
 import '../../../core/common/widgets/spaces.dart';
+import '../../view/webview/webview_screen.dart';
 
 class SubSearchScreenQuickLinks extends StatelessWidget {
   final String name;

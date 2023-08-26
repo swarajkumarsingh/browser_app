@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:browser_app/core/common/snackbar/show_snackbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../../core/common/snackbar/show_snackbar.dart';
 
 class LeftIconWidget extends StatelessWidget {
   final WebViewController? controller;

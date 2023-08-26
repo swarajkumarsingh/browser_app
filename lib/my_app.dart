@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:browser_app/core/constants/color.dart';
-import 'package:browser_app/presentation/view/home/home_screen.dart';
-
-import 'core/constants/constants.dart';
-import 'core/event_tracker/event_tracker.dart';
 import 'router.dart';
+import 'core/constants/color.dart';
+import 'core/constants/constants.dart';
 import 'utils/restart/restart_widget.dart';
+import 'core/event_tracker/event_tracker.dart';
+import 'presentation/view/home/home_screen.dart';
 
 class AppWrapper extends StatelessWidget {
   const AppWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const RestartWidget(child: MyApp());
+    return const ProviderScope(child: RestartWidget(child: MyApp()));
   }
 }
 

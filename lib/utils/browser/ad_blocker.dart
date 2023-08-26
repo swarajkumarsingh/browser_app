@@ -1,6 +1,6 @@
-import 'package:browser_app/core/constants/constants.dart';
-import 'package:browser_app/utils/preferences/preferences_service.dart';
-import 'package:browser_app/utils/text_utils.dart';
+import '../../core/constants/constants.dart';
+import '../preferences/preferences_service.dart';
+import '../text_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 

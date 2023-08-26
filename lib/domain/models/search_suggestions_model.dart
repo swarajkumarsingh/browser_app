@@ -1,9 +1,9 @@
-class SearchSuggestions {
+class SearchSuggestionsModel {
   final String result;
   final String redirectUrl;
   final String source;
 
-  SearchSuggestions({
+  SearchSuggestionsModel({
     required this.result,
     required this.redirectUrl,
     this.source = "google",

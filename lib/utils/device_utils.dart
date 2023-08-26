@@ -3,6 +3,8 @@
 ///  Created by iotjin on 2020/07/28.
 ///  description:  设备信息工具类
 
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';

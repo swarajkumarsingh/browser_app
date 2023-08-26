@@ -1,7 +1,8 @@
-import '../../utils/preferences/preferences_service.dart';
-import '../../utils/preferences/preferences_service_impl.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../utils/preferences/preferences_service.dart';
+import '../../utils/preferences/preferences_service_impl.dart';
 
 final getIt = GetIt.instance;
 class DependencyInjection {

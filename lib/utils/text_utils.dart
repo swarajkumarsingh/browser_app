@@ -1,5 +1,5 @@
-import 'package:browser_app/utils/extensions/string_extension.dart';
-import 'package:browser_app/utils/url_utils.dart';
+import 'extensions/string_extension.dart';
+import 'url_utils.dart';
 
 final textUtils = _TextUtils();
 

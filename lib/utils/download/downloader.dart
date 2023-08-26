@@ -1,13 +1,11 @@
 import 'dart:io';
-import 'dart:isolate';
-import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../core/common/widgets/toast.dart';
-import '../../domain/models/download/download_model.dart';
+import '../../domain/models/download_model.dart';
 import '../permission_utils.dart';
 import '../text_utils.dart';
 import 'downloader_constants.dart';
@@ -16,6 +14,10 @@ import 'downloader_utils.dart';
 final downloader = Downloader();
 
 class Downloader {
+  Future<void> init() async {
+    await FlutterDownloader.initialize(debug: kDebugMode, ignoreSsl: true);
+  }
+
   Future<DownloadModel> downloadFile({
     required String url,
     String? fileName,
@@ -68,7 +70,9 @@ class Downloader {
         url: url,
         savedDir: (await downloaderConstants.getDownloadDir()),
         headers: headers ?? {},
-        fileName: textUtils.isEmpty(fileName) ? "$_randomImageName.$imageContentType" : "$fileName.$imageContentType",
+        fileName: textUtils.isEmpty(fileName)
+            ? "$_randomImageName.$imageContentType"
+            : "$fileName.$imageContentType",
         saveInPublicStorage: true,
         timeout: timeout ?? 15000,
         allowCellular: allowCellular ?? true,
@@ -104,72 +108,6 @@ class Downloader {
   Future<bool> openFile(String taskId) async {
     try {
       return await FlutterDownloader.open(taskId: taskId);
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<bool> dispose([String? sendPortValue]) async {
-    try {
-      return IsolateNameServer.removePortNameMapping(
-          sendPortValue ?? "downloader_send_port");
-    } catch (e) {
-      return false;
-    }
-  }
-
-  static bool downloadCallback(String id, int status, int progress) {
-    try {
-      final SendPort? send =
-          IsolateNameServer.lookupPortByName('downloader_send_port');
-
-      send!.send([id, status, progress]);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  void onDownloadCallBack(String id, DownloadTaskStatus status, int progress) {
-    if (progress == 100 || status == DownloadTaskStatus.complete) {
-      showToast("File downloaded");
-      return;
-    }
-    if (status == DownloadTaskStatus.failed) {
-      showToast("File downloading failed");
-      return;
-    }
-    if (status == DownloadTaskStatus.canceled) {
-      showToast("File downloading canceled");
-      return;
-    }
-    if (status == DownloadTaskStatus.paused) {
-      showToast("File downloading paused");
-      return;
-    }
-    if (status == DownloadTaskStatus.enqueued) {
-      showToast("File downloading enqueued");
-      return;
-    }
-    return;
-  }
-
-  bool init() {
-    final ReceivePort _port = ReceivePort();
-
-    try {
-      IsolateNameServer.registerPortWithName(
-          _port.sendPort, 'downloader_send_port');
-      _port.listen((dynamic data) {
-        final String id = data[0];
-        final DownloadTaskStatus status = DownloadTaskStatus.fromInt(data[1]);
-        final int progress = data[2];
-
-        onDownloadCallBack(id, status, progress);
-      });
-
-      FlutterDownloader.registerCallback(Downloader.downloadCallback);
-      return true;
     } catch (e) {
       return false;
     }
