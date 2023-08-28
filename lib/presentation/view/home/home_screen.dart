@@ -1,43 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:screenshot/screenshot.dart';
 
-import '../../../core/constants/assets.dart';
-import '../../viewModel/home_view_model.dart';
 import '../../../core/common/widgets/spaces.dart';
+import '../../../core/constants/assets.dart';
+import '../../../data/db/webview_db.dart';
 import '../../../data/local/home_data_provider.dart';
+import '../../viewModel/home_view_model.dart';
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/home/home_news_feed_widget.dart';
-import '../../widgets/home/home_search_textfield.dart';
 import '../../widgets/home/home_quick_links_wrap_widget.dart';
+import '../../widgets/home/home_search_textfield.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   static const String routeName = '/home-screen';
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
     _init();
   }
 
+  ScreenshotController screenshotController = ScreenshotController();
+
   void _init() async {
     await homeViewModel.logScreen();
+    await webviewDB.addHomeScreenScreenShotBytes(screenshotController);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: homeAppBar(),
-      bottomNavigationBar: bottomNavigationBar(),
-      body: homeBody(),
+    return Screenshot(
+      controller: screenshotController,
+      child: Scaffold(
+        appBar: appBar(),
+        body: body(),
+        bottomNavigationBar: bottomNavigationBar(),
+      ),
     );
   }
 
-  SingleChildScrollView homeBody() {
+  SingleChildScrollView body() {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -68,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  AppBar homeAppBar() {
+  AppBar appBar() {
     return AppBar(
       centerTitle: true,
       elevation: 0,
@@ -124,8 +133,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   BottomNavigationBarItem tabsNavigationIcon() {
-    return const BottomNavigationBarItem(
-      icon: TabsNavigationIcon(),
+    return BottomNavigationBarItem(
+      icon: TabsNavigationIcon(ref: ref),
       label: "Tabs",
     );
   }

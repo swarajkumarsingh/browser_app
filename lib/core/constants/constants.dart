@@ -10,8 +10,12 @@ const String sentryDSN =
     "https://eed1da5969630f389c729af90d2b3ae3@o4505619587989504.ingest.sentry.io/4505619589038080";
 const int maxNumberOfRestartTries = 3;
 
-const apkDownloadLink = "https://files.an1.co/minecraft-mod_1.20.15.01-an1.com.apk";
-const imageUrlLink = "https://images.pexels.com/photos/895259/pexels-photo-895259.jpeg?cs=srgb&dl=pexels-dominika-roseclay-895259.jpg&fm=jpg";
+const apkDownloadLink =
+    "https://files.an1.co/minecraft-mod_1.20.15.01-an1.com.apk";
+const imageUrlLink =
+    "https://images.pexels.com/photos/895259/pexels-photo-895259.jpeg?cs=srgb&dl=pexels-dominika-roseclay-895259.jpg&fm=jpg";
+
+const googleUrl = "https://google.com";
 
 class Constants {
   Constants._();
@@ -25,4 +29,11 @@ class Constants {
 
   // Browser Preferences
   static String PREF_WEBVIEW_MAX_RE_TRIES = "pref_webview_max_re_tries";
+  static String PRE_BROWSER_FILES_DOWNLOADED = "browser_files_downloaded";
+
+  // Hive Preferences
+  static String HISTORY_BOX = "history_box";
+  static String TABS_BOX = "tabs_box";
+  static String HOME_IMAGE_BOX = "home_image";
+  static String CURRENT_TAB_INDEX_BOX = "current_tab_index";
 }

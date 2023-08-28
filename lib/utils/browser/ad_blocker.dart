@@ -15,17 +15,17 @@ class AdBlocker {
 
   Future<void> incrementPageVisitedCount() async {
     // Update the Number of Page Visited
-    final totalPageVisited = preferenceUtils.getInt(
+    final totalPageVisited = preferencesService.getInt(
         key: Constants.PREF_TOTAL_PAGE_VISITED, defaultValue: 0);
-    await preferenceUtils.setInt(
+    await preferencesService.setInt(
         key: Constants.PREF_TOTAL_PAGE_VISITED, value: (totalPageVisited + 1));
   }
 
   Future<void> _recalculateAdStat(String url) async {
     // Incr Ad block count
-    final totalAdsBlocked = preferenceUtils.getInt(
+    final totalAdsBlocked = preferencesService.getInt(
         key: Constants.PREF_TOTAL_ADS_BLOCKED, defaultValue: 0);
-    await preferenceUtils.setInt(
+    await preferencesService.setInt(
         key: Constants.PREF_TOTAL_ADS_BLOCKED, value: totalAdsBlocked + 1);
 
     // Update the Size of Data Saved
@@ -36,16 +36,16 @@ class AdBlocker {
       final endTime = DateTime.now().second;
 
       // Save the File Size in Bytes.
-      final totalAdFileSize = preferenceUtils.getInt(
+      final totalAdFileSize = preferencesService.getInt(
           key: Constants.PREF_TOTAL_ADS_SIZE_SAVED, defaultValue: 0);
-      await preferenceUtils.setInt(
+      await preferencesService.setInt(
           key: Constants.PREF_TOTAL_ADS_SIZE_SAVED,
           value: (totalAdFileSize + fileLength));
 
       // Save the Seconds Saved.
-      final totalAdTimeSaved = preferenceUtils.getInt(
+      final totalAdTimeSaved = preferencesService.getInt(
           key: Constants.PREF_TOTAL_ADS_TIME_SAVED, defaultValue: 0);
-      await preferenceUtils.setInt(
+      await preferencesService.setInt(
         key: Constants.PREF_TOTAL_ADS_TIME_SAVED,
         value: (totalAdTimeSaved + (endTime - startTime)),
       );

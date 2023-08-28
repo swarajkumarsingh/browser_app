@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/di/injection_container.dart';
 
-final preferenceUtils = getIt<PreferencesService>();
+final preferencesService = getIt<PreferencesService>();
 
 abstract class PreferencesService {
   int getInt({required String key, required int defaultValue});

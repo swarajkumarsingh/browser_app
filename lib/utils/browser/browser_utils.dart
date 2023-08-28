@@ -1,10 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:browser_app/domain/models/download_request_model.dart';
-import 'package:browser_app/domain/repository/webview_repository.dart';
-import 'package:browser_app/utils/browser/browser_constants.dart';
-import 'package:browser_app/utils/clipboard.dart';
-import 'package:browser_app/utils/text_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
@@ -12,10 +8,14 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../core/common/snackbar/show_snackbar.dart';
 import '../../core/common/widgets/toast.dart';
+import '../../domain/models/download_request_model.dart';
 import '../../domain/models/url_data_model.dart';
+import '../../domain/repository/webview_repository.dart';
 import '../../presentation/widgets/webview/download_dialog.dart';
 import '../download/downloader.dart';
 import '../download/downloader_constants.dart';
+import '../text_utils.dart';
+import 'browser_constants.dart';
 
 final browserUtils = _BrowserUtils();
 
@@ -25,6 +25,26 @@ class _BrowserUtils {
       return domain;
     }
     return "http://${domain.toLowerCase()}";
+  }
+
+  bool urlIsSecure(Uri url) {
+    return (url.scheme == "https") || isLocalizedContent(url);
+  }
+
+  bool isAndroid() {
+    return !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+  }
+
+  bool isIOS() {
+    return !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
+  }
+
+  bool isLocalizedContent(Uri url) {
+    return (url.scheme == "file" ||
+        url.scheme == "chrome" ||
+        url.scheme == "data" ||
+        url.scheme == "javascript" ||
+        url.scheme == "about");
   }
 
   String addQueryToGoogle(String prompt) {
@@ -39,13 +59,23 @@ class _BrowserUtils {
     return keyword.contains("data:image");
   }
 
+  bool containsBlockedUrl(String url) {
+    for (final site in browserConstants.blockedSites) {
+      return url == site;
+    }
+    return false;
+  }
+
   Future<NavigationDecision> onNavigationRequest({
     required NavigationRequest request,
     required BuildContext context,
     required TextEditingController fileNameController,
     required bool mounted,
   }) async {
-    await clipBoard.setData(request.url);
+    if (containsBlockedUrl(request.url)) {
+      return NavigationDecision.prevent;
+    }
+
     final downloadRequest = await browserUtils.isDownloadRequest(request.url);
 
     if (!downloadRequest.isDownloadRequest) {
@@ -60,7 +90,7 @@ class _BrowserUtils {
     final downloadDir = await downloaderConstants.getDownloadDir();
 
     showDownloadDialog(
-      fileSize: "0",
+      fileSize: 0,
       context: context,
       controller: fileNameController,
       fileType: downloadRequest.fileExtension!,

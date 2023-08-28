@@ -92,6 +92,8 @@ dependencies:
   # Local DB
   hive_flutter: ^1.1.0
   share_plus: ^7.1.0
+  flutter_inappwebview: ^5.7.2+3
+  screenshot: ^2.1.0
 
 
 dev_dependencies:

@@ -6,4 +6,8 @@ final hiveService = HiveServiceImpl();
 abstract class HiveService {
   Future<void> init();
   bool isBoxEmpty(Box<dynamic> box);
+
+  int getBoxLength(Box<dynamic> box);
+
+  int getBoxLengthFromName(String boxName);
 }

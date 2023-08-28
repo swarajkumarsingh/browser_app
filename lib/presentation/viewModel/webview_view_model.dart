@@ -25,56 +25,66 @@ class _WebviewViewModel {
     required bool mounted,
   }) async {
     _updateTextEditingController(ref, url);
-    _initializeWebview(
+    await _initializeWebview(
         context: context, ref: ref, url: url, prompt: prompt, mounted: mounted);
     await _logScreen(url, prompt);
   }
 
-  void _initializeWebview({
+  Future<void> _initializeWebview({
     required BuildContext context,
     required WidgetRef ref,
     required String url,
     required String prompt,
     required bool mounted,
-  }) {
-    ref.read(webviewControllerProvider.notifier).update((state) {
-      late final PlatformWebViewControllerCreationParams params;
-      if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-        params = WebKitWebViewControllerCreationParams(
-          allowsInlineMediaPlayback: true,
-          mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-        );
-      } else {
-        params = const PlatformWebViewControllerCreationParams();
-      }
+  }) async {
 
-      final WebViewController controller =
-          WebViewController.fromPlatformCreationParams(params);
+      ref.read(webviewControllerProvider.notifier).update((state) {
+      return null;
+    });
 
-      controller
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setBackgroundColor(Colors.white)
-        ..setNavigationDelegate(
-          NavigationDelegate(
-            onProgress: (int _) => _onProgress(ref, _),
-            onPageStarted: _onPageStarted,
-            onPageFinished: (String _) => _onPageFinished(_, ref),
-            onWebResourceError: (WebResourceError _) async =>
-                _onWebResourceError,
-            onNavigationRequest: (NavigationRequest _) => _onNavigationRequest(
-                ref: ref, request: _, context: context, mounted: mounted),
-            onUrlChange: (UrlChange _) async => _onUrlChange(ref, _, url),
-          ),
-        )
-        ..addJavaScriptChannel('Toaster', onMessageReceived: _onMessageReceived)
-        ..loadRequest(Uri.parse(url));
+    late final PlatformWebViewControllerCreationParams params;
+    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+      params = WebKitWebViewControllerCreationParams(
+        allowsInlineMediaPlayback: true,
+        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+      );
+    } else {
+      params = const PlatformWebViewControllerCreationParams();
+    }
+    final WebViewController controller =
+        WebViewController.fromPlatformCreationParams(params);
+    try {
+      await controller.setJavaScriptMode(JavaScriptMode.unrestricted);
+
+      await controller.setBackgroundColor(Colors.white);
+
+      await controller.setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int _) => _onProgress(ref, _, controller),
+          onPageStarted: _onPageStarted,
+          onPageFinished: (String _) => _onPageFinished(_, ref),
+          onWebResourceError: (WebResourceError _) async => _onWebResourceError,
+          onNavigationRequest: (NavigationRequest _) => _onNavigationRequest(
+              ref: ref, request: _, context: context, mounted: mounted),
+          onUrlChange: (UrlChange _) async => _onUrlChange(ref, _, url),
+        ),
+      );
+
+      await controller.addJavaScriptChannel('Toaster',
+          onMessageReceived: _onMessageReceived);
+
+      await controller.loadRequest(Uri.parse(url));
 
       if (controller.platform is AndroidWebViewController) {
-        AndroidWebViewController.enableDebugging(true);
-        (controller.platform as AndroidWebViewController)
+        await AndroidWebViewController.enableDebugging(true);
+        await (controller.platform as AndroidWebViewController)
             .setMediaPlaybackRequiresUserGesture(false);
       }
+    } catch (e) {
+      logger.success("string");
+    }
 
+    ref.read(webviewControllerProvider.notifier).update((state) {
       return controller;
     });
   }
@@ -133,7 +143,8 @@ class _WebviewViewModel {
     logger.info('Page started loading: $url');
   }
 
-  void _onProgress(WidgetRef ref, int progress) async {
+  void _onProgress(
+      WidgetRef ref, int progress, WebViewController controller) async {
     logger.info('WebView is loading (progress : $progress%)');
     if (progress < 70) {
       ref.read(webviewScreenLoadingProvider.notifier).update((state) => true);

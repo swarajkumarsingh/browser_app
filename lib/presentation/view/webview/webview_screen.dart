@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../core/constants/color.dart';
-import '../search/search_screen_webview.dart';
-import '../../viewModel/webview_view_model.dart';
-import '../../widgets/webview/webview_loader.dart';
 import '../../../data/provider/state_providers.dart';
+import '../../viewModel/webview_view_model.dart';
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/search/search_navigation_icons.dart';
+import '../../widgets/webview/webview_loader.dart';
+import '../search/search_screen_webview.dart';
 
 class WebviewScreen extends ConsumerStatefulWidget {
   final String url;
   final String prompt;
+  final bool showTabController;
+  final bool wantKeepAlive;
   static const String routeName = '/webview-screen';
-  const WebviewScreen({super.key, required this.url, this.prompt = ""});
+  const WebviewScreen({
+    super.key,
+    required this.url,
+    this.prompt = "",
+    this.wantKeepAlive = false,
+    this.showTabController = true,
+  });
 
   @override
   ConsumerState<WebviewScreen> createState() => _WebviewScreenState();
 }
 
-class _WebviewScreenState extends ConsumerState<WebviewScreen> {
+class _WebviewScreenState extends ConsumerState<WebviewScreen>
+    with AutomaticKeepAliveClientMixin<WebviewScreen> {
   @override
   void initState() {
     super.initState();
@@ -42,7 +51,12 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {  
+    super.build(context);
+    
     final controller = ref.watch(webviewControllerProvider);
 
     return WillPopScope(
@@ -56,7 +70,8 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen> {
       backgroundColor: Colors.white,
       appBar: appBar(),
       body: body(),
-      bottomNavigationBar: bottomNavigationBar(),
+      bottomNavigationBar:
+          widget.showTabController ? bottomNavigationBar() : null,
     );
   }
 
@@ -189,8 +204,8 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen> {
   }
 
   BottomNavigationBarItem tabsNavigationIcon() {
-    return const BottomNavigationBarItem(
-      icon: TabsNavigationIcon(),
+    return BottomNavigationBarItem(
+      icon: TabsNavigationIcon(ref: ref),
       label: "Tabs",
     );
   }

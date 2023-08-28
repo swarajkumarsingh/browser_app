@@ -1,7 +1,7 @@
+import 'package:browser_app/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../../utils/hive/hive_constants.dart';
 import '../../../utils/hive/hive_service.dart';
 import '../../viewModel/history_view_model.dart';
 import '../../widgets/history/history_column_widget.dart';
@@ -65,7 +65,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   SingleChildScrollView historyBody() {
     return SingleChildScrollView(
       child: ValueListenableBuilder<Box>(
-        valueListenable: Hive.box(hiveConstants.historyBox).listenable(),
+        valueListenable: Hive.box(Constants.HISTORY_BOX).listenable(),
         builder: (context, box, widget) {
           if (hiveService.isBoxEmpty(box)) {
             return const NoHistoryWidget();

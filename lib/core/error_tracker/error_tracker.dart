@@ -64,6 +64,8 @@ class _ErrorTracker {
     dynamic hint,
   }) async {
     try {
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+
       if (error.runtimeType == StateError) {
         await FirebaseCrashlytics.instance.recordError(error, stackTrace);
         await Sentry.captureException(error,

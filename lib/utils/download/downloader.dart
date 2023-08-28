@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:browser_app/data/db/webview_db.dart';
 import 'package:flutter/foundation.dart';
+import '../../core/event_tracker/event_tracker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../domain/models/download_model.dart';
 import '../permission_utils.dart';
@@ -19,17 +21,17 @@ class Downloader {
   }
 
   Future<DownloadModel> downloadFile({
-    required String url,
-    String? fileName,
-    required String imageContentType,
-    Map<String, String>? headers,
-    String? savedDir,
-    bool? showNotification,
-    bool? allowCellular,
-    bool? requiresStorageNotLow,
-    bool? saveInPublicStorage,
-    bool? openFileFromNotification,
     int? timeout,
+    String? savedDir,
+    String? fileName,
+    bool? allowCellular,
+    required String url,
+    bool? showNotification,
+    bool? saveInPublicStorage,
+    bool? requiresStorageNotLow,
+    Map<String, String>? headers,
+    bool? openFileFromNotification,
+    required String imageContentType,
   }) async {
     try {
       if (!FlutterDownloader.initialized) {
@@ -80,6 +82,13 @@ class Downloader {
         requiresStorageNotLow: requiresStorageNotLow ?? true,
         openFileFromNotification: openFileFromNotification ?? true,
       );
+
+      await eventTracker.log("downloads_start", {
+        "taskId": taskId,
+        "url": url,
+      });
+
+      await webviewDB.incrBrowserDownloadFile();
 
       return DownloadModel(
         message: "File start downloading",

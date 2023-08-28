@@ -9,7 +9,7 @@ void showDownloadDialog(
     String? title,
     String? fileName,
     required String fileType,
-    required String fileSize,
+    required int fileSize,
     String? btnText,
     required String storageLocation,
     required VoidCallback function,
@@ -40,7 +40,7 @@ void showDownloadDialog(
                 children: [
                   const Icon(Icons.filter),
                   const HorizontalSpace(width: 10),
-                  Text("File Size: ${fileSize}MB"),
+                  if (fileSize != 0) Text("File Size: ${fileSize}MB"),
                 ],
               ),
               const VerticalSpace(height: 10),
