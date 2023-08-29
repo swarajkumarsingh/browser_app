@@ -9,7 +9,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../core/common/snackbar/show_snackbar.dart';
 import '../../core/common/widgets/toast.dart';
 import '../../domain/models/download_request_model.dart';
-import '../../domain/models/url_data_model.dart';
 import '../../domain/repository/webview_repository.dart';
 import '../../presentation/widgets/webview/download_dialog.dart';
 import '../download/downloader.dart';
@@ -73,6 +72,7 @@ class _BrowserUtils {
     required bool mounted,
   }) async {
     if (containsBlockedUrl(request.url)) {
+      showSnackBar("Site blocked my admin");
       return NavigationDecision.prevent;
     }
 
@@ -117,32 +117,7 @@ class _BrowserUtils {
     return NavigationDecision.prevent;
   }
 
-  Future<UrlDataModel> getUrlData(String url) async {
-    try {
-      final res = await webviewRepository.getUrlData(url: url);
-
-      if (!res.successBool) {
-        return UrlDataModel(success: false, url: "", size: "", contentType: "");
-      }
-
-      if (!res.successBool ||
-          textUtils.isEmpty(res.data!.data!.contentType) ||
-          textUtils.isEmpty(res.data!.data!.size)) {
-        return UrlDataModel(success: false, url: "", size: "", contentType: "");
-      }
-
-      return UrlDataModel(
-        success: res.successBool,
-        url: url,
-        size: res.data!.data!.size,
-        contentType: res.data!.data!.contentType,
-      );
-    } catch (e) {
-      return UrlDataModel(success: false, url: "", size: "", contentType: "");
-    }
-  }
-
-  String getImageSizeInMB(String value) {
+  String calculateImageSizeInMB(String value) {
     try {
       final int number = int.parse(value);
       final double result = number / 1048576;
@@ -153,7 +128,12 @@ class _BrowserUtils {
     }
   }
 
-  String getImageSizeInKB(String value) {
+  Future<String> imageSizeInMb(String url) async {
+    final res = await webviewRepository.getUrlSize(url: url);
+    return "$res MB";
+  }
+
+  String calculateImageSizeInKB(String value) {
     try {
       final int number = int.parse(value);
       final double result = number / 1024;

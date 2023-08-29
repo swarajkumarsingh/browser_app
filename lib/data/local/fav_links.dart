@@ -6,13 +6,13 @@ List<Site> fakeFavoriteLinks = [
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2008px-Google_%22G%22_Logo.svg.png",
     redirectLink:
-        "https://www.pexels.com/photo/medium-short-coated-white-dog-on-white-textile-2607544/",
+        "https://images.pexels.com/photos/2607544/pexels-photo-2607544.jpeg?cs=srgb&dl=pexels-simona-kidri%C4%8D-2607544.jpg&fm=jpg",
   ),
   Site(
     text: "Instagram",
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png",
-    redirectLink: "https://instagram.com/",
+    redirectLink: "https://files.an1.net/dr-driving-mod_1.70-an1.com.apk",
   ),
   Site(
     text: "Netflix",

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../viewModel/history_view_model.dart';
 import '../../../domain/models/history_model.dart';
+import '../../viewModel/history_view_model.dart';
 
 class HistoryListTileWidget extends StatelessWidget {
   final Box<dynamic> box;
@@ -23,7 +23,7 @@ class HistoryListTileWidget extends StatelessWidget {
       onTap: () => historyViewModel.navigateToWebviewScreen(homeModel.url),
       leading: const Icon(FontAwesomeIcons.globe),
       title: Text(
-        homeModel.prompt,
+        homeModel.prompt == "" ? homeModel.url : homeModel.prompt,
         maxLines: 1,
         softWrap: true,
         overflow: TextOverflow.ellipsis,

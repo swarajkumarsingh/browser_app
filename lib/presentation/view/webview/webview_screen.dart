@@ -9,18 +9,20 @@ import '../../viewModel/webview_view_model.dart';
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/search/search_navigation_icons.dart';
 import '../../widgets/webview/webview_loader.dart';
+import '../download/download_screen.dart';
+import '../history/history_screen.dart';
 import '../search/search_screen_webview.dart';
 
 class WebviewScreen extends ConsumerStatefulWidget {
   final String url;
-  final String prompt;
+  final String query;
   final bool showTabController;
   final bool wantKeepAlive;
   static const String routeName = '/webview-screen';
   const WebviewScreen({
     super.key,
     required this.url,
-    this.prompt = "",
+    this.query = "",
     this.wantKeepAlive = false,
     this.showTabController = true,
   });
@@ -39,7 +41,7 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
         context: context,
         ref: ref,
         url: widget.url,
-        prompt: widget.prompt,
+        query: widget.query,
         mounted: mounted,
       );
     });
@@ -54,9 +56,9 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
   bool get wantKeepAlive => true;
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     super.build(context);
-    
+
     final controller = ref.watch(webviewControllerProvider);
 
     return WillPopScope(
@@ -114,9 +116,9 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
         onTap: () {
           appRouter.push(
             SearchScreenWebview(
-              prompt: widget.prompt == ""
+              prompt: widget.query == ""
                   ? Uri.parse(widget.url).host
-                  : widget.prompt,
+                  : widget.query,
               url: widget.url,
             ),
           );
@@ -204,15 +206,33 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
   }
 
   BottomNavigationBarItem tabsNavigationIcon() {
-    return BottomNavigationBarItem(
-      icon: TabsNavigationIcon(ref: ref),
+    return const BottomNavigationBarItem(
+      icon: TabsNavigationIcon(),
       label: "Tabs",
     );
   }
 
   BottomNavigationBarItem settingsNavigationBar() {
-    return const BottomNavigationBarItem(
-      icon: SettingsIconWidget(),
+    return BottomNavigationBarItem(
+      icon: PopupMenuButton(
+        elevation: 1,
+        icon: const Icon(Icons.settings),
+        surfaceTintColor: Colors.grey,
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            child: const Text("History"),
+            onTap: () => appRouter.push(const HistoryScreen()),
+          ),
+          PopupMenuItem(
+            child: const Text("Downloads"),
+            onTap: () => appRouter.push(const DownloadScreen()),
+          ),
+          PopupMenuItem(
+            child: const Text("Settings"),
+            onTap: () {},
+          ),
+        ],
+      ),
       label: "Settings",
     );
   }

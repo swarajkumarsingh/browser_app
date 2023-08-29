@@ -1,9 +1,7 @@
 import 'package:browser_app/presentation/view/tab/tab_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/provider/state_providers.dart';
 import '../../viewModel/home_view_model.dart';
 
 class PlusIconWidget extends StatelessWidget {
@@ -25,15 +23,12 @@ class PlusIconWidget extends StatelessWidget {
 }
 
 class TabsNavigationIcon extends StatelessWidget {
-  final WidgetRef ref;
   const TabsNavigationIcon({
-    super.key, required this.ref,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final tabsList = ref.watch(tabsListProvider);
-    final tabCount = tabsList.length.toString();
     return GestureDetector(
       onTap: () {
         appRouter.push(const TabsScreen());
@@ -50,8 +45,8 @@ class TabsNavigationIcon extends StatelessWidget {
           ),
           borderRadius: const BorderRadius.all(Radius.circular(8)),
         ),
-        child: Text(
-          tabCount,
+        child: const Text(
+          "1",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),

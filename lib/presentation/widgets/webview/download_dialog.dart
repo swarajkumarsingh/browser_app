@@ -48,11 +48,14 @@ void showDownloadDialog(
                 children: [
                   const Icon(Icons.edit),
                   const HorizontalSpace(width: 10),
-                  Text(
-                    maxLines: 3,
-                    softWrap: true,
-                    storageLocation,
-                    overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    width: 180,
+                    child: Text(
+                      maxLines: 3,
+                      softWrap: true,
+                      storageLocation,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),

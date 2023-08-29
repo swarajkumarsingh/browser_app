@@ -20,6 +20,9 @@ const googleUrl = "https://google.com";
 class Constants {
   Constants._();
 
+  static String downloadImageUrl =
+      "https://gc-strapi-production.s3.eu-west-2.amazonaws.com/Partners_network_installation_icon_92a8e01da7.jpg";
+
 // AdBlocker Preferences
   static String PREF_TOTAL_ADS_BLOCKED = "pref_total_ads_blocked";
   static String PREF_TOTAL_AD_BLOCKER_ENABLED = "pref_total_ad_blocker_enabled";
@@ -36,4 +39,7 @@ class Constants {
   static String TABS_BOX = "tabs_box";
   static String HOME_IMAGE_BOX = "home_image";
   static String CURRENT_TAB_INDEX_BOX = "current_tab_index";
+
+  static String DOWNLOAD_SAVE_BOX = "download_save_box";
+  static String DOWNLOADING_SAVE_BOX = "downloading_save_box";
 }

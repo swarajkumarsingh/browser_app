@@ -40,9 +40,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case WebviewScreen.routeName:
       final arguments = settings.arguments as Map<String, dynamic>;
       final url = arguments['url'];
-      final prompt = arguments['prompt'];
+      final query = arguments['query'];
       return MaterialPageRoute(
-        builder: (_) => WebviewScreen(url: url, prompt: prompt),
+        builder: (_) => WebviewScreen(url: url, query: query),
       );
 
     default:

@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:browser_app/data/db/history_db.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
@@ -21,24 +22,23 @@ class _WebviewViewModel {
     required BuildContext context,
     required WidgetRef ref,
     required String url,
-    required String prompt,
+    required String query,
     required bool mounted,
   }) async {
     _updateTextEditingController(ref, url);
     await _initializeWebview(
-        context: context, ref: ref, url: url, prompt: prompt, mounted: mounted);
-    await _logScreen(url, prompt);
+        context: context, ref: ref, url: url, query: query, mounted: mounted);
+    await _logScreen(url, query);
   }
 
   Future<void> _initializeWebview({
     required BuildContext context,
     required WidgetRef ref,
     required String url,
-    required String prompt,
+    required String query,
     required bool mounted,
   }) async {
-
-      ref.read(webviewControllerProvider.notifier).update((state) {
+    ref.read(webviewControllerProvider.notifier).update((state) {
       return null;
     });
 
@@ -72,6 +72,8 @@ class _WebviewViewModel {
 
       await controller.addJavaScriptChannel('Toaster',
           onMessageReceived: _onMessageReceived);
+
+      await addHistory(url, query);
 
       await controller.loadRequest(Uri.parse(url));
 
@@ -116,6 +118,10 @@ class _WebviewViewModel {
       fileNameController: fileNameController,
       mounted: mounted,
     );
+  }
+
+  Future<void> addHistory(String url, String query) async {
+    await historyDB.addHistory(url: url, query: query);
   }
 
   Future<void> _onWebResourceError(WebResourceError error) async {

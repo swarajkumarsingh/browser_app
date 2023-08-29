@@ -7,6 +7,14 @@ import '../../utils/date/date_time_util.dart';
 final historyDB = _HistoryDB();
 
 class _HistoryDB {
+  Future<void> addHistory(
+      {required url, required query}) async {
+    final _shoppingBox = Hive.box(Constants.HISTORY_BOX);
+    await _shoppingBox.add(
+      HistoryModel(url: url, prompt: query, time: DateTime.now()).toMap(),
+    );
+  }
+
   Future<int> deleteAll() async {
     final historyBox = Hive.box(Constants.HISTORY_BOX);
     return await historyBox.clear();

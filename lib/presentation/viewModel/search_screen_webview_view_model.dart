@@ -52,7 +52,7 @@ class _SearchScreenWebviewViewModel {
     if (textUtils.isValidUrl(clipBoardText)) {
       appRouter.push(WebviewScreen(
         url: browserUtils.addHttpToDomain(clipBoardText),
-        prompt: "",
+        query: "",
       ));
       return;
     }
@@ -62,7 +62,7 @@ class _SearchScreenWebviewViewModel {
 
     appRouter.push(WebviewScreen(
       url: browserUtils.addQueryToGoogle(prompt),
-      prompt: prompt,
+      query: prompt,
     ));
   }
 
@@ -87,7 +87,7 @@ class _SearchScreenWebviewViewModel {
 
     appRouter.push(WebviewScreen(
       url: browserUtils.addQueryToGoogle(prompt),
-      prompt: prompt,
+      query: prompt,
     ));
   }
 }

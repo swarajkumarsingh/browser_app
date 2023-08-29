@@ -11,13 +11,15 @@ class HiveServiceImpl extends HiveService {
     await Hive.openBox(Constants.HISTORY_BOX);
     await Hive.openBox(Constants.HOME_IMAGE_BOX);
     await Hive.openBox(Constants.CURRENT_TAB_INDEX_BOX);
+    await Hive.openBox(Constants.DOWNLOAD_SAVE_BOX);
+    await Hive.openBox(Constants.DOWNLOADING_SAVE_BOX);
   }
 
   @override
   bool isBoxEmpty(Box box) {
     return box.keys.isEmpty;
   }
-  
+
   @override
   int getBoxLength(Box<dynamic> box) {
     if (box.length == box.keys.length) {
@@ -25,7 +27,7 @@ class HiveServiceImpl extends HiveService {
     }
     return 0;
   }
-  
+
   @override
   int getBoxLengthFromName(String boxName) {
     final box = Hive.box(boxName);

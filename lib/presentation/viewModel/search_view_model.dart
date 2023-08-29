@@ -3,7 +3,6 @@ import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/event_tracker/event_tracker.dart';
-import '../../data/db/search_db.dart';
 import '../../data/provider/state_providers.dart';
 import '../../utils/browser/browser_utils.dart';
 import '../../utils/text_utils.dart';
@@ -20,17 +19,14 @@ class _SearchScreenViewModel {
     // Url
     if (textUtils.isValidUrl(prompt)) {
       final url = browserUtils.addHttpToDomain(prompt);
-      await searchDB.addHistory(url: url, query: url, time: DateTime.now());
-      appRouter.push(WebviewScreen(url: url, prompt: ""));
+      appRouter.push(WebviewScreen(url: url, query: ""));
       return;
     }
 
     // Query
-    final oldPrompt = prompt;
     prompt = textUtils.replaceSpaces(prompt);
     final url = browserUtils.addQueryToGoogle(prompt);
-    await searchDB.addHistory(url: url, query: oldPrompt, time: DateTime.now());
-    appRouter.push(WebviewScreen(url: url, prompt: prompt));
+    appRouter.push(WebviewScreen(url: url, query: prompt));
   }
 
   void onChanged(WidgetRef ref, String value) {

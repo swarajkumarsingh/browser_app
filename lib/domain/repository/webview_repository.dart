@@ -8,4 +8,6 @@ final webviewRepository = WebviewRepositoryImpl(WebviewDataSource());
 
 abstract class WebviewRepository {
   Future<RemoteResponse<Response>> getUrlData({required String url});
+
+  Future<RemoteResponse<String>> getUrlSize({required String url});
 }
