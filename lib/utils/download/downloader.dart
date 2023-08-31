@@ -106,10 +106,7 @@ class Downloader {
         final task = await downloader.loadTasksWithRawQuery(
             "SELECT * FROM task WHERE task_id = '$taskId'");
 
-        logger.error(":::: $taskId");
-        logger.error(":::: ${task![0].taskId}");
-
-        switch (task[0].status) {
+        switch (task![0].status) {
           case DownloadTaskStatus.running:
             final model = DownloadingModel(
               filename: newFileName,

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/common/widgets/spaces.dart';
 import '../../../core/constants/color.dart';
-import '../../viewModel/download_view_model.dart';
 
-class CountBadge extends StatelessWidget {
-  final WidgetRef ref;
-  const CountBadge({
+class AdaptiveDownloadTitleAndCountBadge extends StatelessWidget {
+  final String title;
+  final int length;
+  const AdaptiveDownloadTitleAndCountBadge({
     super.key,
-    required this.ref,
+    required this.title,
+    required this.length,
   });
 
   @override
@@ -18,19 +18,19 @@ class CountBadge extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       child: Row(
         children: [
-          const Text(
-            "Downloaded",
-            style: TextStyle(
+          Text(
+            title,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
           ),
           const HorizontalSpace(width: 10),
           Badge.count(
-            count: downloadViewModel.downloadListLength(ref),
+            count: length,
             backgroundColor: colors.black,
             textColor: colors.white,
-          )
+          ),
         ],
       ),
     );

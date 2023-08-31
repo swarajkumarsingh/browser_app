@@ -12,7 +12,7 @@ class DownloadScreenLeadingIconButton extends StatelessWidget {
     return IconButton(
       icon: Icon(
         Icons.arrow_back_rounded,
-        color: colors.white,
+        color: colors.black,
         size: 35,
       ),
       onPressed: () => Navigator.pop(context),

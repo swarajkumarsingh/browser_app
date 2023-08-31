@@ -34,27 +34,28 @@ class _DownloaderDB {
     return false;
   }
 
-  Future<void> updateProgressOnly(String taskId, int progress) async {
-    final box = Hive.box(Constants.DOWNLOADING_SAVE_BOX);
+  Future<bool> updateProgressOnly(String taskId, DownloadingModel model) async {
+    try {
+      final box = Hive.box(Constants.DOWNLOADING_SAVE_BOX);
 
-    for (final key in box.keys) {
-      final model = DownloadingModel.fromJson(box.get(key));
-      if (model.taskId == taskId) {
-        logger.success("<<--> ${model.progress}");
-        model.progress = progress;
-        logger.success("--> ${model.progress}");
-        await box.put(key, model);
+      for (final key in box.keys) {
+        if (model.taskId == taskId) {
+          await box.put(key, model.toJson());
+          return true;
+        }
       }
+      return false;
+    } catch (e) {
+      logger.error(e);
+      return false;
     }
   }
 
   Future<bool> updateDownloading(DownloadingModel model) async {
     try {
       if (checkIfDownloadingModelAlreadyPresent(model.taskId)) {
-        await updateProgressOnly(model.taskId, model.progress);
-        return true;
+        return await updateProgressOnly(model.taskId, model);
       }
-
       final box = Hive.box(Constants.DOWNLOADING_SAVE_BOX);
       await box.add(model.toJson());
       return true;
@@ -68,9 +69,6 @@ class _DownloaderDB {
       final box = Hive.box(Constants.DOWNLOADING_SAVE_BOX);
       for (final key in box.keys) {
         final model = DownloadingModel.fromJson(box.get(key));
-        logger.error(box.keys);
-        logger.error(taskId);
-        logger.error(model.taskId);
         if (model.taskId == taskId) {
           await box.delete(key);
           return true;
