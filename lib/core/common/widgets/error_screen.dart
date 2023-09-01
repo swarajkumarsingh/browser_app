@@ -1,17 +1,35 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:browser_app/presentation/viewModel/search_view_model.dart';
+import 'package:browser_app/utils/speech_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ErrorScreen extends StatelessWidget {
+class ErrorScreen extends ConsumerStatefulWidget {
   final String? message;
-  const ErrorScreen({super.key, this.message});
+  const ErrorScreen({
+    Key? key,
+    this.message,
+  }) : super(key: key);
+
+  @override
+  ConsumerState<ErrorScreen> createState() => _ErrorScreenState();
+}
+
+class _ErrorScreenState extends ConsumerState<ErrorScreen> {
+  @override
+  void initState() {
+    super.initState();
+    speechService.init(ref);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _errorScreenBody(),
+      body: _errorScreenBody(ref, context),
     );
   }
 
-  SingleChildScrollView _errorScreenBody() {
+  SingleChildScrollView _errorScreenBody(WidgetRef ref, BuildContext context) {
     return SingleChildScrollView(
       child: SafeArea(
         child: Center(
@@ -25,9 +43,11 @@ class ErrorScreen extends StatelessWidget {
                     "https://img.freepik.com/premium-vector/funny-404-error-page-template-with-fallen-ice-cream_556049-83.jpg"),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  searchScreenViewModel.speechTextListen(ref, context);
+                },
                 child: Text(
-                  message ?? "Error Ocurred",
+                  widget.message ?? "Error Ocurred",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,

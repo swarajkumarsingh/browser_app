@@ -29,6 +29,10 @@ class SearchScreenWebview extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
+  bool isListening = false;
+  String transcribedText = '';
+  // SpeechToText speechToText = SpeechToText();
+
   final _textEditingController = TextEditingController();
 
   @override
@@ -46,8 +50,9 @@ class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
   void _init() async {
     _textEditingController.text = widget.url;
 
-    await Future(() {
+    await Future(() async {
       ref.read(clipBoardProvider.notifier).update((state) => "");
+      await searchScreenWebviewViewModel.initSpeechText(ref);
     });
 
     await searchScreenWebviewViewModel.logScreen(widget.url, widget.prompt);
@@ -175,7 +180,7 @@ class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
               const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
           suffixIcon: InkWell(
             onTap: () => searchScreenWebviewViewModel.onTap(
-                _showSuggestions, _textEditingController),
+                ref, context, _showSuggestions, _textEditingController),
             child: Icon(!_showSuggestions ? Icons.mic : Icons.clear_outlined),
           ),
           border: const OutlineInputBorder(

@@ -6,6 +6,10 @@
     <true/>
     <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
     <true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This application needs to access your microphone</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This application needs the speech recognition permission</string>
     <key>NSAllowsArbitraryLoads</key><true/>
     <key>NSTemporaryExceptionMinimumTLSVersion</key>
     <string>TLSv1.1</string>

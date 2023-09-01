@@ -83,7 +83,8 @@ class _WebviewViewModel {
             .setMediaPlaybackRequiresUserGesture(false);
       }
     } catch (e) {
-      logger.success("string");
+      logger.error(e);
+      showSnackBar("error occurred");
     }
 
     ref.read(webviewControllerProvider.notifier).update((state) {
@@ -181,7 +182,6 @@ class _WebviewViewModel {
       return true;
     }
     await controller.goBack();
-    logger.info("Back button pressed");
     return false;
   }
 

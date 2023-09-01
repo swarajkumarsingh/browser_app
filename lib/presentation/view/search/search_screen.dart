@@ -1,12 +1,15 @@
+// ignore_for_file: unused_element, unused_field
+
 import 'package:flutter/material.dart';
+import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../core/constants/color.dart';
 import '../../../data/local/search_quick_links.dart';
-import '../../../data/provider/state_providers.dart';
 import '../../viewModel/search_view_model.dart';
 import '../../widgets/search/search_quick_links.dart';
-import '../../widgets/search/search_suggestions_dialog.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   static const String routeName = '/search-screen';
@@ -23,6 +26,10 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
+  String _lastWords = '';
+  bool listening = false;
+  final _speechToText = SpeechToText();
+
   final _textEditingController = TextEditingController();
 
   @override
@@ -33,12 +40,47 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   void dispose() {
+    _lastWords = "";
+    listening = false;
+    _speechToText.stop();
     _textEditingController.dispose();
     super.dispose();
   }
 
-  void _init() async {
+  Future<void> _init() async {
+    await _speechToText.initialize();
+    await searchScreenViewModel.initSpeechText(ref);
     await searchScreenViewModel.logScreen();
+  }
+
+  Future<void> _startListening() async {
+    await _speechToText.listen(onResult: _onSpeechResult);
+    setState(() {});
+  }
+
+  Future<void> _stopListening() async {
+    await _speechToText.stop();
+    setState(() {});
+    logger.success(_lastWords);
+    await searchScreenViewModel.onSubmitted(_lastWords);
+  }
+
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      _lastWords = result.recognizedWords;
+    });
+  }
+
+  void toggle() {
+    if (listening == true) {
+      setState(() {
+        listening = false;
+      });
+      return;
+    }
+    setState(() {
+      listening = true;
+    });
   }
 
   @override
@@ -50,15 +92,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   SingleChildScrollView searchScreenBody() {
-    final _showSuggestions = ref.watch(searchScreenShowSuggestionsProvider);
-
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (_showSuggestions)
-            ShowSuggestionsDialog(
-              value: _textEditingController.text,
-            ),
           Column(
             children: [
               SearchScreenQuickLinks(
@@ -75,8 +111,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   AppBar searchScreenAppBar() {
-    final _showSuggestions = ref.watch(searchScreenShowSuggestionsProvider);
-
     return AppBar(
       elevation: 0,
       leadingWidth: 30,
@@ -94,14 +128,24 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           hintMaxLines: 1,
           fillColor: colors.homeTextFieldColor,
           hintText: 'Search or type Web address',
-          contentPadding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
-          suffixIcon: InkWell(
-            onTap: () => searchScreenViewModel.onTap(
-                ref: ref,
-                showSuggestions: _showSuggestions,
-                textEditingController: _textEditingController),
-            child: Icon(!_showSuggestions ? Icons.mic : Icons.clear_outlined),
-          ),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
+          suffixIcon: IconButton(
+              icon: Icon(
+                  !listening ? Icons.mic_rounded : Icons.stop_circle_rounded),
+              onPressed: () async {
+                if (await _speechToText.hasPermission &&
+                    _speechToText.isAvailable &&
+                    _speechToText.isNotListening) {
+                  await _startListening();
+                  toggle();
+                } else if (_speechToText.isListening) {
+                  await _stopListening();
+                  toggle();
+                } else {
+                  await _speechToText.initialize();
+                }
+              }),
           border: const OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(
