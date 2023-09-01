@@ -16,7 +16,6 @@ import '../search/search_screen_webview.dart';
 class WebviewScreen extends ConsumerStatefulWidget {
   final String url;
   final String query;
-  final bool showTabController;
   final bool wantKeepAlive;
   static const String routeName = '/webview-screen';
   const WebviewScreen({
@@ -24,7 +23,6 @@ class WebviewScreen extends ConsumerStatefulWidget {
     required this.url,
     this.query = "",
     this.wantKeepAlive = false,
-    this.showTabController = true,
   });
 
   @override
@@ -75,8 +73,7 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
       backgroundColor: Colors.white,
       appBar: appBar(),
       body: body(),
-      bottomNavigationBar:
-          widget.showTabController ? bottomNavigationBar() : null,
+      bottomNavigationBar: bottomNavigationBar(),
     );
   }
 

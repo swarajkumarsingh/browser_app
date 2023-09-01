@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/color.dart';
 import '../../../data/local/search_quick_links.dart';
 import '../../../data/provider/state_providers.dart';
-import '../../viewModel/search_view_model.dart';
+import '../../viewModel/search_screen_view_model.dart';
 import '../../widgets/search/search_quick_links.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {

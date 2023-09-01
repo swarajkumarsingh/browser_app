@@ -32,7 +32,6 @@ Future<void> _init() async {
     await hiveService.init();
     await Permission.storage.request();
     await Permission.microphone.request();
-    // await Permission.audio.request();
     await downloader.init();
     await FlutterDisplayMode.setHighRefreshRate();
     await setPreferredOrientations();

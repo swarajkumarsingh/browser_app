@@ -1,23 +1,25 @@
-import 'package:browser_app/data/db/webview_db.dart';
-import 'package:browser_app/domain/models/webview_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 
-final toggleMicIconProvider = StateProvider<bool>((ref) => false);
+import '../db/webview_db.dart';
+import '../../domain/models/webview_model.dart';
+
 final dataProvider = StateProvider<String>((ref) => "");
-final showSpeechDialogProvider = StateProvider<bool>((ref) => false);
-final speechToTextProvider = StateProvider<SpeechToText>((ref) => SpeechToText());
-final transcribedTextProvider = StateProvider<String>((ref) => "");
+final toggleMicIconProvider = StateProvider<bool>((ref) => false);
 
 final clipBoardProvider = StateProvider<String>((ref) => "");
-final webviewScreenLoadingProvider = StateProvider<bool>((ref) => false);
+
 final searchScreenShowSuggestionsProvider = StateProvider<bool>((ref) => false);
-final webviewControllerProvider = StateProvider<WebViewController?>((ref) => null);
 final searchScreenWebviewShowSuggestionsProvider = StateProvider<bool>((ref) => false);
+
+final downloadedFileProvider = StateProvider<List<DownloadTask>>((ref) => <DownloadTask>[]);
+
+final webviewUrlProvider = StateProvider<String>((ref) => "");
+final webviewScreenLoadingProvider = StateProvider<bool>((ref) => false);
+final webviewControllerProvider = StateProvider<WebViewController?>((ref) => null);
 final webviewFileNameControllerProvider = StateProvider<TextEditingController>((ref) => TextEditingController(text: ""));
 final webviewSearchTextControllerProvider = StateProvider<TextEditingController>((ref) => TextEditingController(text: ""));
-final downloadedFileProvider = StateProvider<List<DownloadTask>>((ref) => <DownloadTask>[]);
+
 final tabsListProvider = StateProvider<List<WebViewModel>>((ref) => <WebViewModel>[WebViewModel(url: "https://google.com/", tabIndex: 1, title: "Google", isIncognitoMode: false, screenshot: webviewDB.getHomeScreenImageBytes())]);

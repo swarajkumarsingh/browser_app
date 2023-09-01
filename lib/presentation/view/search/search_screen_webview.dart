@@ -52,7 +52,6 @@ class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
 
     await Future(() async {
       ref.read(clipBoardProvider.notifier).update((state) => "");
-      await searchScreenWebviewViewModel.initSpeechText(ref);
     });
 
     await searchScreenWebviewViewModel.logScreen(widget.url, widget.prompt);
