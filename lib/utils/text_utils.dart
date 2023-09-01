@@ -10,6 +10,16 @@ class _TextUtils {
     }
     return false;
   }
+
+  bool isImage(String url) {
+    final low = url.toLowerCase();
+    return low.endsWith('.jpg') ||
+        low.endsWith('.jpeg') ||
+        low.endsWith('.png') ||
+        low.endsWith('.gif') ||
+        low.endsWith('.webp');
+  }
+
   bool isNotValidUrl(String url) {
     if (!isValidUrl(url)) {
       return true;

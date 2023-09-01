@@ -5,6 +5,7 @@ analyzer:
     missing_required_param: error
     missing_return: error
     todo: ignore
+    constant_identifier_names: ignore
     sdk_version_async_exported_from_core: ignore
     no_leading_underscores_for_local_identifiers: ignore
   exclude:

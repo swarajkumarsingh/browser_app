@@ -65,6 +65,30 @@ class Api {
     );
   }
 
+  //  Future<Response> getCached(
+  //   String url, {
+  //   String? subKey,
+  //   Duration duration = const Duration(days: 1),
+  //   Map<String, dynamic>? queryParameters,
+  //   bool forceRefresh = false,
+  //   Options? options,
+  // }) async {
+  //   options ??= Options();
+  //   final resp = await dio.get(
+  //     url,
+  //     queryParameters: queryParameters,
+  //     options: buildCacheOptions(
+  //       duration,
+  //       subKey: subKey,
+  //       options: options.copyWith(sendTimeout: 10000, receiveTimeout: 10000),
+  //       forceRefresh: forceRefresh,
+  //       maxStale: const Duration(days: 30),
+  //     ),
+  //   );
+  //   return resp;
+  // }
+
+
   Future<Response<T>> post<T>(
     String path, {
     dynamic data,
