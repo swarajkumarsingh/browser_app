@@ -6,13 +6,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-final clipBoardProvider = StateProvider<String>((ref) => "");
-final transcribedTextProvider = StateProvider<String>((ref) => "");
-final webviewScreenLoadingProvider = StateProvider<bool>((ref) => false);
 final toggleMicIconProvider = StateProvider<bool>((ref) => false);
-final searchScreenShowSuggestionsProvider = StateProvider<bool>((ref) => false);
+final dataProvider = StateProvider<String>((ref) => "");
 final showSpeechDialogProvider = StateProvider<bool>((ref) => false);
 final speechToTextProvider = StateProvider<SpeechToText>((ref) => SpeechToText());
+final transcribedTextProvider = StateProvider<String>((ref) => "");
+
+final clipBoardProvider = StateProvider<String>((ref) => "");
+final webviewScreenLoadingProvider = StateProvider<bool>((ref) => false);
+final searchScreenShowSuggestionsProvider = StateProvider<bool>((ref) => false);
 final webviewControllerProvider = StateProvider<WebViewController?>((ref) => null);
 final searchScreenWebviewShowSuggestionsProvider = StateProvider<bool>((ref) => false);
 final webviewFileNameControllerProvider = StateProvider<TextEditingController>((ref) => TextEditingController(text: ""));

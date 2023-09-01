@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:browser_app/presentation/viewModel/search_view_model.dart';
 import 'package:browser_app/utils/speech_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,9 +42,7 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
                     "https://img.freepik.com/premium-vector/funny-404-error-page-template-with-fallen-ice-cream_556049-83.jpg"),
               ),
               GestureDetector(
-                onTap: () {
-                  searchScreenViewModel.speechTextListen(ref, context);
-                },
+                onTap: () {},
                 child: Text(
                   widget.message ?? "Error Ocurred",
                   style: const TextStyle(

@@ -1,9 +1,7 @@
 // ignore_for_file: unused_element, unused_field
 
 import 'package:flutter/material.dart';
-import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../core/constants/color.dart';
@@ -27,7 +25,7 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
-  String _lastWords = '';
+  // String lastWords = '';
   // bool listening = false;
   final _speechToText = SpeechToText();
   final _textEditingController = TextEditingController();
@@ -40,7 +38,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   void dispose() {
-    _lastWords = "";
     // listening = false;
     _speechToText.stop();
     _textEditingController.dispose();
@@ -53,23 +50,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   Future<void> _startListening() async {
-    await _speechToText.listen(onResult: _onSpeechResult);
-    logger.error(1);
-    setState(() {});
+    await _speechToText.listen(
+      onResult: (result) {
+        ref
+            .read(dataProvider.notifier)
+            .update((state) => result.recognizedWords);
+      },
+    );
   }
 
   Future<void> _stopListening() async {
+    final lastWords = ref.watch(dataProvider);
     await _speechToText.stop();
-    setState(() {});
-    logger.success(_lastWords);
-    await searchScreenViewModel.onSubmitted(_lastWords);
-  }
-
-  void _onSpeechResult(SpeechRecognitionResult result) {
-    logger.info(result.recognizedWords);
-    setState(() {
-      _lastWords = result.recognizedWords;
-    });
+    await searchScreenViewModel.onSubmitted(lastWords);
   }
 
   void toggle() {
