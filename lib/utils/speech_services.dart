@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:browser_app/core/constants/strings.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,7 +33,7 @@ class _SpeechService {
 
     if (speechText.hasError) {
       logger.error(speechText.lastError);
-      return SpeechModel(success: false, message: "error occurred");
+      return SpeechModel(success: false, message: Strings.errorOccurred);
     }
 
     logger.success("1");

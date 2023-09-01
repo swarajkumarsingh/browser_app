@@ -21,8 +21,7 @@ class DownloadingListenableBuilder extends StatelessWidget {
         }
         return Column(
           children: [
-            AdaptiveDownloadTitleAndCountBadge(
-                title: "Downloading", length: box.values.length),
+            AdaptiveDownloadTitleAndCountBadge(title: "Downloading", length: box.values.length),
             DownloadingScreenListTile(box: box),
             const Divider(),
           ],

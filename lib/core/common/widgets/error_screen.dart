@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:browser_app/core/constants/strings.dart';
 import 'package:browser_app/utils/speech_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +45,7 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
               GestureDetector(
                 onTap: () {},
                 child: Text(
-                  widget.message ?? "Error Ocurred",
+                  widget.message ?? Strings.errorOccurred,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,

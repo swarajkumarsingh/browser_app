@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../core/constants/color.dart';
 import '../../../data/local/search_quick_links.dart';
@@ -25,9 +24,6 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
-  // String lastWords = '';
-  // bool listening = false;
-  final _speechToText = SpeechToText();
   final _textEditingController = TextEditingController();
 
   @override
@@ -38,40 +34,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   void dispose() {
-    // listening = false;
-    _speechToText.stop();
     _textEditingController.dispose();
+    searchScreenViewModel.dispose();
     super.dispose();
   }
 
   Future<void> _init() async {
-    await _speechToText.initialize();
+    await searchScreenViewModel.init();
     await searchScreenViewModel.logScreen();
-  }
-
-  Future<void> _startListening() async {
-    await _speechToText.listen(
-      onResult: (result) {
-        ref
-            .read(dataProvider.notifier)
-            .update((state) => result.recognizedWords);
-      },
-    );
-  }
-
-  Future<void> _stopListening() async {
-    final lastWords = ref.watch(dataProvider);
-    await _speechToText.stop();
-    await searchScreenViewModel.onSubmitted(lastWords);
-  }
-
-  void toggle() {
-    final listening = ref.watch(toggleMicIconProvider);
-    if (listening == true) {
-      ref.read(toggleMicIconProvider.notifier).update((state) => false);
-      return;
-    }
-    ref.read(toggleMicIconProvider.notifier).update((state) => true);
   }
 
   @override
@@ -126,19 +96,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           suffixIcon: IconButton(
               icon: Icon(
                   !listening ? Icons.mic_rounded : Icons.stop_circle_rounded),
-              onPressed: () async {
-                if (await _speechToText.hasPermission &&
-                    _speechToText.isAvailable &&
-                    _speechToText.isNotListening) {
-                  await _startListening();
-                  toggle();
-                } else if (_speechToText.isListening) {
-                  await _stopListening();
-                  toggle();
-                } else {
-                  await _speechToText.initialize();
-                }
-              }),
+              onPressed: () async =>
+                  searchScreenViewModel.onTap(ref: ref, context: context)),
           border: const OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(

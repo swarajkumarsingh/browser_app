@@ -50,6 +50,9 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
   @override
   void dispose() {
     super.dispose();
+    Future(() {
+      ref.read(webviewControllerProvider);
+    });
   }
 
   @override

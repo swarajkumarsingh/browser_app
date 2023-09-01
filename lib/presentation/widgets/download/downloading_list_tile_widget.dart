@@ -1,3 +1,4 @@
+import 'package:browser_app/presentation/viewModel/download_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -24,8 +25,12 @@ class DownloadingScreenListTile extends StatelessWidget {
             ),
             title: Text(model.filename,
                 maxLines: 2, overflow: TextOverflow.ellipsis, softWrap: true),
-            subtitle: const Text("10MB"),
-            trailing: CircularProgressIndicator(value: model.progress / 100),
+            subtitle: LinearProgressIndicator(value: model.progress / 100),
+            trailing: IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () async =>
+                  downloadViewModel.cancelDownload(model.taskId),
+            ),
           );
         }),
       ],

@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:browser_app/core/constants/strings.dart';
 import 'package:browser_app/data/db/history_db.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
@@ -84,7 +85,7 @@ class _WebviewViewModel {
       }
     } catch (e) {
       logger.error(e);
-      showSnackBar("error occurred");
+      showSnackBar(Strings.errorOccurred);
     }
 
     ref.read(webviewControllerProvider.notifier).update((state) {

@@ -1,5 +1,6 @@
 import 'package:browser_app/core/common/widgets/toast.dart';
 import 'package:browser_app/data/db/downloader_db.dart';
+import 'package:browser_app/utils/download/downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/event_tracker/event_tracker.dart';
@@ -18,6 +19,15 @@ class _DownloadViewModel {
   int downloadListLength(WidgetRef ref) {
     final downloadedFiles = ref.watch(downloadedFileProvider);
     return downloadedFiles.isEmpty ? 0 : downloadedFiles.length;
+  }
+
+  Future<void> cancelDownload(String taskId) async {
+    final success = await downloader.cancelTask(taskId);
+    if (!success) {
+      showToast("unable to cancel download");
+    }
+    await downloaderDB.removeFromDownloading(taskId);
+    showToast("download canceled");
   }
 
   Future<void> deleteFile(int key, String path) async {

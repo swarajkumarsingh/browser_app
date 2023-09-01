@@ -1,6 +1,12 @@
+import '../../core/common/widgets/toast.dart';
+import '../../core/constants/strings.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../core/event_tracker/event_tracker.dart';
 import '../../data/provider/state_providers.dart';
@@ -11,6 +17,32 @@ import '../view/webview/webview_screen.dart';
 final searchScreenViewModel = _SearchScreenViewModel();
 
 class _SearchScreenViewModel {
+  final _speechToText = SpeechToText();
+
+  Future<void> init() async {
+    await _speechToText.initialize(
+      onError: _onSpeechError,
+      debugLogging: kDebugMode,
+      finalTimeout: const Duration(seconds: 5),
+      onStatus: (status) => logger.info("Speech package status: $status"),
+      options: [],
+    );
+  }
+
+  void dispose() async {
+    await _speechToText.stop();
+  }
+
+  void _onSpeechError(SpeechRecognitionError errorNotification) {
+    if (errorNotification.permanent) {
+      init();
+      return;
+    }
+
+    logger.error(errorNotification.errorMsg);
+    showToast(Strings.errorOccurred);
+  }
+
   Future<void> logScreen() async {
     await eventTracker.screen("search-screen");
   }
@@ -41,11 +73,60 @@ class _SearchScreenViewModel {
         .update((state) => true);
   }
 
+  void toggle(WidgetRef ref) {
+    final listening = ref.watch(toggleMicIconProvider);
+    if (listening == true) {
+      ref.read(toggleMicIconProvider.notifier).update((state) => false);
+      return;
+    }
+    ref.read(toggleMicIconProvider.notifier).update((state) => true);
+  }
+
+  Future<void> stopListening(WidgetRef ref, SpeechToText speechToText) async {
+    final lastWords = ref.watch(dataProvider);
+    await speechToText.stop();
+    await searchScreenViewModel.onSubmitted(lastWords);
+  }
+
+  Future<void> _startListening(WidgetRef ref, SpeechToText speechToText) async {
+    await speechToText.listen(
+      onResult: (result) {
+        ref
+            .read(dataProvider.notifier)
+            .update((state) => result.recognizedWords);
+      },
+    );
+  }
+
   void onTap({
     required WidgetRef ref,
     required BuildContext context,
-    
-  }) {
-    
+  }) async {
+    if (await _speechToText.hasPermission == false) {
+      showToast("Permission not given");
+      return;
+    }
+
+    if (!_speechToText.isAvailable) {
+      showToast("speech not available");
+      return;
+    }
+
+    if (_speechToText.hasError) {
+      showToast(Strings.errorOccurred);
+      return;
+    }
+
+    if (await _speechToText.hasPermission &&
+        _speechToText.isAvailable &&
+        _speechToText.isNotListening) {
+      await _startListening(ref, _speechToText);
+      toggle(ref);
+    } else if (_speechToText.isListening) {
+      await stopListening(ref, _speechToText);
+      toggle(ref);
+    } else {
+      await _speechToText.initialize();
+    }
   }
 }
