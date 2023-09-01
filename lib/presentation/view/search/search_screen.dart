@@ -8,6 +8,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../core/constants/color.dart';
 import '../../../data/local/search_quick_links.dart';
+import '../../../data/provider/state_providers.dart';
 import '../../viewModel/search_view_model.dart';
 import '../../widgets/search/search_quick_links.dart';
 
@@ -27,9 +28,8 @@ class SearchScreen extends ConsumerStatefulWidget {
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   String _lastWords = '';
-  bool listening = false;
+  // bool listening = false;
   final _speechToText = SpeechToText();
-
   final _textEditingController = TextEditingController();
 
   @override
@@ -41,7 +41,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   void dispose() {
     _lastWords = "";
-    listening = false;
+    // listening = false;
     _speechToText.stop();
     _textEditingController.dispose();
     super.dispose();
@@ -49,12 +49,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   Future<void> _init() async {
     await _speechToText.initialize();
-    await searchScreenViewModel.initSpeechText(ref);
     await searchScreenViewModel.logScreen();
   }
 
   Future<void> _startListening() async {
     await _speechToText.listen(onResult: _onSpeechResult);
+    logger.error(1);
     setState(() {});
   }
 
@@ -66,21 +66,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
+    logger.info(result.recognizedWords);
     setState(() {
       _lastWords = result.recognizedWords;
     });
   }
 
   void toggle() {
+    final listening = ref.watch(toggleMicIconProvider);
     if (listening == true) {
-      setState(() {
-        listening = false;
-      });
+      ref.read(toggleMicIconProvider.notifier).update((state) => false);
       return;
     }
-    setState(() {
-      listening = true;
-    });
+    ref.read(toggleMicIconProvider.notifier).update((state) => true);
   }
 
   @override
@@ -111,6 +109,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   AppBar searchScreenAppBar() {
+    final listening = ref.watch(toggleMicIconProvider);
+
     return AppBar(
       elevation: 0,
       leadingWidth: 30,

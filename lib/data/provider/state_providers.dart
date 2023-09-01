@@ -9,6 +9,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 final clipBoardProvider = StateProvider<String>((ref) => "");
 final transcribedTextProvider = StateProvider<String>((ref) => "");
 final webviewScreenLoadingProvider = StateProvider<bool>((ref) => false);
+final toggleMicIconProvider = StateProvider<bool>((ref) => false);
 final searchScreenShowSuggestionsProvider = StateProvider<bool>((ref) => false);
 final showSpeechDialogProvider = StateProvider<bool>((ref) => false);
 final speechToTextProvider = StateProvider<SpeechToText>((ref) => SpeechToText());
