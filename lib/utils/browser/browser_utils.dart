@@ -3,8 +3,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../core/common/snackbar/show_snackbar.dart';
 import '../../core/common/widgets/toast.dart';
@@ -65,26 +65,25 @@ class _BrowserUtils {
     return false;
   }
 
-  Future<NavigationDecision> onNavigationRequest({
-    required NavigationRequest request,
+  Future<NavigationActionPolicy> onNavigationRequest({
     required BuildContext context,
+    required String url,
     required TextEditingController fileNameController,
-    required bool mounted,
   }) async {
-    if (containsBlockedUrl(request.url)) {
+    if (containsBlockedUrl(url)) {
       showSnackBar("Site blocked my admin");
-      return NavigationDecision.prevent;
+      return NavigationActionPolicy.CANCEL;
     }
 
-    final downloadRequest = await browserUtils.isDownloadRequest(request.url);
+    final downloadRequest = await browserUtils.isDownloadRequest(url);
 
     if (!downloadRequest.isDownloadRequest) {
-      return NavigationDecision.navigate;
+      return NavigationActionPolicy.ALLOW;
     }
 
     if (textUtils.isEmpty(downloadRequest.fileExtension)) {
       logger.error("Unable to download the file");
-      return NavigationDecision.prevent;
+      return NavigationActionPolicy.CANCEL;
     }
 
     final downloadDir = await downloaderConstants.getDownloadDir();
@@ -97,7 +96,7 @@ class _BrowserUtils {
       storageLocation: downloadDir,
       function: () async {
         final res = await downloader.downloadFile(
-          url: request.url,
+          url: url,
           imageContentType: downloadRequest.fileExtension!,
           savedDir: downloadDir,
           fileName: fileNameController.text,
@@ -110,11 +109,11 @@ class _BrowserUtils {
 
         showToast(res.message);
 
-        if (mounted) appRouter.pop();
+        appRouter.pop();
         return;
       },
     );
-    return NavigationDecision.prevent;
+    return NavigationActionPolicy.ALLOW;
   }
 
   String calculateImageSizeInMB(String value) {

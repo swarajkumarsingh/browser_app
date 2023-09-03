@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
@@ -19,7 +19,7 @@ final downloadedFileProvider = StateProvider<List<DownloadTask>>((ref) => <Downl
 final webviewUrlProvider = StateProvider<String>((ref) => "");
 final webviewPromptProvider = StateProvider<String>((ref) => "");
 final webviewScreenLoadingProvider = StateProvider<bool>((ref) => false);
-final webviewControllerProvider = StateProvider<WebViewController?>((ref) => null);
+final webviewControllerProvider = StateProvider<InAppWebViewController?>((ref) => null);
 final webviewFileNameControllerProvider = StateProvider<TextEditingController>((ref) => TextEditingController(text: ""));
 final webviewSearchTextControllerProvider = StateProvider<TextEditingController>((ref) => TextEditingController(text: ""));
 

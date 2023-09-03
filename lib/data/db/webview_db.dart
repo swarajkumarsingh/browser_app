@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../core/constants/constants.dart';
 import '../../domain/models/webview_model.dart';
@@ -43,7 +43,7 @@ class _WebviewDB {
     required Uint8List? screenshot,
     required String title,
     required int tabIndex,
-    WebViewController? webViewController,
+    InAppWebViewController? webViewController,
   }) async {
     final tabBox = Hive.box(Constants.TABS_BOX);
     await tabBox.add(
@@ -75,7 +75,7 @@ class _WebviewDB {
     required int tabIndex,
     required bool isIncognitoMode,
     required Uint8List? screenshot,
-    WebViewController? webViewController,
+    InAppWebViewController? webViewController,
   }) async {
     final tabBox = Hive.box(Constants.TABS_BOX);
     for (final key in tabBox.keys) {

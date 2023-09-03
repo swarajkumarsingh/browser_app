@@ -2,7 +2,7 @@ import 'package:browser_app/data/db/webview_db.dart';
 import 'package:browser_app/domain/models/webview_model.dart';
 import 'package:browser_app/utils/preferences/preferences_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../core/constants/constants.dart';
 
@@ -14,7 +14,7 @@ class _TabViewModel {
     required String title,
     required Uint8List? screenshot,
     required int tabIndex,
-    WebViewController? webViewController,
+    InAppWebViewController? webViewController,
   }) async {
     await webviewDB.addTab(
       url: url,
@@ -38,7 +38,7 @@ class _TabViewModel {
     required String title,
     required Uint8List? screenshot,
     required int tabIndex,
-    WebViewController? webViewController,
+    InAppWebViewController? webViewController,
   }) async {
     await webviewDB.updateTab(
       url: url,

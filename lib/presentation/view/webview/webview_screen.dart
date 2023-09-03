@@ -1,8 +1,13 @@
+import 'package:browser_app/utils/browser/browser_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
+import '../../../core/common/snackbar/show_snackbar.dart';
 import '../../../core/constants/color.dart';
 import '../../../data/provider/state_providers.dart';
 import '../../viewModel/webview_view_model.dart';
@@ -29,39 +34,20 @@ class WebviewScreen extends ConsumerStatefulWidget {
   ConsumerState<WebviewScreen> createState() => _WebviewScreenState();
 }
 
-class _WebviewScreenState extends ConsumerState<WebviewScreen>
-    with AutomaticKeepAliveClientMixin<WebviewScreen> {
+class _WebviewScreenState extends ConsumerState<WebviewScreen> {
   @override
   void initState() {
     super.initState();
-    Future(() async {
-      await webviewViewModel.init(
-        context: context,
-        ref: ref,
-        url: widget.url,
-        query: widget.query,
-        mounted: mounted,
-      );
-    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    Future(() {
-      ref.read(webviewControllerProvider);
-    });
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     final controller = ref.watch(webviewControllerProvider);
-
     return WillPopScope(
       onWillPop: () async => webviewViewModel.onWillPop(controller),
       child: scaffold(),
@@ -79,13 +65,10 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
 
   Stack body() {
     final webviewScreenLoading = ref.watch(webviewScreenLoadingProvider);
-    final controller = ref.watch(webviewControllerProvider);
 
     return Stack(
       children: [
-        controller != null
-            ? WebViewWidget(controller: controller)
-            : const WebviewLoader(),
+        WebviewWidget(widget.url),
         if (webviewScreenLoading) const WebviewLoader(),
       ],
     );
@@ -234,6 +217,79 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
         ],
       ),
       label: "Settings",
+    );
+  }
+}
+
+class WebviewWidget extends ConsumerWidget {
+  final String url;
+  const WebviewWidget(
+    this.url, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return InAppWebView(
+      initialUrlRequest: URLRequest(url: Uri.parse(url)),
+      onDownloadStartRequest: (controller, url) async {
+        final String path = url.url.path;
+        final String fileName = path.substring(path.lastIndexOf('/') + 1);
+
+        await FlutterDownloader.enqueue(
+          url: url.toString(),
+          fileName: fileName,
+          savedDir: (await getTemporaryDirectory()).path,
+          showNotification: true,
+          openFileFromNotification: true,
+        );
+      },
+      onLoadError: (controller, url, code, message) {},
+      onLoadHttpError: (controller, url, statusCode, description) {},
+      shouldOverrideUrlLoading: (view, navigationAction) async {
+        final url = navigationAction.request.url.toString();
+        if (browserUtils.containsBlockedUrl(url)) {
+          showSnackBar("Site blocked my admin 1");
+          return NavigationActionPolicy.CANCEL;
+        }
+
+        await webviewViewModel.onNavigationRequest(
+          ref: ref,
+          url: url,
+          context: context,
+        );
+
+        return NavigationActionPolicy.ALLOW;
+      },
+      onLoadStart: (controller, url) async {
+        ref
+            .read(webviewSearchTextControllerProvider.notifier)
+            .update((state) => TextEditingController(text: url.toString()));
+      },
+      shouldInterceptFetchRequest: (controller, fetchRequest) async {
+        logger.success(fetchRequest.url);
+        return FetchRequest(action: FetchRequestAction.ABORT);
+      },
+      shouldInterceptAjaxRequest: (controller, ajaxRequest) async {
+        logger.success(ajaxRequest.url);
+        return AjaxRequest(action: AjaxRequestAction.ABORT);
+      },
+      androidShouldInterceptRequest: (controller, request) async {
+        logger.success(request.url);
+        return WebResourceResponse();
+      },
+      onLoadResource: (controller, resource) {},
+      onLoadStop: (controller, url) {},
+      onScrollChanged: (controller, x, y) {},
+      onPrint: (controller, url) {},
+      onLongPressHitTestResult: (controller, hitTestResult) {},
+      onProgressChanged: (controller, progress) {},
+      onTitleChanged: (controller, title) {},
+      onWebViewCreated: (controller) {
+        ref
+            .read(webviewControllerProvider.notifier)
+            .update((state) => controller);
+      },
     );
   }
 }

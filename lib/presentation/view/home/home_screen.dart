@@ -1,9 +1,5 @@
-import 'package:browser_app/presentation/view/download/download_screen.dart';
-import 'package:browser_app/presentation/view/history/history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../../core/common/widgets/spaces.dart';
@@ -15,6 +11,8 @@ import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/home/home_news_feed_widget.dart';
 import '../../widgets/home/home_quick_links_wrap_widget.dart';
 import '../../widgets/home/home_search_textfield.dart';
+import '../download/download_screen.dart';
+import '../history/history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
@@ -30,8 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _init();
   }
-
-  String a = "";
 
   ScreenshotController screenshotController = ScreenshotController();
 
@@ -97,28 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Image.asset(assets.fullLogo),
         ),
       ),
-      title: FittedBox(
-        child: GestureDetector(
-          onTap: () async {
-            // logger.error(a);
-            // final b = await FlutterDownloader.loadTasks();
-            // logger.success(b);
-            // logger.success(b![0].taskId);
-
-            // const _downloadTaskId = "ef63da4d-38de-4519-b18a-6d307a8fcf9e";
-
-            final tasks = await FlutterDownloader.loadTasksWithRawQuery(
-                query: "SELECT * FROM task WHERE task_id = '$a'");
-            logger.success(tasks);
-            logger.success(tasks![0].taskId);
-          },
-          child: const Text(
-            "Browser App",
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
+      title: const FittedBox(
+        child: Text(
+          "Browser App",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
           ),
         ),
       ),

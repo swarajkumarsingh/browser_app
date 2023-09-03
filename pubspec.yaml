@@ -65,7 +65,7 @@ dependencies:
   font_awesome_flutter: ^10.5.0
 
   # Webview
-  webview_flutter: ^4.2.2
+  # webview_flutter: ^4.2.2
 
   # Flutter downloader
   flutter_downloader: ^1.11.1

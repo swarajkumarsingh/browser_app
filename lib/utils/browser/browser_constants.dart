@@ -3,7 +3,7 @@ final browserConstants = _BrowserConstants();
 class _BrowserConstants {
   List<String> keywords = ["data:image/png;base64", "data:image/png"];
 
-  List<String> blockedSites = ["https://instagram.com/"];
+  List<String> blockedSites = ["https://www.instagram.com/"];
 
   List<String> fileExtensions = [
     ".3gp",

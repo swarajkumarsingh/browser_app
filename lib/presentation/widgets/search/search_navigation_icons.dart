@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import '../../../core/common/snackbar/show_snackbar.dart';
 
 class LeftIconWidget extends StatelessWidget {
-  final WebViewController? controller;
+  final InAppWebViewController? controller;
   const LeftIconWidget({
     super.key,
     required this.controller,
@@ -30,7 +30,7 @@ class LeftIconWidget extends StatelessWidget {
 }
 
 class RightIconWidget extends StatelessWidget {
-  final WebViewController? controller;
+  final InAppWebViewController? controller;
   const RightIconWidget({
     super.key,
     required this.controller,
@@ -56,7 +56,7 @@ class RightIconWidget extends StatelessWidget {
 }
 
 class PlayIconWidget extends StatelessWidget {
-  final WebViewController? controller;
+  final InAppWebViewController? controller;
   const PlayIconWidget({
     super.key,
     required this.controller,
