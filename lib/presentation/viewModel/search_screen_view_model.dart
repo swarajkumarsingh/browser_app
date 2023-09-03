@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:speech_to_text/speech_to_text.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:browser_app/utils/speech_services.dart';
-import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
-import '../../utils/text_utils.dart';
-import '../../core/constants/strings.dart';
-import '../view/webview/webview_screen.dart';
 import '../../core/common/widgets/toast.dart';
-import '../../utils/browser/browser_utils.dart';
-import '../../data/provider/state_providers.dart';
+import '../../core/constants/strings.dart';
 import '../../core/event_tracker/event_tracker.dart';
+import '../../data/provider/state_providers.dart';
+import '../../utils/browser/browser_utils.dart';
+import '../../utils/functions/functions.dart';
+import '../../utils/text_utils.dart';
 
 final searchScreenViewModel = _SearchScreenViewModel();
 
@@ -48,18 +47,28 @@ class _SearchScreenViewModel {
     await eventTracker.screen("search-screen");
   }
 
-  Future<void> onSubmitted(String prompt) async {
+  Future<void> onSubmitted(WidgetRef ref, BuildContext context, String prompt) async {
     // Url
     if (textUtils.isValidUrl(prompt)) {
       final url = browserUtils.addHttpToDomain(prompt);
-      appRouter.push(WebviewScreen(url: url, query: ""));
+      functions.navigateToWebviewScreen(
+        ref: ref,
+        context: context,
+        url: url,
+        mounted: true,
+      );
       return;
     }
 
     // Query
     prompt = textUtils.replaceSpaces(prompt);
     final url = browserUtils.addQueryToGoogle(prompt);
-    appRouter.push(WebviewScreen(url: url, query: prompt));
+    functions.navigateToWebviewScreen(
+      ref: ref,
+      context: context,
+      url: url,
+      mounted: true,
+    );
   }
 
   void onChanged(WidgetRef ref, String value) {
@@ -83,9 +92,12 @@ class _SearchScreenViewModel {
     ref.read(toggleMicIconProvider.notifier).update((state) => true);
   }
 
-  Future<void> stopListening(WidgetRef ref, SpeechToText speechToText) async => speechService.stopListening;
+  Future<void> stopListening(WidgetRef ref, SpeechToText speechToText) async =>
+      speechService.stopListening;
 
-  Future<void> _startListening(WidgetRef ref, SpeechToText speechToText) async => speechService.startListening;
+  Future<void> _startListening(
+          WidgetRef ref, SpeechToText speechToText) async =>
+      speechService.startListening;
 
   void onTap({
     required WidgetRef ref,

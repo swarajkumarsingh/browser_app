@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../domain/models/history_model.dart';
+import '../../../utils/functions/functions.dart';
 import '../../viewModel/history_view_model.dart';
 
-class HistoryListTileWidget extends StatelessWidget {
+class HistoryListTileWidget extends ConsumerWidget {
   final Box<dynamic> box;
   final int boxKey;
   const HistoryListTileWidget({
@@ -18,9 +20,17 @@ class HistoryListTileWidget extends StatelessWidget {
   final HistoryModel homeModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      onTap: () => historyViewModel.navigateToWebviewScreen(homeModel.url),
+      // onTap: () => historyViewModel.navigateToWebviewScreen(ref,homeModel.url),
+      onTap: () {
+        functions.navigateToWebviewScreen(
+          ref: ref,
+          context: context,
+          url: homeModel.url,
+          mounted: true,
+        );
+      },
       leading: const Icon(FontAwesomeIcons.globe),
       title: Text(
         homeModel.prompt == "" ? homeModel.url : homeModel.prompt,
@@ -41,7 +51,7 @@ class HistoryListTileWidget extends StatelessWidget {
           PopupMenuItem(
             child: const Text("Open"),
             onTap: () =>
-                historyViewModel.navigateToWebviewScreen(homeModel.url),
+                historyViewModel.navigateToWebviewScreen(ref, context, homeModel.url),
           ),
           PopupMenuItem(
             child: const Text("Delete"),

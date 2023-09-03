@@ -84,7 +84,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       title: TextField(
         autofocus: false,
         controller: _textEditingController,
-        onSubmitted: searchScreenViewModel.onSubmitted,
+        onSubmitted: (String _) => searchScreenViewModel.onSubmitted(ref, context, _),
         onChanged: (String _) => searchScreenViewModel.onChanged(ref, _),
         decoration: InputDecoration(
           filled: true,

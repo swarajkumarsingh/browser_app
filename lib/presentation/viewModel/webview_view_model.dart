@@ -27,12 +27,12 @@ class _WebviewViewModel {
     required bool mounted,
   }) async {
     _updateTextEditingController(ref, url);
-    await _initializeWebview(
+    await initializeWebview(
         context: context, ref: ref, url: url, query: query, mounted: mounted);
     await _logScreen(url, query);
   }
 
-  Future<void> _initializeWebview({
+  Future<void> initializeWebview({
     required BuildContext context,
     required WidgetRef ref,
     required String url,

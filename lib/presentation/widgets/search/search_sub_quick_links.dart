@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/common/widgets/spaces.dart';
-import '../../view/webview/webview_screen.dart';
+import '../../../utils/functions/functions.dart';
 
-class SubSearchScreenQuickLinks extends StatelessWidget {
+class SubSearchScreenQuickLinks extends ConsumerWidget {
   final String name;
   final String image;
   final String redirectUrl;
@@ -17,9 +17,11 @@ class SubSearchScreenQuickLinks extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => appRouter.push(WebviewScreen(url: redirectUrl)),
+      onTap: () {
+        functions.navigateToWebviewScreen(ref: ref, context: context, url: redirectUrl, mounted: true);
+      },
       child: SizedBox(
         height: 80,
         width: 80,

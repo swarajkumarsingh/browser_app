@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../core/constants/color.dart';
 import '../../../data/provider/state_providers.dart';
+import '../../../utils/functions/functions.dart';
 import '../../../utils/text_utils.dart';
 import '../../viewModel/search_screen_webview_view_model.dart';
 import '../../widgets/search/search_suggestions_dialog.dart';
@@ -29,10 +30,6 @@ class SearchScreenWebview extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
-  bool isListening = false;
-  String transcribedText = '';
-  // SpeechToText speechToText = SpeechToText();
-
   final _textEditingController = TextEditingController();
 
   @override
@@ -91,8 +88,14 @@ class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
   ListTile copiedTextListTile() {
     final clipBoardText = ref.watch(clipBoardProvider);
     return ListTile(
-      onTap: () =>
-          searchScreenWebviewViewModel.navigateToWebviewScreen(clipBoardText),
+      onTap: () {
+            functions.navigateToWebviewScreen(
+          ref: ref,
+          context: context,
+          url: clipBoardText,
+          mounted: true,
+        );
+      },
       leading: const Icon(FontAwesomeIcons.globe, size: 20),
       contentPadding: const EdgeInsets.only(left: 12, right: 10),
       title: const Text(
@@ -168,7 +171,7 @@ class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
         autofocus: false,
         onChanged: (String _) => searchScreenWebviewViewModel.onChanged(ref, _),
         onSubmitted: (String prompt) =>
-            searchScreenWebviewViewModel.onSubmitted(context, prompt),
+            searchScreenWebviewViewModel.onSubmitted(ref, context, prompt),
         controller: _textEditingController,
         decoration: InputDecoration(
           filled: true,

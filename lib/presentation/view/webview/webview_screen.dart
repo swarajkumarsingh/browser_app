@@ -20,8 +20,8 @@ class WebviewScreen extends ConsumerStatefulWidget {
   static const String routeName = '/webview-screen';
   const WebviewScreen({
     super.key,
-    required this.url,
     this.query = "",
+    required this.url,
     this.wantKeepAlive = false,
   });
 
@@ -32,52 +32,45 @@ class WebviewScreen extends ConsumerStatefulWidget {
 class _WebviewScreenState extends ConsumerState<WebviewScreen>
     with AutomaticKeepAliveClientMixin<WebviewScreen> {
   @override
-  void initState() {
-    super.initState();
-    Future(() async {
-      await webviewViewModel.init(
-        context: context,
-        ref: ref,
-        url: widget.url,
-        query: widget.query,
-        mounted: mounted,
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    Future(() {
-      ref.read(webviewControllerProvider);
-    });
-  }
-
-  @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     final controller = ref.watch(webviewControllerProvider);
-
     return WillPopScope(
       onWillPop: () async => webviewViewModel.onWillPop(controller),
-      child: scaffold(),
+      child: scaffold(ref),
     );
   }
 
-  Scaffold scaffold() {
+  Scaffold scaffold(WidgetRef ref) {
     return Scaffold(
+      appBar: appBar(ref),
+      body: body(ref),
       backgroundColor: Colors.white,
-      appBar: appBar(),
-      body: body(),
-      bottomNavigationBar: bottomNavigationBar(),
+      bottomNavigationBar: BottomNavigationBar(
+      elevation: 0,
+      iconSize: 25,
+      showSelectedLabels: false,
+      useLegacyColorScheme: true,
+      showUnselectedLabels: false,
+      backgroundColor: Colors.white,
+      selectedItemColor: Colors.black,
+      unselectedItemColor: Colors.black,
+      type: BottomNavigationBarType.fixed,
+      items: [
+        leftNavigationIcon(ref),
+        rightNavigationIcon(ref),
+        playNavigationIcon(ref),
+        tabsNavigationIcon(),
+        settingsNavigationBar(),
+      ],
+    ),
     );
   }
 
-  Stack body() {
+  Stack body(WidgetRef ref) {
     final webviewScreenLoading = ref.watch(webviewScreenLoadingProvider);
     final controller = ref.watch(webviewControllerProvider);
 
@@ -91,7 +84,8 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
     );
   }
 
-  AppBar appBar() {
+
+  AppBar appBar(WidgetRef ref) {
     final searchTextController = ref.watch(webviewSearchTextControllerProvider);
     final controller = ref.watch(webviewControllerProvider);
 
@@ -157,7 +151,7 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
     );
   }
 
-  BottomNavigationBar bottomNavigationBar() {
+  BottomNavigationBar bottomNavigationBar(WidgetRef ref) {
     return BottomNavigationBar(
       elevation: 0,
       iconSize: 25,
@@ -169,16 +163,16 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
       unselectedItemColor: Colors.black,
       type: BottomNavigationBarType.fixed,
       items: [
-        leftNavigationIcon(),
-        rightNavigationIcon(),
-        playNavigationIcon(),
+        leftNavigationIcon(ref),
+        rightNavigationIcon(ref),
+        playNavigationIcon(ref),
         tabsNavigationIcon(),
         settingsNavigationBar(),
       ],
     );
   }
 
-  BottomNavigationBarItem leftNavigationIcon() {
+  BottomNavigationBarItem leftNavigationIcon(WidgetRef ref) {
     final controller = ref.watch(webviewControllerProvider);
 
     return BottomNavigationBarItem(
@@ -187,7 +181,7 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
     );
   }
 
-  BottomNavigationBarItem rightNavigationIcon() {
+  BottomNavigationBarItem rightNavigationIcon(WidgetRef ref) {
     final controller = ref.watch(webviewControllerProvider);
 
     return BottomNavigationBarItem(
@@ -196,7 +190,7 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
     );
   }
 
-  BottomNavigationBarItem playNavigationIcon() {
+  BottomNavigationBarItem playNavigationIcon(WidgetRef ref) {
     final controller = ref.watch(webviewControllerProvider);
 
     return BottomNavigationBarItem(

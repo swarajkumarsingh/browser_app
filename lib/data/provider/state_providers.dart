@@ -16,8 +16,6 @@ final searchScreenWebviewShowSuggestionsProvider = StateProvider<bool>((ref) => 
 
 final downloadedFileProvider = StateProvider<List<DownloadTask>>((ref) => <DownloadTask>[]);
 
-final webviewUrlProvider = StateProvider<String>((ref) => "");
-final webviewPromptProvider = StateProvider<String>((ref) => "");
 final webviewScreenLoadingProvider = StateProvider<bool>((ref) => false);
 final webviewControllerProvider = StateProvider<WebViewController?>((ref) => null);
 final webviewFileNameControllerProvider = StateProvider<TextEditingController>((ref) => TextEditingController(text: ""));

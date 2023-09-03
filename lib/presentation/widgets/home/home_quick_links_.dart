@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../view/webview/webview_screen.dart';
+import '../../../utils/functions/functions.dart';
 
-class QuickLinksWidget extends StatelessWidget {
+class QuickLinksWidget extends ConsumerWidget {
   const QuickLinksWidget({
     Key? key,
     required this.image,
@@ -20,10 +20,11 @@ class QuickLinksWidget extends StatelessWidget {
   final double wrapIconWidth = 50.0;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        appRouter.push(WebviewScreen(url: redirectUrl));
+        functions.navigateToWebviewScreen(
+            ref: ref, context: context, url: redirectUrl, mounted: true);
       },
       child: Column(
         children: [

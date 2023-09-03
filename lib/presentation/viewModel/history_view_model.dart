@@ -1,10 +1,11 @@
-import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:browser_app/utils/functions/functions.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/common/widgets/toast.dart';
 import '../../core/event_tracker/event_tracker.dart';
 import '../../data/db/history_db.dart';
 import '../../utils/share_app.dart';
-import '../view/webview/webview_screen.dart';
 
 final historyViewModel = _HistoryViewModel();
 
@@ -33,7 +34,12 @@ class _HistoryViewModel {
     }
   }
 
-  void navigateToWebviewScreen(String url) {
-    appRouter.push(WebviewScreen(url: url));
+  void navigateToWebviewScreen(WidgetRef ref, BuildContext context, String url) {
+    functions.navigateToWebviewScreen(
+      ref: ref,
+      context: context,
+      url: url,
+      mounted: true,
+    );
   }
 }
