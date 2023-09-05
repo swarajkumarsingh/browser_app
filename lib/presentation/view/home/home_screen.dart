@@ -1,5 +1,6 @@
 import 'package:browser_app/presentation/view/download/download_screen.dart';
 import 'package:browser_app/presentation/view/history/history_screen.dart';
+import 'package:browser_app/presentation/view/settings/settings_screen.dart';
 import 'package:browser_app/presentation/viewModel/webview_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
@@ -36,10 +37,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _init() async {
     await Future(() async {
       await webviewViewModel.init(
-          ref: ref,
-          url: "https://google.com/",
-          query: "",
-          mounted: mounted);
+          ref: ref, url: "https://google.com/", query: "", mounted: mounted);
     });
     await webviewDB.addHomeScreenScreenShotBytes(screenshotController);
     await homeViewModel.logScreen();
@@ -152,7 +150,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           PopupMenuItem(
             child: const Text("Settings"),
-            onTap: () {},
+            onTap: () => appRouter.push(const SettingsScreen()),
           ),
         ],
       ),

@@ -29,6 +29,7 @@ class Constants {
 
   // Hive Preferences
   static const String TABS_BOX = "tabs_box";
+  static const String DARK_MODE_BOX = "dark_mode";
   static const String HISTORY_BOX = "history_box";
   static const String HOME_IMAGE_BOX = "home_image";
   static const String CURRENT_TAB_INDEX_BOX = "current_tab_index";

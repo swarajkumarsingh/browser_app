@@ -1,3 +1,4 @@
+import 'package:browser_app/presentation/view/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,23 +51,23 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
       body: body(ref),
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
-      elevation: 0,
-      iconSize: 25,
-      showSelectedLabels: false,
-      useLegacyColorScheme: true,
-      showUnselectedLabels: false,
-      backgroundColor: Colors.white,
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.black,
-      type: BottomNavigationBarType.fixed,
-      items: [
-        leftNavigationIcon(ref),
-        rightNavigationIcon(ref),
-        playNavigationIcon(ref),
-        tabsNavigationIcon(),
-        settingsNavigationBar(),
-      ],
-    ),
+        elevation: 0,
+        iconSize: 25,
+        showSelectedLabels: false,
+        useLegacyColorScheme: true,
+        showUnselectedLabels: false,
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        items: [
+          leftNavigationIcon(ref),
+          rightNavigationIcon(ref),
+          playNavigationIcon(ref),
+          tabsNavigationIcon(),
+          settingsNavigationBar(),
+        ],
+      ),
     );
   }
 
@@ -84,7 +85,6 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
     );
   }
 
-
   AppBar appBar(WidgetRef ref) {
     final searchTextController = ref.watch(webviewSearchTextControllerProvider);
     final controller = ref.watch(webviewControllerProvider);
@@ -100,10 +100,24 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
         ),
       ),
       actions: [
-        IconButton(
-          icon: const Icon(Icons.more_vert_outlined),
-          onPressed: () {},
-          color: colors.black,
+        PopupMenuButton(
+          elevation: 1,
+          icon: const Icon(Icons.settings),
+          surfaceTintColor: Colors.grey,
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: const Text("History"),
+              onTap: () => appRouter.push(const HistoryScreen()),
+            ),
+            PopupMenuItem(
+              child: const Text("Downloads"),
+              onTap: () => appRouter.push(const DownloadScreen()),
+            ),
+            PopupMenuItem(
+              child: const Text("Settings"),
+              onTap: () => appRouter.push(const SettingsScreen()),
+            ),
+          ],
         ),
       ],
       title: GestureDetector(
@@ -223,7 +237,7 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
           ),
           PopupMenuItem(
             child: const Text("Settings"),
-            onTap: () {},
+            onTap: () => appRouter.push(const SettingsScreen()),
           ),
         ],
       ),

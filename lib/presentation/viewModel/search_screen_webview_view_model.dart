@@ -22,18 +22,6 @@ class _SearchScreenWebviewViewModel {
     });
   }
 
-  void onChanged(WidgetRef ref, String value) {
-    if (textUtils.isEmpty(value)) {
-      ref
-          .read(searchScreenWebviewShowSuggestionsProvider.notifier)
-          .update((state) => false);
-      return;
-    }
-    ref
-        .read(searchScreenWebviewShowSuggestionsProvider.notifier)
-        .update((state) => true);
-  }
-
   void onTap(WidgetRef ref, BuildContext context, bool showSuggestions,
       TextEditingController textEditingController) {
     if (showSuggestions) {

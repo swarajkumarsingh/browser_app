@@ -2,6 +2,7 @@ import 'package:browser_app/presentation/view/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'core/constants/color.dart';
 import 'core/constants/constants.dart';
@@ -38,20 +39,30 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Browser App',
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      scaffoldMessengerKey: scaffoldMessengerKey,
-      onGenerateRoute: (settings) => generateRoute(settings),
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: colors.white,
-          background: colors.white,
-        ),
-      ),
-      home: const HomeScreen(),
+    return ValueListenableBuilder(
+      valueListenable: Hive.box(Constants.DARK_MODE_BOX).listenable(),
+      builder: (context, box, widget) {
+        final darkMode = box.get(Constants.DARK_MODE_BOX, defaultValue: false);
+        return MaterialApp(
+          themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+          darkTheme: ThemeData.dark(
+            useMaterial3: true,
+          ),
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: colors.white,
+              background: colors.white,
+            ),
+          ),
+          title: 'Browser App',
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          scaffoldMessengerKey: scaffoldMessengerKey,
+          onGenerateRoute: (settings) => generateRoute(settings),
+          home: const HomeScreen(),
+        );
+      },
     );
   }
 }

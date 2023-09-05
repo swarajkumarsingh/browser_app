@@ -9,6 +9,7 @@ class HiveServiceImpl extends HiveService {
     await Hive.initFlutter();
     await Hive.openBox(Constants.TABS_BOX);
     await Hive.openBox(Constants.HISTORY_BOX);
+    await Hive.openBox(Constants.DARK_MODE_BOX);
     await Hive.openBox(Constants.HOME_IMAGE_BOX);
     await Hive.openBox(Constants.CURRENT_TAB_INDEX_BOX);
     await Hive.openBox(Constants.DOWNLOAD_SAVE_BOX);

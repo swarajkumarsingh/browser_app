@@ -12,7 +12,6 @@ final toggleMicIconProvider = StateProvider<bool>((ref) => false);
 final clipBoardProvider = StateProvider<String>((ref) => "");
 
 final searchScreenShowSuggestionsProvider = StateProvider<bool>((ref) => false);
-final searchScreenWebviewShowSuggestionsProvider = StateProvider<bool>((ref) => false);
 
 final downloadedFileProvider = StateProvider<List<DownloadTask>>((ref) => <DownloadTask>[]);
 
