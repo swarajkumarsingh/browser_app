@@ -5,7 +5,9 @@ import '../../../core/constants/constants.dart';
 import '../../../data/db/webview_db.dart';
 import '../../../data/provider/state_providers.dart';
 import '../../../domain/models/webview_model.dart';
+import '../../../utils/browser/browser_utils.dart';
 import '../../../utils/functions/functions.dart';
+import '../../../utils/text_utils.dart';
 import '../../viewModel/tabs_view_model.dart';
 import '../../widgets/tabs/tab_widget.dart';
 
@@ -38,10 +40,25 @@ class TabsScreen extends ConsumerWidget {
                     // delete tab
                     tabViewModel.deleteTab(ref, tab.id);
                   },
-                  onTap: () {
-                    functions.removeNavigateToWebviewScreen(
+                  onTap: () async {
+                    var prompt = tab.url;
+                    // Url
+                    if (textUtils.isValidUrl(prompt)) {
+                      final url = browserUtils.addHttpToDomain(prompt);
+                      await functions.navigateToWebviewScreen(
+                        ref: ref,
+                        url: url,
+                        mounted: true,
+                      );
+                      return;
+                    }
+
+                    // Query
+                    prompt = textUtils.replaceSpaces(prompt);
+                    final url = browserUtils.addQueryToGoogle(prompt);
+                    await functions.navigateToWebviewScreen(
                       ref: ref,
-                      url: tab.url,
+                      url: url,
                       mounted: true,
                     );
                     // Last viewed tab index
