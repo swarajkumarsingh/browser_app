@@ -37,7 +37,6 @@ class _HistoryViewModel {
   void navigateToWebviewScreen(WidgetRef ref, BuildContext context, String url) {
     functions.navigateToWebviewScreen(
       ref: ref,
-      context: context,
       url: url,
       mounted: true,
     );

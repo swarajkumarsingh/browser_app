@@ -11,7 +11,6 @@ final functions = _Functions();
 class _Functions {
   void navigateToWebviewScreen({
     required WidgetRef ref,
-    required BuildContext context,
     required String url,
     required bool mounted,
     String query = "",
@@ -22,15 +21,15 @@ class _Functions {
       return;
     }
 
-
     await webviewViewModel.init(
-        context: context, ref: ref, url: url, query: query, mounted: mounted);
+        ref: ref, url: url, query: query, mounted: mounted);
 
     appRouter.push(WebviewScreen(
       url: url,
       query: query,
     ));
   }
+
   void popToWebviewScreen({
     required WidgetRef ref,
     required BuildContext context,
@@ -44,7 +43,7 @@ class _Functions {
       return;
     }
 
-   await controller.loadRequest(Uri.parse(url)); 
+    await controller.loadRequest(Uri.parse(url));
     appRouter.pop();
   }
 }

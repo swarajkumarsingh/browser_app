@@ -47,13 +47,12 @@ class _SearchScreenViewModel {
     await eventTracker.screen("search-screen");
   }
 
-  Future<void> onSubmitted(WidgetRef ref, BuildContext context, String prompt) async {
+  Future<void> onSubmitted(WidgetRef ref, String prompt) async {
     // Url
     if (textUtils.isValidUrl(prompt)) {
       final url = browserUtils.addHttpToDomain(prompt);
       functions.navigateToWebviewScreen(
         ref: ref,
-        context: context,
         url: url,
         mounted: true,
       );
@@ -65,7 +64,6 @@ class _SearchScreenViewModel {
     final url = browserUtils.addQueryToGoogle(prompt);
     functions.navigateToWebviewScreen(
       ref: ref,
-      context: context,
       url: url,
       mounted: true,
     );
@@ -118,16 +116,21 @@ class _SearchScreenViewModel {
       return;
     }
 
-    if (await _speechToText.hasPermission &&
-        _speechToText.isAvailable &&
-        _speechToText.isNotListening) {
-      await _startListening(ref, _speechToText);
-      toggle(ref);
-    } else if (_speechToText.isListening) {
-      await stopListening(ref, _speechToText);
-      toggle(ref);
-    } else {
-      await _speechToText.initialize();
-    }
+   try {
+      if (await _speechToText.hasPermission &&
+          _speechToText.isAvailable &&
+          _speechToText.isNotListening) {
+        await _startListening(ref, _speechToText);
+        toggle(ref);
+      } else if (_speechToText.isListening) {
+        await stopListening(ref, _speechToText);
+        toggle(ref);
+      } else {
+        await _speechToText.initialize();
+      }
+   } catch (e) {
+     showToast(Strings.errorOccurred);
+     rethrow;
+   }
   }
 }

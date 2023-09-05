@@ -20,20 +20,17 @@ final webviewViewModel = _WebviewViewModel();
 
 class _WebviewViewModel {
   Future<void> init({
-    required BuildContext context,
     required WidgetRef ref,
     required String url,
     required String query,
     required bool mounted,
   }) async {
     _updateTextEditingController(ref, url);
-    await initializeWebview(
-        context: context, ref: ref, url: url, query: query, mounted: mounted);
+    await initializeWebview( ref: ref, url: url, query: query, mounted: mounted);
     await _logScreen(url, query);
   }
 
   Future<void> initializeWebview({
-    required BuildContext context,
     required WidgetRef ref,
     required String url,
     required String query,
@@ -66,7 +63,7 @@ class _WebviewViewModel {
           onPageFinished: (String _) => _onPageFinished(_, ref),
           onWebResourceError: (WebResourceError _) async => _onWebResourceError,
           onNavigationRequest: (NavigationRequest _) => _onNavigationRequest(
-              ref: ref, request: _, context: context, mounted: mounted),
+              ref: ref, request: _, mounted: mounted),
           onUrlChange: (UrlChange _) async => _onUrlChange(ref, _, url),
         ),
       );
@@ -109,14 +106,12 @@ class _WebviewViewModel {
   Future<NavigationDecision> _onNavigationRequest({
     required WidgetRef ref,
     required NavigationRequest request,
-    required BuildContext context,
     required bool mounted,
   }) async {
     final fileNameController = ref.watch(webviewFileNameControllerProvider);
 
     return browserUtils.onNavigationRequest(
       request: request,
-      context: context,
       fileNameController: fileNameController,
       mounted: mounted,
     );

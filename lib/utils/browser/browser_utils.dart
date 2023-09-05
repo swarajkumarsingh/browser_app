@@ -67,7 +67,6 @@ class _BrowserUtils {
 
   Future<NavigationDecision> onNavigationRequest({
     required NavigationRequest request,
-    required BuildContext context,
     required TextEditingController fileNameController,
     required bool mounted,
   }) async {
@@ -91,7 +90,6 @@ class _BrowserUtils {
 
     showDownloadDialog(
       fileSize: 0,
-      context: context,
       controller: fileNameController,
       fileType: downloadRequest.fileExtension!,
       storageLocation: downloadDir,

@@ -1,3 +1,4 @@
+import 'package:browser_app/core/common/widgets/toast.dart';
 import 'package:browser_app/presentation/view/tab/tab_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
@@ -31,6 +32,7 @@ class TabsNavigationIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        showToast("under maintenance");
         appRouter.push(const TabsScreen());
       },
       child: Container(

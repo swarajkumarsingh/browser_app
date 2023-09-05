@@ -36,7 +36,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _init() async {
     await Future(() async {
       await webviewViewModel.init(
-          context: context,
           ref: ref,
           url: "https://google.com/",
           query: "",

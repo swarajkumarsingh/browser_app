@@ -94,6 +94,7 @@ dependencies:
   # screenshot provider
   screenshot: ^2.1.0
   speech_to_text: ^6.3.0
+  flutter_typeahead: ^4.6.2
 
 # Dev Dependencies
 dev_dependencies:

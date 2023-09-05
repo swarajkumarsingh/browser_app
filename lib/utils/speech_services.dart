@@ -14,7 +14,7 @@ class _SpeechService {
       WidgetRef ref, BuildContext context, SpeechToText speechToText) async {
     final lastWords = ref.watch(dataProvider);
     await speechToText.stop();
-    await searchScreenViewModel.onSubmitted(ref, context, lastWords);
+    await searchScreenViewModel.onSubmitted(ref, lastWords);
   }
 
   Future<void> startListening(WidgetRef ref, SpeechToText speechToText) async {

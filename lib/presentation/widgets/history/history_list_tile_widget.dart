@@ -26,7 +26,6 @@ class HistoryListTileWidget extends ConsumerWidget {
       onTap: () {
         functions.navigateToWebviewScreen(
           ref: ref,
-          context: context,
           url: homeModel.url,
           mounted: true,
         );
