@@ -12,7 +12,7 @@ class _ScreenShotUtils {
     Future<Uint8List?> captureHomeScreenScreenshot(
       ScreenshotController screenshotController) async {
     return await screenshotController.capture(
-      delay: const Duration(milliseconds: 1500),
+      delay: const Duration(milliseconds: 2000),
     );
   }
 }

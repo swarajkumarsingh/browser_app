@@ -35,6 +35,31 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
   bool get wantKeepAlive => false;
 
   @override
+  void initState() {
+    super.initState();
+
+    Future(() {
+      // _init();
+    });
+  }
+
+  void _init() async {
+    await webviewViewModel.init(
+        ref: ref, url: widget.url, query: widget.query, mounted: mounted);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Future(() {
+      ref.read(webviewScreenLoadingProvider.notifier).dispose();
+      ref.read(webviewControllerProvider.notifier).dispose();
+      ref.read(webviewFileNameControllerProvider.notifier).dispose();
+      ref.read(webviewSearchTextControllerProvider.notifier).dispose();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     final controller = ref.watch(webviewControllerProvider);
@@ -50,28 +75,29 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
       body: body(ref),
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
-      elevation: 0,
-      iconSize: 25,
-      showSelectedLabels: false,
-      useLegacyColorScheme: true,
-      showUnselectedLabels: false,
-      backgroundColor: Colors.white,
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.black,
-      type: BottomNavigationBarType.fixed,
-      items: [
-        leftNavigationIcon(ref),
-        rightNavigationIcon(ref),
-        playNavigationIcon(ref),
-        tabsNavigationIcon(),
-        settingsNavigationBar(),
-      ],
-    ),
+        elevation: 0,
+        iconSize: 25,
+        showSelectedLabels: false,
+        useLegacyColorScheme: true,
+        showUnselectedLabels: false,
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        items: [
+          leftNavigationIcon(ref),
+          rightNavigationIcon(ref),
+          playNavigationIcon(ref),
+          tabsNavigationIcon(),
+          settingsNavigationBar(),
+        ],
+      ),
     );
   }
 
   Stack body(WidgetRef ref) {
-    final webviewScreenLoading = ref.watch(webviewScreenLoadingProvider);
+    final webviewScreenLoading =
+        mounted ? ref.watch(webviewScreenLoadingProvider) : true;
     final controller = ref.watch(webviewControllerProvider);
 
     return Stack(
@@ -84,9 +110,10 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
     );
   }
 
-
   AppBar appBar(WidgetRef ref) {
-    final searchTextController = ref.watch(webviewSearchTextControllerProvider);
+    final searchTextController = mounted
+        ? ref.watch(webviewSearchTextControllerProvider)
+        : TextEditingController(text: "");
     final controller = ref.watch(webviewControllerProvider);
 
     return AppBar(

@@ -24,7 +24,7 @@ class QuickLinksWidget extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         functions.navigateToWebviewScreen(
-            ref: ref, context: context, url: redirectUrl, mounted: true);
+            ref: ref, url: redirectUrl, mounted: true);
       },
       child: Column(
         children: [

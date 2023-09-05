@@ -20,7 +20,7 @@ class SubSearchScreenQuickLinks extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        functions.navigateToWebviewScreen(ref: ref, context: context, url: redirectUrl, mounted: true);
+        functions.navigateToWebviewScreen(ref: ref, url: redirectUrl, mounted: true);
       },
       child: SizedBox(
         height: 80,

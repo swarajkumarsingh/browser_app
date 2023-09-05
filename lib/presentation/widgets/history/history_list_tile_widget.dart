@@ -22,11 +22,9 @@ class HistoryListTileWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
-      // onTap: () => historyViewModel.navigateToWebviewScreen(ref,homeModel.url),
       onTap: () {
         functions.navigateToWebviewScreen(
           ref: ref,
-          context: context,
           url: homeModel.url,
           mounted: true,
         );

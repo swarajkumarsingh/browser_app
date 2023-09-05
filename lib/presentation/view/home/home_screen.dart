@@ -1,6 +1,5 @@
 import 'package:browser_app/presentation/view/download/download_screen.dart';
 import 'package:browser_app/presentation/view/history/history_screen.dart';
-import 'package:browser_app/presentation/viewModel/webview_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,14 +33,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ScreenshotController screenshotController = ScreenshotController();
 
   void _init() async {
-    await Future(() async {
-      await webviewViewModel.init(
-          context: context,
-          ref: ref,
-          url: "https://google.com/",
-          query: "",
-          mounted: mounted);
-    });
     await webviewDB.addHomeScreenScreenShotBytes(screenshotController);
     await homeViewModel.logScreen();
   }

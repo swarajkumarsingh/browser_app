@@ -55,7 +55,6 @@ class _SearchScreenWebviewViewModel {
     if (textUtils.isValidUrl(text)) {
       functions.navigateToWebviewScreen(
         ref: ref,
-        context: context,
         url: browserUtils.addHttpToDomain(text),
         mounted: true,
       );
@@ -66,7 +65,6 @@ class _SearchScreenWebviewViewModel {
     final prompt = textUtils.replaceSpaces(text);
     functions.navigateToWebviewScreen(
       ref: ref,
-      context: context,
       url: browserUtils.addQueryToGoogle(prompt),
       query: prompt,
       mounted: true,
@@ -79,7 +77,6 @@ class _SearchScreenWebviewViewModel {
     if (textUtils.isValidUrl(text)) {
       functions.popToWebviewScreen(
         ref: ref,
-        context: context,
         url: browserUtils.addHttpToDomain(text),
         mounted: true,
       );
@@ -90,7 +87,6 @@ class _SearchScreenWebviewViewModel {
     final prompt = textUtils.replaceSpaces(text);
     functions.popToWebviewScreen(
       ref: ref,
-      context: context,
       url: browserUtils.addQueryToGoogle(prompt),
       query: prompt,
       mounted: true,

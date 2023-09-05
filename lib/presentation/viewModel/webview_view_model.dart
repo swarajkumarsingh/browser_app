@@ -20,7 +20,6 @@ final webviewViewModel = _WebviewViewModel();
 
 class _WebviewViewModel {
   Future<void> init({
-    required BuildContext context,
     required WidgetRef ref,
     required String url,
     required String query,
@@ -28,20 +27,16 @@ class _WebviewViewModel {
   }) async {
     _updateTextEditingController(ref, url);
     await initializeWebview(
-        context: context, ref: ref, url: url, query: query, mounted: mounted);
+        ref: ref, url: url, query: query, mounted: mounted);
     await _logScreen(url, query);
   }
 
   Future<void> initializeWebview({
-    required BuildContext context,
     required WidgetRef ref,
     required String url,
     required String query,
     required bool mounted,
   }) async {
-    ref.read(webviewControllerProvider.notifier).update((state) {
-      return null;
-    });
 
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
@@ -66,7 +61,7 @@ class _WebviewViewModel {
           onPageFinished: (String _) => _onPageFinished(_, ref),
           onWebResourceError: (WebResourceError _) async => _onWebResourceError,
           onNavigationRequest: (NavigationRequest _) => _onNavigationRequest(
-              ref: ref, request: _, context: context, mounted: mounted),
+              ref: ref, request: _, mounted: mounted),
           onUrlChange: (UrlChange _) async => _onUrlChange(ref, _, url),
         ),
       );
@@ -109,14 +104,12 @@ class _WebviewViewModel {
   Future<NavigationDecision> _onNavigationRequest({
     required WidgetRef ref,
     required NavigationRequest request,
-    required BuildContext context,
     required bool mounted,
   }) async {
     final fileNameController = ref.watch(webviewFileNameControllerProvider);
 
     return browserUtils.onNavigationRequest(
       request: request,
-      context: context,
       fileNameController: fileNameController,
       mounted: mounted,
     );
@@ -155,15 +148,22 @@ class _WebviewViewModel {
       WidgetRef ref, int progress, WebViewController controller) async {
     logger.info('WebView is loading (progress : $progress%)');
     if (progress < 70) {
-      ref.read(webviewScreenLoadingProvider.notifier).update((state) => true);
+      showLoading(ref);
       return;
     }
+    hideLoading(ref);
+  }
 
+  void hideLoading(WidgetRef ref) {
     ref.read(webviewScreenLoadingProvider.notifier).update((state) => false);
   }
 
+  void showLoading(WidgetRef ref) {
+    ref.read(webviewScreenLoadingProvider.notifier).update((state) => true);
+  }
+
   void _onPageFinished(String url, WidgetRef ref) async {
-    ref.read(webviewScreenLoadingProvider.notifier).update((state) => false);
+    hideLoading(ref);
     logger.info('Page finished loading: $url');
   }
 

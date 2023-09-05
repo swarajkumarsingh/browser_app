@@ -2,10 +2,11 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   errors:
-    missing_required_param: error
-    missing_return: error
     todo: ignore
+    missing_return: error
+    missing_required_param: error
     constant_identifier_names: ignore
+    use_build_context_synchronously: false
     sdk_version_async_exported_from_core: ignore
     no_leading_underscores_for_local_identifiers: ignore
   exclude:

@@ -47,13 +47,13 @@ class _SearchScreenViewModel {
     await eventTracker.screen("search-screen");
   }
 
-  Future<void> onSubmitted(WidgetRef ref, BuildContext context, String prompt) async {
+  Future<void> onSubmitted(
+      WidgetRef ref, BuildContext context, String prompt) async {
     // Url
     if (textUtils.isValidUrl(prompt)) {
       final url = browserUtils.addHttpToDomain(prompt);
-      functions.navigateToWebviewScreen(
+      await functions.navigateToWebviewScreen(
         ref: ref,
-        context: context,
         url: url,
         mounted: true,
       );
@@ -63,9 +63,8 @@ class _SearchScreenViewModel {
     // Query
     prompt = textUtils.replaceSpaces(prompt);
     final url = browserUtils.addQueryToGoogle(prompt);
-    functions.navigateToWebviewScreen(
+    await functions.navigateToWebviewScreen(
       ref: ref,
-      context: context,
       url: url,
       mounted: true,
     );

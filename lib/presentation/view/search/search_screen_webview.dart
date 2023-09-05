@@ -91,7 +91,6 @@ class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
       onTap: () {
             functions.navigateToWebviewScreen(
           ref: ref,
-          context: context,
           url: clipBoardText,
           mounted: true,
         );

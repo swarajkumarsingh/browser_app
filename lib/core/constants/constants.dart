@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
 
-final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 // Sentry config
 const int maxNumberOfRestartTries = 3;
 const String sentryEnvironment = "staging";
-const String sentryDSN = "https://eed1da5969630f389c729af90d2b3ae3@o4505619587989504.ingest.sentry.io/4505619589038080";
+const String sentryDSN =
+    "https://eed1da5969630f389c729af90d2b3ae3@o4505619587989504.ingest.sentry.io/4505619589038080";
 
 const googleUrl = "https://google.com";
-const apkDownloadLink = "https://files.an1.co/minecraft-mod_1.20.15.01-an1.com.apk";
-const imageUrlLink = "https://images.pexels.com/photos/895259/pexels-photo-895259.jpeg?cs=srgb&dl=pexels-dominika-roseclay-895259.jpg&fm=jpg";
+const apkDownloadLink =
+    "https://files.an1.co/minecraft-mod_1.20.15.01-an1.com.apk";
+const imageUrlLink =
+    "https://images.pexels.com/photos/895259/pexels-photo-895259.jpeg?cs=srgb&dl=pexels-dominika-roseclay-895259.jpg&fm=jpg";
 
 class Constants {
   Constants._();
 
-  static const String downloadImageUrl = "https://gc-strapi-production.s3.eu-west-2.amazonaws.com/Partners_network_installation_icon_92a8e01da7.jpg";
+  static const String downloadImageUrl =
+      "https://gc-strapi-production.s3.eu-west-2.amazonaws.com/Partners_network_installation_icon_92a8e01da7.jpg";
 
   // AdBlocker Preferences
   static const String PREF_TOTAL_ADS_BLOCKED = "pref_total_ads_blocked";
   static const String PREF_TOTAL_PAGE_VISITED = "pref_total_page_visited";
   static const String PREF_TOTAL_ADS_SIZE_SAVED = "pref_total_ads_size_saved";
   static const String PREF_TOTAL_ADS_TIME_SAVED = "pref_total_ads_time_saved";
-  static const String PREF_TOTAL_AD_BLOCKER_ENABLED = "pref_total_ad_blocker_enabled";
+  static const String PREF_TOTAL_AD_BLOCKER_ENABLED =
+      "pref_total_ad_blocker_enabled";
 
   // Browser Preferences
   static const String PREF_WEBVIEW_MAX_RE_TRIES = "pref_webview_max_re_tries";

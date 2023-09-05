@@ -1,52 +1,61 @@
-import 'package:browser_app/data/db/webview_db.dart';
 import 'package:browser_app/domain/models/webview_model.dart';
-import 'package:browser_app/utils/preferences/preferences_service.dart';
+import 'package:browser_app/utils/utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../core/constants/constants.dart';
+import '../../data/provider/state_providers.dart';
+import '../../utils/functions/functions.dart';
 
 final tabViewModel = _TabViewModel();
 
 class _TabViewModel {
   Future<void> addTab({
+    required WidgetRef ref,
     required String url,
     required String title,
     required Uint8List? screenshot,
-    required int tabIndex,
     WebViewController? webViewController,
   }) async {
-    await webviewDB.addTab(
+    functions.removeNavigateToWebviewScreen(
+      ref: ref,
       url: url,
-      title: title,
-      tabIndex: tabIndex,
-      screenshot: screenshot,
-      isIncognitoMode: false,
-      webViewController: webViewController,
+      mounted: true,
     );
 
-    await preferencesService.setInt(
-        key: Constants.CURRENT_TAB_INDEX_BOX, value: tabIndex);
+    final list = ref.read(tabsListProvider);
+    final webViewModel = WebViewModel(
+        url: url,
+        id: utils.getRandomTabId(),
+        title: title,
+        isIncognitoMode: false,
+        screenshot: screenshot);
+    ref
+        .read(tabsListProvider.notifier)
+        .update((state) => [...list, webViewModel]);
+
+    // TODO add to DB
   }
 
-  Future<WebViewModel?> getTab(int tabIndex) async {
-    return webviewDB.getTab(tabIndex);
+  Future<void> deleteTab(WidgetRef ref, String id) async {
+    final tabsList = ref.watch(tabsListProvider);
+    final indexToRemove = tabsList.indexWhere((tab) => tab.id == id);
+
+    if (indexToRemove == -1) return;
+
+    tabsList.removeAt(indexToRemove);
+    ref.read(tabsListProvider.notifier).update((state) => [...tabsList]);
+    // TODO delete from DB
   }
 
-  Future<void> updateTab({
-    required String url,
-    required String title,
-    required Uint8List? screenshot,
-    required int tabIndex,
-    WebViewController? webViewController,
-  }) async {
-    await webviewDB.updateTab(
-      url: url,
-      title: title,
-      screenshot: screenshot,
-      isIncognitoMode: false,
-      tabIndex: tabIndex,
-      webViewController: webViewController,
-    );
+  Future<void> updateScreenShot(
+      WidgetRef ref, String id, Uint8List imageBytes) async {
+    final tabsList = ref.watch(tabsListProvider);
+
+    final index = tabsList.indexWhere((tab) => tab.id == id);
+
+    if (index == -1) return;
+
+    // tabsList[index]
   }
 }

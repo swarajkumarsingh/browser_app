@@ -1,3 +1,4 @@
+import 'package:browser_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,4 +22,4 @@ final webviewControllerProvider = StateProvider<WebViewController?>((ref) => nul
 final webviewFileNameControllerProvider = StateProvider<TextEditingController>((ref) => TextEditingController(text: ""));
 final webviewSearchTextControllerProvider = StateProvider<TextEditingController>((ref) => TextEditingController(text: ""));
 
-final tabsListProvider = StateProvider<List<WebViewModel>>((ref) => <WebViewModel>[WebViewModel(url: "https://google.com/", tabIndex: 1, title: "Google", isIncognitoMode: false, screenshot: webviewDB.getHomeScreenImageBytes())]);
+final tabsListProvider = StateProvider<List<WebViewModel>>((ref) => <WebViewModel>[WebViewModel(url: "https://google.com/", id: utils.getRandomTabId(), title: "Home Page", isIncognitoMode: false, screenshot: webviewDB.getHomeScreenImageBytes())]);

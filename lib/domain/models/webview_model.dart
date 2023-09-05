@@ -5,13 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class WebViewModel {
   final String url;
-  final int tabIndex;
+  final String id;
   final String title;
   final bool isIncognitoMode;
   final Uint8List? screenshot;
   WebViewModel({
     required this.url,
-    required this.tabIndex,
+    required this.id,
     required this.title,
     required this.isIncognitoMode,
     required this.screenshot,
@@ -20,7 +20,7 @@ class WebViewModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'url': url,
-      'tabIndex': tabIndex,
+      'id': id,
       'title': title,
       'isIncognitoMode': isIncognitoMode,
       'screenshot': screenshot,
@@ -30,7 +30,7 @@ class WebViewModel {
   factory WebViewModel.fromMap(Map<String, dynamic> map) {
     return WebViewModel(
       url: map['url'] as String,
-      tabIndex: map['tabIndex'] as int,
+      id: map['id'] as String,
       title: map['title'] as String,
       isIncognitoMode: map['isIncognitoMode'] as bool,
       screenshot: map['screenshot'],
@@ -44,14 +44,14 @@ class WebViewModel {
 
   WebViewModel copyWith({
     String? url,
-    int? tabIndex,
+    String? id,
     String? title,
     bool? isIncognitoMode,
     Uint8List? screenshot,
   }) {
     return WebViewModel(
       url: url ?? this.url,
-      tabIndex: tabIndex ?? this.tabIndex,
+      id: id ?? this.id,
       title: title ?? this.title,
       isIncognitoMode: isIncognitoMode ?? this.isIncognitoMode,
       screenshot: screenshot ?? this.screenshot,

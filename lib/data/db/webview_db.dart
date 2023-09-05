@@ -42,7 +42,7 @@ class _WebviewDB {
     required bool isIncognitoMode,
     required Uint8List? screenshot,
     required String title,
-    required int tabIndex,
+    required String id,
     WebViewController? webViewController,
   }) async {
     final tabBox = Hive.box(Constants.TABS_BOX);
@@ -51,18 +51,18 @@ class _WebviewDB {
         url: url,
         title: title,
         screenshot: screenshot,
-        tabIndex: tabIndex,
+        id: id,
         isIncognitoMode: isIncognitoMode,
       ).toMap(),
     );
   }
 
-  Future<WebViewModel?> getTab(int tabIndex) async {
+  Future<WebViewModel?> getTab(String id) async {
     final box = Hive.box(Constants.TABS_BOX);
     for (final key in box.keys) {
       final item = box.get(key);
       final webViewModel = WebViewModel.fromJson(item);
-      if (webViewModel.tabIndex == tabIndex) {
+      if (webViewModel.id == id) {
         return await box.get(key);
       }
     }
@@ -72,7 +72,7 @@ class _WebviewDB {
   Future<void> updateTab({
     required String url,
     required String title,
-    required int tabIndex,
+    required String id,
     required bool isIncognitoMode,
     required Uint8List? screenshot,
     WebViewController? webViewController,
@@ -81,7 +81,7 @@ class _WebviewDB {
     for (final key in tabBox.keys) {
       final item = tabBox.get(key);
       final webViewModel = WebViewModel.fromJson(item);
-      if (webViewModel.tabIndex == tabIndex) {
+      if (webViewModel.id == id) {
         await tabBox.delete(key);
       }
     }
@@ -89,7 +89,7 @@ class _WebviewDB {
     await addTab(
       url: url,
       isIncognitoMode: isIncognitoMode,
-      tabIndex: tabIndex,
+      id: id,
       screenshot: screenshot,
       title: title,
     );
