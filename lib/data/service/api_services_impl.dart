@@ -1,3 +1,4 @@
+import 'package:browser_app/utils/text_utils.dart';
 import 'package:dio/dio.dart';
 
 import '../../core/config/config.dart';
@@ -13,4 +14,7 @@ class ApiServiceImpl extends ApiService {
   
   @override
   Future<Response> getImageHead(String url) async => _api.head(url);
+  
+  @override
+  Future<Response> getSuggestions(String keyword) async => _api.get(textUtils.addGoogleSuggestionWithKeyword(keyword), options: Options(contentType: "text/xml"));
 }

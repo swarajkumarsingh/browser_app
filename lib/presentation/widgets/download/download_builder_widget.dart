@@ -16,7 +16,7 @@ class DownloadListenableBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: Hive.box(Constants.DOWNLOAD_SAVE_BOX).listenable(),
-      builder: (context, box, widget) {
+      builder: (_, box, __) {
         if (hiveService.isBoxEmpty(box)) {
           return const NoDownloads();
         }

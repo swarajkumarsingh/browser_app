@@ -1,21 +1,20 @@
-import 'package:browser_app/presentation/view/download/download_screen.dart';
-import 'package:browser_app/presentation/view/history/history_screen.dart';
-import 'package:browser_app/presentation/view/settings/settings_screen.dart';
-import 'package:browser_app/presentation/viewModel/webview_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_approuter/flutter_approuter.dart';
+import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../../core/common/widgets/spaces.dart';
-import '../../../core/constants/assets.dart';
+import '../../../core/constants/constants.dart';
 import '../../../data/db/webview_db.dart';
 import '../../../data/local/home_data_provider.dart';
 import '../../viewModel/home_view_model.dart';
+import '../../viewModel/webview_view_model.dart';
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/home/home_news_feed_widget.dart';
 import '../../widgets/home/home_quick_links_wrap_widget.dart';
 import '../../widgets/home/home_search_textfield.dart';
+import '../../widgets/home/more_options_menu_widget.dart';
+import '../../widgets/home/responsive_title_widget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const String routeName = '/home-screen';
@@ -35,9 +34,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ScreenshotController screenshotController = ScreenshotController();
 
   void _init() async {
+    logger.success(const String.fromEnvironment("SALT"));
     await Future(() async {
       await webviewViewModel.init(
-          ref: ref, url: "https://google.com/", query: "", mounted: mounted);
+          ref: ref, url: googleUrl, query: "", mounted: mounted);
     });
     await webviewDB.addHomeScreenScreenShotBytes(screenshotController);
     await homeViewModel.logScreen();
@@ -90,26 +90,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return AppBar(
       centerTitle: true,
       elevation: 0,
+      actions: const [
+        MoreOptionsMenuWidget(),
+      ],
       scrolledUnderElevation: 0,
-      backgroundColor: Colors.white,
-      leading: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          height: 100,
-          width: 100,
-          child: Image.asset(assets.fullLogo),
-        ),
-      ),
-      title: const FittedBox(
-        child: Text(
-          "Browser App",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
-        ),
-      ),
+      backgroundColor: Theme.of(context).primaryColor,
+      title: const ResponsiveTitleWidget(),
     );
   }
 
@@ -120,7 +106,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       showSelectedLabels: false,
       useLegacyColorScheme: true,
       showUnselectedLabels: false,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).primaryColor,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black,
       type: BottomNavigationBarType.fixed,
@@ -134,27 +120,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  BottomNavigationBarItem settingsNavigationBar() {
-    return BottomNavigationBarItem(
-      icon: PopupMenuButton(
-        elevation: 1,
-        icon: const Icon(Icons.settings),
-        surfaceTintColor: Colors.grey,
-        itemBuilder: (context) => [
-          PopupMenuItem(
-              child: const Text("History"),
-              onTap: () => appRouter.push(const HistoryScreen())),
-          PopupMenuItem(
-            child: const Text("Downloads"),
-            onTap: () => appRouter.push(const DownloadScreen()),
-          ),
-          PopupMenuItem(
-            child: const Text("Settings"),
-            onTap: () => appRouter.push(const SettingsScreen()),
-          ),
-        ],
-      ),
-      label: "Settings",
+  BottomNavigationBarItem searchNavigationIcon() {
+    return const BottomNavigationBarItem(
+      icon: SearchNavigationIcon(),
+      label: "Search",
+    );
+  }
+
+  BottomNavigationBarItem homeNavigationIcon() {
+    return const BottomNavigationBarItem(
+      icon: HomeNavigationIcon(),
+      label: "Home",
+    );
+  }
+
+  BottomNavigationBarItem plusNavigationIcon() {
+    return const BottomNavigationBarItem(
+      icon: PlusNavigationIcon(),
+      label: "Add",
     );
   }
 
@@ -165,24 +148,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  BottomNavigationBarItem plusNavigationIcon() {
+  BottomNavigationBarItem settingsNavigationBar() {
     return const BottomNavigationBarItem(
-      icon: PlusIconWidget(),
-      label: "Add",
-    );
-  }
-
-  BottomNavigationBarItem searchNavigationIcon() {
-    return const BottomNavigationBarItem(
-      icon: SearchNavigationIcon(),
-      label: "Search",
-    );
-  }
-
-  BottomNavigationBarItem homeNavigationIcon() {
-    return const BottomNavigationBarItem(
-      icon: Icon(Icons.home_outlined),
-      label: "Home",
+      icon: SettingsNavigationIcon(),
+      label: "Tabs",
     );
   }
 }

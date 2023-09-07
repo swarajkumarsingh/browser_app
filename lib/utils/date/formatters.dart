@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_renaming_method_parameters
 
-import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 final currencyFormat = NumberFormat.currency(
   locale: 'en_IN',

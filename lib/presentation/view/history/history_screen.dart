@@ -1,4 +1,4 @@
-import 'package:browser_app/core/constants/constants.dart';
+import '../../../core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -39,6 +39,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       title: const Text("History"),
       elevation: 0,
       scrolledUnderElevation: 0,
+      backgroundColor: Theme.of(context).primaryColor,
       actions: [
         IconButton(
           onPressed: () {},
@@ -66,7 +67,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return SingleChildScrollView(
       child: ValueListenableBuilder<Box>(
         valueListenable: Hive.box(Constants.HISTORY_BOX).listenable(),
-        builder: (context, box, widget) {
+        builder: (_, box, __) {
           if (hiveService.isBoxEmpty(box)) {
             return const NoHistoryWidget();
           }

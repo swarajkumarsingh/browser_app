@@ -1,6 +1,7 @@
-import 'package:browser_app/core/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../constants/strings.dart';
 
 class ErrorScreen extends ConsumerStatefulWidget {
   final String? message;

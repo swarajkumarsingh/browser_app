@@ -1,8 +1,9 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_logger_plus/flutter_logger_plus.dart';
+
 import '../../core/constants/constants.dart';
 import '../preferences/preferences_service.dart';
 import '../text_utils.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 
 class AdBlocker {
   Future<bool> isAd(String url) async {

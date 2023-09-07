@@ -1,3 +1,4 @@
+import 'package:browser_app/data/data_source/offline/webview_offline_data_source.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/repository/webview_repository.dart';
@@ -6,22 +7,28 @@ import '../data_source/online/webview_data_source.dart';
 import '../remote/remote_response.dart';
 
 class WebviewRepositoryImpl extends WebviewRepository {
-  final WebviewDataSource _webviewDataSource;
-  WebviewRepositoryImpl(this._webviewDataSource);
-
   @override
   Future<RemoteResponse<Response>> getUrlData({required String url}) async {
     if (!await isNetworkAvailable) {
       return RemoteResponse.internetConnectionError();
     }
-    return await _webviewDataSource.getUrlData(url: url);
+    return await WebviewOnlineDataSource().getUrlData(url: url);
   }
-  
+
   @override
   Future<RemoteResponse<String>> getUrlSize({required String url}) async {
-       if (!await isNetworkAvailable) {
+    if (!await isNetworkAvailable) {
       return RemoteResponse.internetConnectionError();
     }
-    return await _webviewDataSource.getUrlSize(url: url);
+    return await WebviewOnlineDataSource().getUrlSize(url: url);
+  }
+
+  @override
+  Future<RemoteResponse<List<String>>> getSuggestions(
+      {required String keyword}) async {
+    if (!await isNetworkAvailable) {
+      return WebviewOfflineDataSource().getSuggestions(keyword: keyword);
+    }
+    return await WebviewOnlineDataSource().getSuggestions(keyword: keyword);
   }
 }

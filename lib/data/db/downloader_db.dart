@@ -1,9 +1,10 @@
-import 'package:browser_app/core/constants/constants.dart';
-import 'package:browser_app/domain/models/download_save_model.dart';
-import 'package:browser_app/domain/models/downloading_model.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../core/constants/constants.dart';
+import '../../domain/models/download_save_model.dart';
+import '../../domain/models/downloading_model.dart';
 
 final downloaderDB = _DownloaderDB();
 

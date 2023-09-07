@@ -1,7 +1,7 @@
-import '../../../utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/local/search_suggestions.dart';
+import '../../../utils/screen_utils.dart';
 import 'search_suggestion_list_tile.dart';
 
 class ShowSuggestionsDialog extends StatelessWidget {

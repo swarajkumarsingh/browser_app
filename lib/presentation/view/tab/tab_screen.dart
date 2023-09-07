@@ -1,6 +1,6 @@
-import 'package:browser_app/data/provider/state_providers.dart';
-import 'package:browser_app/domain/models/webview_model.dart';
-import 'package:browser_app/presentation/view/webview/webview_screen.dart';
+import '../../../data/provider/state_providers.dart';
+import '../../../domain/models/webview_model.dart';
+import '../webview/webview_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';

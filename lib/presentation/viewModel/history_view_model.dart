@@ -1,10 +1,10 @@
-import 'package:browser_app/utils/functions/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/common/widgets/toast.dart';
 import '../../core/event_tracker/event_tracker.dart';
 import '../../data/db/history_db.dart';
+import '../../utils/functions/functions.dart';
 import '../../utils/share_app.dart';
 
 final historyViewModel = _HistoryViewModel();

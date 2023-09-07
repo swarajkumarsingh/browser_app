@@ -10,7 +10,7 @@ import '../../core/common/snackbar/show_snackbar.dart';
 import '../../core/common/widgets/toast.dart';
 import '../../domain/models/download_request_model.dart';
 import '../../domain/repository/webview_repository.dart';
-import '../../presentation/widgets/webview/download_dialog.dart';
+import '../../presentation/widgets/webview/webview_download_dialog.dart';
 import '../download/downloader.dart';
 import '../download/downloader_constants.dart';
 import '../text_utils.dart';
@@ -171,17 +171,17 @@ class _BrowserUtils {
   String removeQueryFromUrl(String url) {
     final Uri uri = Uri.parse(url);
     final Uri newUri = uri.replace(queryParameters: {});
-    final a = newUri.toString().replaceAll("?", "");
-    return a;
+    final value = textUtils.replaceQuestionMarkWithSpace(newUri.toString());
+    return value;
   }
 
   DownloadedRequestModel _checkUrlEndsWithAnyExtension(
       String url, List<String> extensions) {
     for (final extension in extensions) {
       if (url.contains(extension)) {
-        final _ = extension.replaceAll(".", "");
+        final fileExtension = textUtils.replaceDotWithSpace(extension);
         return DownloadedRequestModel(
-            isDownloadRequest: true, fileExtension: _);
+            isDownloadRequest: true, fileExtension: fileExtension);
       }
     }
     return DownloadedRequestModel(

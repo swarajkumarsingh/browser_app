@@ -95,6 +95,8 @@ dependencies:
   screenshot: ^2.1.0
   speech_to_text: ^6.3.0
   flutter_typeahead: ^4.6.2
+  stack_trace: ^1.11.0
+  xml: ^6.3.0
 
 # Dev Dependencies
 dev_dependencies:

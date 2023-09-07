@@ -11,6 +11,13 @@ const googleUrl = "https://google.com";
 const apkDownloadLink = "https://files.an1.co/minecraft-mod_1.20.15.01-an1.com.apk";
 const imageUrlLink = "https://images.pexels.com/photos/895259/pexels-photo-895259.jpeg?cs=srgb&dl=pexels-dominika-roseclay-895259.jpg&fm=jpg";
 
+String newsApiUrl = "";
+String DICTIONARY_BASE_URL = "";
+
+const String newsTitleStatic = "Breaking News";
+const String newsImageStatic =
+    "https://awlights.com/wp-content/uploads/sites/31/2017/05/placeholder-news.jpg";
+
 class Constants {
   Constants._();
 

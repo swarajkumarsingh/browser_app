@@ -7,4 +7,5 @@ final ApiService apiService = ApiServiceImpl(Api());
 abstract class ApiService {
   Future<Response> getHomeData();
   Future<Response> getImageHead(String url);
+  Future<Response> getSuggestions(String keyword);
 }

@@ -30,6 +30,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
       appBar: AppBar(
         leading: const SizedBox(),
         leadingWidth: 0,
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text("Download"),
         elevation: 0,
         scrolledUnderElevation: 0,

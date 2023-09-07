@@ -1,10 +1,8 @@
-import '../../../domain/models/site_model.dart';
 import 'package:flutter/material.dart';
 
-import 'search_sub_quick_links.dart';
-
 import '../../../core/common/widgets/spaces.dart';
-import '../../../core/constants/color.dart';
+import '../../../domain/models/site_model.dart';
+import 'search_sub_quick_links.dart';
 
 class SearchScreenQuickLinks extends StatelessWidget {
   final String tag;
@@ -30,7 +28,7 @@ class SearchScreenQuickLinks extends StatelessWidget {
                 width: 0.1,
               ),
               borderRadius: const BorderRadius.all(Radius.circular(16)),
-              color: colors.white,
+              color: Theme.of(context).primaryColor,
             ),
             child:
                 Text(tag, style: const TextStyle(fontWeight: FontWeight.w900)),

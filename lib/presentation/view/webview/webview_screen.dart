@@ -1,18 +1,15 @@
-import 'package:browser_app/presentation/view/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../core/constants/color.dart';
 import '../../../data/provider/state_providers.dart';
 import '../../viewModel/webview_view_model.dart';
 import '../../widgets/home/home_navigation_icons.dart';
+import '../../widgets/home/more_options_menu_widget.dart';
 import '../../widgets/search/search_navigation_icons.dart';
-import '../../widgets/webview/webview_loader.dart';
-import '../download/download_screen.dart';
-import '../history/history_screen.dart';
-import '../search/search_screen_webview.dart';
+import '../../widgets/webview/webview_loader_widget.dart';
+import '../../widgets/webview/webview_reload_icon_widget.dart';
+import '../../widgets/webview/webview_text_field_widget.dart';
 
 class WebviewScreen extends ConsumerStatefulWidget {
   final String url;
@@ -38,9 +35,8 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final controller = ref.watch(webviewControllerProvider);
     return WillPopScope(
-      onWillPop: () async => webviewViewModel.onWillPop(controller),
+      onWillPop: () async => webviewViewModel.onWillPop(ref),
       child: scaffold(ref),
     );
   }
@@ -49,30 +45,40 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
     return Scaffold(
       appBar: appBar(ref),
       body: body(ref),
-      backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        iconSize: 25,
-        showSelectedLabels: false,
-        useLegacyColorScheme: true,
-        showUnselectedLabels: false,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          leftNavigationIcon(ref),
-          rightNavigationIcon(ref),
-          playNavigationIcon(ref),
-          tabsNavigationIcon(),
-          settingsNavigationBar(),
-        ],
+      backgroundColor: Theme.of(context).primaryColor,
+      bottomNavigationBar: bottomNavigationBar(ref),
+    );
+  }
+
+  AppBar appBar(WidgetRef ref) {
+    final controller = ref.watch(webviewControllerProvider);
+    final searchTextController = ref.watch(webviewSearchTextControllerProvider);
+
+    return AppBar(
+      leadingWidth: 30,
+      elevation: 0,
+      backgroundColor: Theme.of(context).primaryColor,
+      iconTheme: IconThemeData(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white70
+            : Colors.black,
+      ),
+      leading: const WebviewHomeIconWidget(),
+      actions: [
+        WebviewReloadIconWidget(controller: controller),
+        const MoreOptionsMenuWidget(),
+      ],
+      title: WebviewTextfieldWidget(
+        url: widget.url,
+        query: widget.query,
+        searchTextController: searchTextController,
+        controller: controller,
       ),
     );
   }
 
   Stack body(WidgetRef ref) {
-    final webviewScreenLoading = ref.watch(webviewScreenLoadingProvider);
+    final loading = ref.watch(webviewScreenLoadingProvider);
     final controller = ref.watch(webviewControllerProvider);
 
     return Stack(
@@ -80,102 +86,22 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
         controller != null
             ? WebViewWidget(controller: controller)
             : const WebviewLoader(),
-        if (webviewScreenLoading) const WebviewLoader(),
+        if (loading) const WebviewLoader(),
       ],
-    );
-  }
-
-  AppBar appBar(WidgetRef ref) {
-    final searchTextController = ref.watch(webviewSearchTextControllerProvider);
-    final controller = ref.watch(webviewControllerProvider);
-
-    return AppBar(
-      leadingWidth: 30,
-      elevation: 0,
-      leading: IconButton(
-        onPressed: webviewViewModel.navigateToHomeScreen,
-        icon: const Icon(
-          Icons.home_outlined,
-          color: Colors.black,
-        ),
-      ),
-      actions: [
-        PopupMenuButton(
-          elevation: 1,
-          icon: const Icon(Icons.settings),
-          surfaceTintColor: Colors.grey,
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              child: const Text("History"),
-              onTap: () => appRouter.push(const HistoryScreen()),
-            ),
-            PopupMenuItem(
-              child: const Text("Downloads"),
-              onTap: () => appRouter.push(const DownloadScreen()),
-            ),
-            PopupMenuItem(
-              child: const Text("Settings"),
-              onTap: () => appRouter.push(const SettingsScreen()),
-            ),
-          ],
-        ),
-      ],
-      title: GestureDetector(
-        onTap: () {
-          appRouter.push(
-            SearchScreenWebview(
-              prompt: widget.query == ""
-                  ? Uri.parse(widget.url).host
-                  : widget.query,
-              url: widget.url,
-            ),
-          );
-        },
-        child: TextField(
-          onChanged: (value) {
-            // TODO: Implement google search
-          },
-          enabled: false,
-          canRequestFocus: false,
-          keyboardType: TextInputType.none,
-          controller: searchTextController,
-          decoration: InputDecoration(
-            filled: true,
-            hintMaxLines: 1,
-            fillColor: colors.homeTextFieldColor,
-            hintText: 'Search or type Web address',
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
-            prefixIcon: const Icon(Icons.privacy_tip_outlined),
-            suffixIcon: InkWell(
-              onTap: () async {
-                await controller!.reload();
-              },
-              child: const Icon(Icons.refresh_outlined),
-            ),
-            border: const OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.all(
-                Radius.circular(8),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 
   BottomNavigationBar bottomNavigationBar(WidgetRef ref) {
     return BottomNavigationBar(
-      elevation: 0,
       iconSize: 25,
+      elevation: 0,
       showSelectedLabels: false,
       useLegacyColorScheme: true,
       showUnselectedLabels: false,
-      backgroundColor: Colors.white,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black,
       type: BottomNavigationBarType.fixed,
+      backgroundColor: Theme.of(context).primaryColor,
       items: [
         leftNavigationIcon(ref),
         rightNavigationIcon(ref),
@@ -196,19 +122,15 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
   }
 
   BottomNavigationBarItem rightNavigationIcon(WidgetRef ref) {
-    final controller = ref.watch(webviewControllerProvider);
-
     return BottomNavigationBarItem(
-      icon: RightIconWidget(controller: controller),
+      icon: RightIconWidget(ref: ref),
       label: "Forward",
     );
   }
 
   BottomNavigationBarItem playNavigationIcon(WidgetRef ref) {
-    final controller = ref.watch(webviewControllerProvider);
-
-    return BottomNavigationBarItem(
-      icon: PlayIconWidget(controller: controller),
+    return const BottomNavigationBarItem(
+      icon: PlayIconWidget(),
       label: "Play",
     );
   }
@@ -221,27 +143,23 @@ class _WebviewScreenState extends ConsumerState<WebviewScreen>
   }
 
   BottomNavigationBarItem settingsNavigationBar() {
-    return BottomNavigationBarItem(
-      icon: PopupMenuButton(
-        elevation: 1,
-        icon: const Icon(Icons.settings),
-        surfaceTintColor: Colors.grey,
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            child: const Text("History"),
-            onTap: () => appRouter.push(const HistoryScreen()),
-          ),
-          PopupMenuItem(
-            child: const Text("Downloads"),
-            onTap: () => appRouter.push(const DownloadScreen()),
-          ),
-          PopupMenuItem(
-            child: const Text("Settings"),
-            onTap: () => appRouter.push(const SettingsScreen()),
-          ),
-        ],
-      ),
+    return const BottomNavigationBarItem(
+      icon: SettingsNavigationIcon(),
       label: "Settings",
+    );
+  }
+}
+
+class WebviewHomeIconWidget extends StatelessWidget {
+  const WebviewHomeIconWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: webviewViewModel.navigateToHomeScreen,
+      icon: const Icon(Icons.home_outlined),
     );
   }
 }

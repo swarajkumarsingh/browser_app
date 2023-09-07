@@ -7,7 +7,6 @@ import '../../../utils/functions/functions.dart';
 import '../../../utils/text_utils.dart';
 import '../../viewModel/search_screen_view_model.dart';
 
-
 class SearchScreenTextfieldWidget extends StatelessWidget {
   const SearchScreenTextfieldWidget({
     super.key,
@@ -33,14 +32,16 @@ class SearchScreenTextfieldWidget extends StatelessWidget {
         decoration: InputDecoration(
           filled: true,
           hintMaxLines: 1,
-          fillColor: colors.homeTextFieldColor,
+          fillColor: Theme.of(context).brightness == Brightness.dark
+              ? const Color.fromARGB(255, 83, 32, 172)
+              : colors.homeTextFieldColor,
           hintText: 'Search or type Web address',
           contentPadding:
               const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
           suffixIcon: IconButton(
               icon: const Icon(Icons.clear),
               onPressed: () async =>
-                  searchScreenViewModel.onTap(ref: ref, context: context)),
+                  searchScreenViewModel.onTap(ref: ref)),
           border: const OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(

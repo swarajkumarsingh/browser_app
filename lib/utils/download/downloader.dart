@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:browser_app/core/common/widgets/toast.dart';
-import 'package:browser_app/domain/models/downloading_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../core/common/widgets/toast.dart';
 import '../../core/event_tracker/event_tracker.dart';
 import '../../data/db/downloader_db.dart';
 import '../../data/db/webview_db.dart';
 import '../../domain/models/download_model.dart';
 import '../../domain/models/download_save_model.dart';
+import '../../domain/models/downloading_model.dart';
 import '../permission_utils.dart';
 import '../text_utils.dart';
 import 'downloader_constants.dart';

@@ -1,4 +1,4 @@
-import 'package:browser_app/presentation/viewModel/download_view_model.dart';
+import '../../viewModel/download_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

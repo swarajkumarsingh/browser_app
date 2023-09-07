@@ -1,10 +1,10 @@
-import 'package:browser_app/core/common/widgets/toast.dart';
-import 'package:browser_app/data/db/downloader_db.dart';
-import 'package:browser_app/utils/download/downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/common/widgets/toast.dart';
 import '../../core/event_tracker/event_tracker.dart';
+import '../../data/db/downloader_db.dart';
 import '../../data/provider/state_providers.dart';
+import '../../utils/download/downloader.dart';
 import '../../utils/files.dart';
 
 final downloadViewModel = _DownloadViewModel();

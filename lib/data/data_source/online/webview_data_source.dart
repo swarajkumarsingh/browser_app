@@ -1,11 +1,12 @@
-import 'package:browser_app/utils/browser/browser_utils.dart';
 import 'package:dio/dio.dart';
+import 'package:xml/xml.dart' as xml;
 
+import '../../../utils/browser/browser_utils.dart';
 import '../../../utils/text_utils.dart';
 import '../../remote/remote_response.dart';
 import '../../service/api_service.dart';
 
-class WebviewDataSource {
+class WebviewOnlineDataSource {
   Future<RemoteResponse<Response>> getUrlData({required String url}) async {
     RemoteResponse<Response> remoteResponse;
     try {
@@ -33,5 +34,26 @@ class WebviewDataSource {
       remoteResponse = RemoteResponse.somethingWentWrong();
     }
     return remoteResponse;
+  }
+
+  Future<RemoteResponse<List<String>>> getSuggestions(
+      {required String keyword}) async {
+    try {
+      final response = await apiService.getSuggestions(keyword);
+      if (response.statusCode != 200) {
+        return RemoteResponse.somethingWentWrong();
+      }
+
+      final responseBody = response.data;
+      final xmlDocument = xml.XmlDocument.parse(responseBody);
+      final suggestionsXml = xmlDocument.findAllElements('suggestion');
+      final suggestions = suggestionsXml
+          .map((element) => element.getAttribute('data') ?? '')
+          .toList();
+
+      return RemoteResponse.success(suggestions);
+    } catch (e) {
+      return RemoteResponse.somethingWentWrong();
+    }
   }
 }

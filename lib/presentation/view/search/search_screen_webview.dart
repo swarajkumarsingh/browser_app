@@ -3,13 +3,12 @@ import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../core/constants/color.dart';
 import '../../../data/provider/state_providers.dart';
 import '../../../utils/functions/functions.dart';
 import '../../../utils/text_utils.dart';
 import '../../viewModel/search_screen_view_model.dart';
 import '../../viewModel/search_screen_webview_view_model.dart';
-import '../../widgets/search/search_text_field_widget.dart';
+import '../../widgets/search/search_webview_text_field_widget.dart';
 
 class SearchScreenWebview extends ConsumerStatefulWidget {
   static const String routeName = '/search-screen-webview';
@@ -156,19 +155,34 @@ class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
       toolbarHeight: 80,
       centerTitle: true,
       scrolledUnderElevation: 0,
-      backgroundColor: colors.white,
+      backgroundColor: Theme.of(context).primaryColor,
       actions: [
-        IconButton(
-            icon: Icon(
-                !listening ? Icons.mic_rounded : Icons.stop_circle_rounded),
-            onPressed: () async =>
-                searchScreenViewModel.onTap(ref: ref, context: context)),
+        MicIconWidget(listening: listening, ref: ref),
       ],
       title: SearchScreenTextfieldWidget(
-          textEditingController: _textEditingController,
-          ref: ref,
-          context: context,
-          mounted: mounted),
+        ref: ref,
+        context: context,
+        mounted: mounted,
+        textEditingController: _textEditingController,
+      ),
     );
+  }
+}
+
+class MicIconWidget extends StatelessWidget {
+  const MicIconWidget({
+    super.key,
+    required this.listening,
+    required this.ref,
+  });
+
+  final bool listening;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        icon: Icon(!listening ? Icons.mic_rounded : Icons.stop_circle_rounded),
+        onPressed: () async => searchScreenViewModel.onTap(ref: ref));
   }
 }

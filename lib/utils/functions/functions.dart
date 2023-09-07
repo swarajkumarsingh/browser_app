@@ -1,13 +1,12 @@
-import 'package:browser_app/data/provider/state_providers.dart';
-import 'package:browser_app/presentation/view/webview/webview_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
-import 'package:xml/xml.dart';
-
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:xml/xml.dart';
 
+import '../../data/provider/state_providers.dart';
+import '../../presentation/view/webview/webview_screen.dart';
 import '../../presentation/viewModel/webview_view_model.dart';
 
 final functions = _Functions();

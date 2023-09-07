@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
 
 void showToast(String message, {bool longText = false, Color bgColor = Colors.black, Color textColor = Colors.white}) {

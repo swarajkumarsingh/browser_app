@@ -1,6 +1,5 @@
-import 'package:browser_app/utils/speech_services.dart';
+import 'package:browser_app/domain/repository/webview_repository.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
@@ -12,6 +11,7 @@ import '../../core/event_tracker/event_tracker.dart';
 import '../../data/provider/state_providers.dart';
 import '../../utils/browser/browser_utils.dart';
 import '../../utils/functions/functions.dart';
+import '../../utils/speech_services.dart';
 import '../../utils/text_utils.dart';
 
 final searchScreenViewModel = _SearchScreenViewModel();
@@ -26,7 +26,18 @@ class _SearchScreenViewModel {
       finalTimeout: const Duration(seconds: 5),
       onStatus: (status) => logger.info("Speech package status: $status"),
       options: [],
-    );
+    ).then((value) {
+      logger.info("Speech to Text initialized");
+    });
+  }
+
+  Future<List<String>> fetchSuggestions(String keyword) async {
+    final suggestions = await webviewRepository.getSuggestions(keyword: keyword);
+    if (!suggestions.successBool || suggestions.data == null) {
+      return [];
+    }
+
+    return suggestions.data!;
   }
 
   void dispose() async {
@@ -99,7 +110,6 @@ class _SearchScreenViewModel {
 
   void onTap({
     required WidgetRef ref,
-    required BuildContext context,
   }) async {
     if (await _speechToText.hasPermission == false) {
       showToast("Permission not given");
@@ -116,7 +126,7 @@ class _SearchScreenViewModel {
       return;
     }
 
-   try {
+    try {
       if (await _speechToText.hasPermission &&
           _speechToText.isAvailable &&
           _speechToText.isNotListening) {
@@ -128,9 +138,9 @@ class _SearchScreenViewModel {
       } else {
         await _speechToText.initialize();
       }
-   } catch (e) {
-     showToast(Strings.errorOccurred);
-     rethrow;
-   }
+    } catch (e) {
+      showToast(Strings.errorOccurred);
+      rethrow;
+    }
   }
 }

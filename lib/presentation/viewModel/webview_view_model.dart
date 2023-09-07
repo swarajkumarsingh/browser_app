@@ -26,7 +26,7 @@ class _WebviewViewModel {
     required bool mounted,
   }) async {
     _updateTextEditingController(ref, url);
-    await initializeWebview( ref: ref, url: url, query: query, mounted: mounted);
+    await initializeWebview(ref: ref, url: url, query: query, mounted: mounted);
     await _logScreen(url, query);
   }
 
@@ -62,8 +62,8 @@ class _WebviewViewModel {
           onPageStarted: _onPageStarted,
           onPageFinished: (String _) => _onPageFinished(_, ref),
           onWebResourceError: (WebResourceError _) async => _onWebResourceError,
-          onNavigationRequest: (NavigationRequest _) => _onNavigationRequest(
-              ref: ref, request: _, mounted: mounted),
+          onNavigationRequest: (NavigationRequest _) =>
+              _onNavigationRequest(ref: ref, request: _, mounted: mounted),
           onUrlChange: (UrlChange _) async => _onUrlChange(ref, _, url),
         ),
       );
@@ -169,7 +169,9 @@ class _WebviewViewModel {
         .update((state) => TextEditingController(text: change.url ?? url));
   }
 
-  Future<bool> onWillPop(WebViewController? controller) async {
+  Future<bool> onWillPop(WidgetRef ref) async {
+    final controller = ref.watch(webviewControllerProvider);
+
     if (controller == null) {
       return true;
     }
@@ -182,6 +184,6 @@ class _WebviewViewModel {
   }
 
   Future<void> navigateToHomeScreen() async {
-    appRouter.push(const HomeScreen());
+    appRouter.pushAndRemoveUntil(const HomeScreen());
   }
 }

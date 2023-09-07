@@ -1,6 +1,7 @@
-import 'package:browser_app/core/common/widgets/spaces.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/common/widgets/spaces.dart';
 
 void showSpeechDialog({
   required WidgetRef ref,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../core/common/snackbar/show_snackbar.dart';
+import '../../../data/provider/state_providers.dart';
 
 class LeftIconWidget extends StatelessWidget {
   final WebViewController? controller;
@@ -24,42 +26,52 @@ class LeftIconWidget extends StatelessWidget {
         }
         await controller!.goBack();
       },
-      child: const Icon(Icons.arrow_back_ios_new_outlined),
+      child: Icon(
+        Icons.arrow_back_ios_new_outlined,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white70
+            : Colors.black,
+      ),
     );
   }
 }
 
 class RightIconWidget extends StatelessWidget {
-  final WebViewController? controller;
+  final WidgetRef ref;
   const RightIconWidget({
     super.key,
-    required this.controller,
+    required this.ref,
   });
 
   @override
   Widget build(BuildContext context) {
+    final controller = ref.watch(webviewControllerProvider);
+
     return GestureDetector(
       onTap: () async {
         if (controller == null) {
           return;
         }
 
-        if (!await controller!.canGoForward()) {
+        if (!await controller.canGoForward()) {
           showSnackBar("Cannot go forward");
           return;
         }
-        await controller!.goForward();
+        await controller.goForward();
       },
-      child: const Icon(Icons.arrow_forward_ios_outlined),
+      child: Icon(
+        Icons.arrow_forward_ios_outlined,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white70
+            : Colors.black,
+      ),
     );
   }
 }
 
 class PlayIconWidget extends StatelessWidget {
-  final WebViewController? controller;
   const PlayIconWidget({
     super.key,
-    required this.controller,
   });
 
   @override

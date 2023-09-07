@@ -141,7 +141,6 @@ class _BrowserConstants {
     "application/postscript": ".ps",
     "audio/x-aiff": ".aif",
     "application/vnd.android.package-archive": ".apk",
-    "text/html": ".html",
     "video/x-msvideo": ".avi",
     "image/bmp": ".bmp",
     "application/x-bzip2": ".bz2",

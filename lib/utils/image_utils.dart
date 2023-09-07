@@ -8,8 +8,8 @@
 // ignore_for_file: avoid_print
 
 import 'package:browser_app/utils/text_utils.dart';
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 
 enum ImageFormat { png, jpg, jpeg, gif, webp }
 

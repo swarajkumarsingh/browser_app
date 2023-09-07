@@ -4,11 +4,21 @@ import 'url_utils.dart';
 final textUtils = _TextUtils();
 
 class _TextUtils {
+
+  String addGoogleSuggestionWithKeyword(String keyword) => "http://google.com/complete/search?q=$keyword&output=toolbar";
+
   bool isValidUrl(String url) {
     if (!url.containsSpaces && url.containsDot && URLUtil.isValidUrl(url)) {
       return true;
     }
     return false;
+  }
+
+  String replaceDotWithSpace(String value) {
+    return value.replaceAll(".", "");
+  }
+  String replaceQuestionMarkWithSpace(String value) {
+    return value.replaceAll("?", "");
   }
 
   bool isImage(String url) {

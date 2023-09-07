@@ -1,4 +1,3 @@
-import 'package:browser_app/presentation/view/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'core/constants/color.dart';
 import 'core/constants/constants.dart';
 import 'core/event_tracker/event_tracker.dart';
+import 'presentation/view/home/home_screen.dart';
 import 'router.dart';
 import 'utils/restart/restart_widget.dart';
 
@@ -41,28 +41,40 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: Hive.box(Constants.DARK_MODE_BOX).listenable(),
-      builder: (context, box, widget) {
+      builder: (_, box, __) {
         final darkMode = box.get(Constants.DARK_MODE_BOX, defaultValue: false);
         return MaterialApp(
-          themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
-          darkTheme: ThemeData.dark(
-            useMaterial3: true,
-          ),
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: colors.white,
-              background: colors.white,
-            ),
-          ),
+          theme: themeData(),
           title: 'Browser App',
+          home: const HomeScreen(),
+          darkTheme: darkThemeData(),
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           scaffoldMessengerKey: scaffoldMessengerKey,
           onGenerateRoute: (settings) => generateRoute(settings),
-          home: const HomeScreen(),
+          themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
         );
       },
     );
+  }
+
+  ThemeData darkThemeData() {
+    return ThemeData(
+          primaryColor: Colors.deepPurple,
+          brightness: Brightness.dark,
+          useMaterial3: true,
+        );
+  }
+
+  ThemeData themeData() {
+    return ThemeData(
+          useMaterial3: true,
+          primaryColor: Colors.white,
+          brightness: Brightness.light,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: colors.white,
+            background: colors.white,
+          ),
+        );
   }
 }
