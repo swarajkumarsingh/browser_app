@@ -13,7 +13,7 @@ ScreenshotController screenshotController = ScreenshotController();
 const int maxNumberOfRestartTries = 3;
 const String sentryEnvironment = "staging";
 const String sentryDSN =
-    "https://eed1da5969630f389c729af90d2b3ae3@o4505619587989504.ingest.sentry.io/4505619589038080";
+    "";
 
 const googleUrl = "https://google.com";
 const apkDownloadLink =
@@ -21,8 +21,10 @@ const apkDownloadLink =
 const imageUrlLink =
     "https://images.pexels.com/photos/895259/pexels-photo-895259.jpeg?cs=srgb&dl=pexels-dominika-roseclay-895259.jpg&fm=jpg";
 
+const news_api_key = "";
+
 String newsApiUrl =
-    "https://newsapi.org/v2/everything?q=tesla&from=${getYesterdayDateForNewsApi()}&sortBy=publishedAt&apiKey=9a6eff31dfbb47d2b439163238b70f3f";
+    "https://newsapi.org/v2/everything?q=tesla&from=${getYesterdayDateForNewsApi()}&sortBy=publishedAt&apiKey=$newsApiUrl";
 FlutterTts flutterTts = FlutterTts();
 const String newsTitleStatic = "Breaking News";
 const String newsImageStatic =
