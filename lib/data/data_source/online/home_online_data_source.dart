@@ -1,3 +1,5 @@
+import '../../db/home_db.dart';
+import '../../../domain/models/news_model.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 
@@ -8,9 +10,7 @@ import '../../../utils/text_utils.dart';
 import '../../remote/remote_response.dart';
 import '../../service/api_service.dart';
 
-final homeDataSource = HomeDataSource();
-
-class HomeDataSource {
+class HomeOnlineDataSource {
   Future<RemoteResponse<Home>> getHomeData() async {
     RemoteResponse<Home> remoteResponse;
     try {
@@ -36,5 +36,31 @@ class HomeDataSource {
     }
 
     return remoteResponse;
+  }
+
+  Future<RemoteResponse<News>> getNewsData(String url) async {
+    final Trace customTrace = eventTracker.startTrace("news-fetch-event");
+    try {
+      await customTrace.start();
+
+      final response = await apiService.getNewsData(url);
+      customTrace.setMetric("fetched-api-results", 1);
+
+      if (response.statusCode != STATUS_OK ||
+          textUtils.isEmpty(response.data) ||
+          response.data == null) {
+        await customTrace.stop();
+        return RemoteResponse.somethingWentWrong();
+      }
+
+      final news = News.fromJson(response.data);
+      await homeDB.saveNews(news);
+      await customTrace.stop();
+      return RemoteResponse.success(news);
+    } catch (e) {
+      logger.error("e: $e");
+      await customTrace.stop();
+      return RemoteResponse.somethingWentWrong();
+    }
   }
 }

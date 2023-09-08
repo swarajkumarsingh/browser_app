@@ -1,5 +1,18 @@
 import 'package:intl/intl.dart';
 
+String getTodayDateForNewsApi() {
+  final DateTime today = DateTime.now();
+  final String todayDate = DateFormat('yyyy-MM-dd').format(today);
+  return todayDate;
+}
+
+String getYesterdayDateForNewsApi() {
+  final DateTime today = DateTime.now();
+  final DateTime yesterday = today.subtract(const Duration(days: 1));
+  final String yesterdayDate = DateFormat('yyyy-MM-dd').format(yesterday);
+  return yesterdayDate;
+}
+
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
 
 /// Get the date in MMM dd, yyyy format.

@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../../core/common/widgets/spaces.dart';
 import '../../../core/constants/constants.dart';
 import '../../../data/db/webview_db.dart';
-import '../../../data/local/home_data_provider.dart';
 import '../../viewModel/home_view_model.dart';
 import '../../viewModel/webview_view_model.dart';
 import '../../widgets/home/home_navigation_icons.dart';
-import '../../widgets/home/home_news_feed_widget.dart';
 import '../../widgets/home/home_quick_links_wrap_widget.dart';
 import '../../widgets/home/home_search_textfield.dart';
 import '../../widgets/home/more_options_menu_widget.dart';
+import '../../widgets/home/news_tree_widget.dart';
 import '../../widgets/home/responsive_title_widget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -31,16 +29,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _init();
   }
 
-  ScreenshotController screenshotController = ScreenshotController();
-
   void _init() async {
-    logger.success(const String.fromEnvironment("SALT"));
-    await Future(() async {
-      await webviewViewModel.init(
-          ref: ref, url: googleUrl, query: "", mounted: mounted);
-    });
     await webviewDB.addHomeScreenScreenShotBytes(screenshotController);
     await homeViewModel.logScreen();
+    await Future(() {
+      webviewViewModel.init(
+          ref: ref, url: googleUrl, query: "", mounted: mounted);
+    });
   }
 
   @override
@@ -56,30 +51,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   SingleChildScrollView body() {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             /// [Search Textfield]
-            const HomeSearchTextField(),
+            HomeSearchTextField(),
 
             /// [Quick links]
-            const HomeQuickLinkWrapWidget(),
+            HomeQuickLinkWrapWidget(),
 
             // Spacing
-            const VerticalSpace(height: 20),
+            VerticalSpace(height: 20),
 
             /// [News widget]
-            ...fakeNewsData.map(
-              (e) => NewsWidget(
-                image: e.image,
-                description: e.description,
-                redirectUrl: e.redirectUrl,
-              ),
-            ),
+            NewsContainer(),
           ],
         ),
       ),

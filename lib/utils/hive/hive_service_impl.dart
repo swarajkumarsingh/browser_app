@@ -7,6 +7,7 @@ class HiveServiceImpl extends HiveService {
   @override
   Future<void> init() async {
     await Hive.initFlutter();
+    await Hive.openBox(Constants.NEWS_BOX);
     await Hive.openBox(Constants.TABS_BOX);
     await Hive.openBox(Constants.HISTORY_BOX);
     await Hive.openBox(Constants.DARK_MODE_BOX);

@@ -5,6 +5,7 @@ import '../../../core/constants/constants.dart';
 import '../../widgets/settings/settings_download_screen_list_tile_widget.dart';
 import '../../widgets/settings/settings_history_screen_list_tile_widget.dart';
 import '../../widgets/settings/settings_made_in_india_title.dart';
+import '../../widgets/settings/settings_news_screen_list_tile_widget.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -32,6 +33,7 @@ class SettingsScreen extends StatelessWidget {
             DarkModeSwitchButtonWidget(),
             SettingsHistoryScreenListTile(),
             SettingsDownloadScreenListTile(),
+            SettingsNewsScreenListTile(),
             MadeInIndiaTitle(),
           ],
         ),

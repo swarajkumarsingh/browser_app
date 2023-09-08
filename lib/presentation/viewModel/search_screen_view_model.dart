@@ -1,4 +1,4 @@
-import 'package:browser_app/domain/repository/webview_repository.dart';
+import '../../domain/repository/webview_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_logger_plus/flutter_logger_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

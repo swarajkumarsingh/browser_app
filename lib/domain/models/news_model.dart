@@ -19,12 +19,15 @@ class News {
     required this.articles,
   });
 
-  factory News.fromJson(Map<String, dynamic> json) => News(
-        status: json["status"],
-        totalResults: json["totalResults"],
+  factory News.fromJson(Map<String, dynamic> jsonData) {
+  return News(
+        status: jsonData["status"],
+        totalResults: jsonData["totalResults"],
         articles: List<Article>.from(
-            json["articles"].map((x) => Article.fromJson(x))),
+            jsonData["articles"].map((x) => Article.fromJson(x))),
       );
+
+  }
 
   Map<String, dynamic> toJson() => {
         "status": status,

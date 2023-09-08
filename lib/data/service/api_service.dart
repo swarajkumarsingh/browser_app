@@ -8,4 +8,5 @@ abstract class ApiService {
   Future<Response> getHomeData();
   Future<Response> getImageHead(String url);
   Future<Response> getSuggestions(String keyword);
+  Future<Response> getNewsData(String url);
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-import '../db/webview_db.dart';
 import '../../domain/models/webview_model.dart';
+import '../db/webview_db.dart';
 
 final dataProvider = StateProvider<String>((ref) => "");
 final toggleMicIconProvider = StateProvider<bool>((ref) => false);

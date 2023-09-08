@@ -1,4 +1,4 @@
-import 'package:browser_app/utils/text_utils.dart';
+import '../../utils/text_utils.dart';
 import 'package:dio/dio.dart';
 
 import '../../core/config/config.dart';
@@ -17,4 +17,7 @@ class ApiServiceImpl extends ApiService {
   
   @override
   Future<Response> getSuggestions(String keyword) async => _api.get(textUtils.addGoogleSuggestionWithKeyword(keyword), options: Options(contentType: "text/xml"));
+  
+  @override
+  Future<Response> getNewsData(String url) async => _api.get(url);
 }

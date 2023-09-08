@@ -1,4 +1,4 @@
-import 'package:browser_app/data/data_source/offline/webview_offline_data_source.dart';
+import '../data_source/offline/webview_offline_data_source.dart';
 import 'package:dio/dio.dart';
 
 import '../../domain/repository/webview_repository.dart';

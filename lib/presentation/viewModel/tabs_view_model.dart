@@ -1,10 +1,10 @@
-import '../../data/db/webview_db.dart';
-import '../../domain/models/webview_model.dart';
-import '../../utils/preferences/preferences_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../core/constants/constants.dart';
+import '../../data/db/webview_db.dart';
+import '../../domain/models/webview_model.dart';
+import '../../utils/preferences/preferences_service.dart';
 
 final tabViewModel = _TabViewModel();
 

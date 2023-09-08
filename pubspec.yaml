@@ -97,6 +97,7 @@ dependencies:
   flutter_typeahead: ^4.6.2
   stack_trace: ^1.11.0
   xml: ^6.3.0
+  flutter_tts: ^3.8.2
 
 # Dev Dependencies
 dev_dependencies:
