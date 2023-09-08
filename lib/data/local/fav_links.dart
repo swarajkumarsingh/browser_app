@@ -6,13 +6,13 @@ List<Site> fakeFavoriteLinks = [
     imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2008px-Google_%22G%22_Logo.svg.png",
     redirectLink:
-        "https://images.pexels.com/photos/2607544/pexels-photo-2607544.jpeg?cs=srgb&dl=pexels-simona-kidri%C4%8D-2607544.jpg&fm=jpg",
+        "https://google.com",
   ),
   Site(
     text: "Instagram",
     imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png",
-    redirectLink: "https://files.an1.net/dr-driving-mod_1.70-an1.com.apk",
+        "https://cdn.pixabay.com/photo/2016/08/09/17/52/instagram-1581266_1280.jpg",
+    redirectLink: "https://instagram.com",
   ),
   Site(
     text: "Netflix",
@@ -59,7 +59,7 @@ List<Site> fakeFavoriteLinks = [
   Site(
     text: "Instagram",
     imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png",
+        "https://cdn.pixabay.com/photo/2016/08/09/17/52/instagram-1581266_1280.jpg",
     redirectLink: "https://instagram.com/",
   ),
 ];
