@@ -3,6 +3,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../utils/date/date_time_util.dart';
+import '../config/keys.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -12,8 +13,7 @@ ScreenshotController screenshotController = ScreenshotController();
 // Sentry config
 const int maxNumberOfRestartTries = 3;
 const String sentryEnvironment = "staging";
-const String sentryDSN =
-    "";
+const String sentryDSN = sentryDSN_;
 
 const googleUrl = "https://google.com";
 const apkDownloadLink =
@@ -21,14 +21,14 @@ const apkDownloadLink =
 const imageUrlLink =
     "https://images.pexels.com/photos/895259/pexels-photo-895259.jpeg?cs=srgb&dl=pexels-dominika-roseclay-895259.jpg&fm=jpg";
 
-const news_api_key = "";
-
+const news_api_key = news_api_key_;
 String newsApiUrl =
     "https://newsapi.org/v2/everything?q=tesla&from=${getYesterdayDateForNewsApi()}&sortBy=publishedAt&apiKey=$newsApiUrl";
-FlutterTts flutterTts = FlutterTts();
 const String newsTitleStatic = "Breaking News";
 const String newsImageStatic =
     "https://awlights.com/wp-content/uploads/sites/31/2017/05/placeholder-news.jpg";
+
+FlutterTts flutterTts = FlutterTts();
 
 class Constants {
   Constants._();
