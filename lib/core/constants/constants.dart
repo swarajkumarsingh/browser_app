@@ -1,8 +1,8 @@
+import 'package:browser_app/utils/date/date_time_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:screenshot/screenshot.dart';
 
-import '../../utils/date/date_time_util.dart';
 import '../config/keys.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
@@ -21,9 +21,8 @@ const apkDownloadLink =
 const imageUrlLink =
     "https://images.pexels.com/photos/895259/pexels-photo-895259.jpeg?cs=srgb&dl=pexels-dominika-roseclay-895259.jpg&fm=jpg";
 
-const news_api_key = news_api_key_;
 String newsApiUrl =
-    "https://newsapi.org/v2/everything?q=tesla&from=${getYesterdayDateForNewsApi()}&sortBy=publishedAt&apiKey=$newsApiUrl";
+    "https://newsapi.org/v2/everything?q=india&from=${getYesterdayDateForNewsApi()}&sortBy=publishedAt&apiKey=$news_api_key_";
 const String newsTitleStatic = "Breaking News";
 const String newsImageStatic =
     "https://awlights.com/wp-content/uploads/sites/31/2017/05/placeholder-news.jpg";

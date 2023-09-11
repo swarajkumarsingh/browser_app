@@ -39,11 +39,6 @@ class _Functions {
     required bool mounted,
     String query = "",
   }) async {
-    final controller = ref.watch(webviewControllerProvider);
-
-    if (controller == null) {
-      return;
-    }
 
     await webviewViewModel.init(
         ref: ref, url: url, query: query, mounted: mounted);

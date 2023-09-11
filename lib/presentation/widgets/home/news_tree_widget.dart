@@ -1,8 +1,9 @@
+import 'package:browser_app/data/service/api_service.dart';
+import 'package:browser_app/presentation/viewModel/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 
 import '../../../core/constants/constants.dart';
-import '../../../core/dio/api.dart';
 import '../../../domain/models/news_model.dart';
 import '../../view/news/news_details_screen.dart';
 import 'news_widget.dart';
@@ -15,12 +16,10 @@ class NewsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<News?> getNews() async {
-      final response = await Api().get(newsApiUrl);
-
+      final response = await apiService.getNewsData(newsApiUrl);
       if (response.statusCode == 200) {
         return News.fromJson(response.data);
       }
-
       return null;
     }
 
@@ -28,9 +27,12 @@ class NewsContainer extends StatelessWidget {
       future: getNews(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
+          homeViewModel.reportNewsFetchError(snapshot.error);
           return const Center(child: Text("No News Data"));
         }
         if (snapshot.hasData && snapshot.data == null) {
+          homeViewModel
+              .reportNewsFetchError("News API data null ${snapshot.data}");
           return const Center(child: Text("No News Data"));
         }
         if (snapshot.hasData) {

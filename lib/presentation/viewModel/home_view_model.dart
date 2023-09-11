@@ -1,3 +1,4 @@
+import 'package:browser_app/core/error_tracker/error_tracker.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 
 import '../../core/event_tracker/event_tracker.dart';
@@ -9,6 +10,10 @@ final homeViewModel = _HomeViewModel();
 class _HomeViewModel {
   Future<void> logScreen() async {
     await eventTracker.screen("home-screen");
+  }
+
+  void reportNewsFetchError(dynamic error) async {
+    await errorTracker.log(error.toString());
   }
 
   void navigateToHistoryScreen() {
