@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import '../core/constants/strings.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 import '../core/common/snackbar/show_snackbar.dart';
 import '../core/constants/constants.dart';
+import '../core/constants/strings.dart';
 
 final tts = _TTS(flutterTts);
 

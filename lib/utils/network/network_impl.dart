@@ -8,10 +8,8 @@ class NetworkUtilsImpl extends NetworkUtils {
   Stream<ConnectivityResult> connectChangeListener() async* {
     final Connectivity connectivity = Connectivity();
 
-    // 遍历onConnectivityChanged 构成的 Stream<ConnectivityResult>
     await for (final ConnectivityResult result
         in connectivity.onConnectivityChanged) {
-      // 状态发生改变后将状态值添加到Stream数据流中
       yield result;
     }
   }
@@ -20,10 +18,8 @@ class NetworkUtilsImpl extends NetworkUtils {
   Future<int> getNetworkStatus() async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
-      // 网络类型为移动网络
       return 1;
     } else if (connectivityResult == ConnectivityResult.wifi) {
-      // 网络类型为WIFI
       return 2;
     } else {
       return 0;

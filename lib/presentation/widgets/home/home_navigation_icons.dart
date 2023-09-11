@@ -4,7 +4,7 @@ import 'package:flutter_approuter/flutter_approuter.dart';
 import '../../../core/common/widgets/toast.dart';
 import '../../view/settings/settings_screen.dart';
 import '../../view/tab/tab_screen.dart';
-import '../../viewModel/home_view_model.dart';
+import '../../viewModel/home_screen_view_model.dart';
 
 class PlusNavigationIcon extends StatelessWidget {
   const PlusNavigationIcon({

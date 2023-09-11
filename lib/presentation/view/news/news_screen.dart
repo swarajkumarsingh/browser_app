@@ -1,9 +1,26 @@
+import '../../viewModel/news_screen_view_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../widgets/home/news_tree_widget.dart';
+import '../../widgets/home/news_container.dart';
 
-class NewsScreen extends StatelessWidget {
+class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
+
+  @override
+  State<NewsScreen> createState() => _NewsScreenState();
+}
+
+class _NewsScreenState extends State<NewsScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  void _init() async {
+    await newsViewModel.logScreen();
+  }
 
   @override
   Widget build(BuildContext context) {

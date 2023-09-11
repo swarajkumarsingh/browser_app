@@ -7,7 +7,7 @@ import 'package:xml/xml.dart';
 
 import '../../data/provider/state_providers.dart';
 import '../../presentation/view/webview/webview_screen.dart';
-import '../../presentation/viewModel/webview_view_model.dart';
+import '../../presentation/viewModel/webview_screen_view_model.dart';
 
 final functions = _Functions();
 

@@ -51,8 +51,11 @@ class NewsPublishedAtWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       "Date: ${widget.publishedAt}",
-      style:
-          const TextStyle(color: Color.fromARGB(255, 81, 81, 81), fontSize: 15),
+      style: TextStyle(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white70
+              : const Color.fromARGB(255, 81, 81, 81),
+          fontSize: 15),
     );
   }
 }
@@ -69,8 +72,12 @@ class NewsAuthorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       "Author: ${widget.author}",
-      style:
-          const TextStyle(color: Color.fromARGB(255, 81, 81, 81), fontSize: 15),
+      style: TextStyle(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white70
+            : const Color.fromARGB(255, 81, 81, 81),
+        fontSize: 15,
+      ),
     );
   }
 }
@@ -87,9 +94,11 @@ class NewsDescWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       widget.description,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 18,
-        color: Colors.black,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white70
+            : Colors.black,
         fontWeight: FontWeight.w400,
       ),
     );
@@ -107,15 +116,16 @@ class MoreOnThisNewsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      // TODO
       // onTap: () => urlLauncher.launchURL(widget.link),
       child: RichText(
         text: TextSpan(
           text: 'More on this news: ',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white70
+                : Colors.black,
           ),
           children: [
             TextSpan(

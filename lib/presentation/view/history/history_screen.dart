@@ -3,8 +3,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../utils/hive/hive_service.dart';
-import '../../viewModel/history_view_model.dart';
+import '../../viewModel/history_screen_view_model.dart';
 import '../../widgets/history/history_column_widget.dart';
+import '../../widgets/history/more_options_widget.dart';
 import '../../widgets/history/no_history_widget.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -29,41 +30,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: historyAppBar(),
-      body: historyBody(),
+      appBar: appBar(),
+      body: body(),
     );
   }
 
-  AppBar historyAppBar() {
+  AppBar appBar() {
     return AppBar(
       title: const Text("History"),
       elevation: 0,
       scrolledUnderElevation: 0,
       backgroundColor: Theme.of(context).primaryColor,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.search),
-        ),
-        PopupMenuButton(
-          elevation: 1,
-          surfaceTintColor: Colors.grey,
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              child: const Text("Delete All"),
-              onTap: () async => historyViewModel.deleteAll(),
-            ),
-            PopupMenuItem(
-              child: const Text("Delete Today's History"),
-              onTap: () async => historyViewModel.deleteTodayHistory(),
-            ),
-          ],
-        ),
+      actions: const [
+        MoreOptionsWidget(),
       ],
     );
   }
 
-  SingleChildScrollView historyBody() {
+  SingleChildScrollView body() {
     return SingleChildScrollView(
       child: ValueListenableBuilder<Box>(
         valueListenable: Hive.box(Constants.HISTORY_BOX).listenable(),

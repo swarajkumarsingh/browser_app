@@ -41,7 +41,6 @@ class _DownloadViewModel {
     final success = await downloaderDB.deleteSingleDownloadInfoToDB(key);
     if (!success) {
       maxDeleteReties = maxDeleteReties + 1;
-
       if (maxDeleteReties <= 3) {
         return;
       }

@@ -1,3 +1,5 @@
+import '../../../core/common/widgets/toast.dart';
+import '../../../core/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -80,6 +82,10 @@ class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
     final clipBoardText = ref.watch(clipBoardProvider);
     return ListTile(
       onTap: () {
+        if (textUtils.isEmpty(clipBoardText)) {
+          showToast("No text copied");
+          return;
+        }
         functions.navigateToWebviewScreen(
           ref: ref,
           url: clipBoardText,
@@ -95,7 +101,7 @@ class _SearchScreenWebviewState extends ConsumerState<SearchScreenWebview> {
         softWrap: true,
       ),
       subtitle: Text(
-        textUtils.isEmpty(clipBoardText) ? widget.url : clipBoardText,
+        textUtils.isEmpty(clipBoardText) ? Strings.noTextCopied : clipBoardText,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         softWrap: true,

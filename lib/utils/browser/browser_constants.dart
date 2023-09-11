@@ -45,8 +45,6 @@ class _BrowserConstants {
     ".flv",
     ".gif",
     ".gz",
-    ".htm",
-    ".html",
     ".ico",
     ".ico",
     ".indd",

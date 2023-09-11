@@ -1,6 +1,7 @@
+import 'package:hive_flutter/hive_flutter.dart';
+
 import '../../core/constants/constants.dart';
 import '../../domain/models/news_model.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 final homeDB = _HomeDB();
 
@@ -8,7 +9,7 @@ class _HomeDB {
   Future<bool> saveNews(News news) async {
     final box = Hive.box(Constants.NEWS_BOX);
 
-    if (!box.isOpen ) {
+    if (!box.isOpen) {
       return false;
     }
 

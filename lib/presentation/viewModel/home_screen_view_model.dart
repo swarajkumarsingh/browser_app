@@ -1,4 +1,4 @@
-import 'package:browser_app/core/error_tracker/error_tracker.dart';
+import '../../core/error_tracker/error_tracker.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 
 import '../../core/event_tracker/event_tracker.dart';

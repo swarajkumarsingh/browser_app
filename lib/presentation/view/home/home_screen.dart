@@ -5,13 +5,13 @@ import 'package:screenshot/screenshot.dart';
 import '../../../core/common/widgets/spaces.dart';
 import '../../../core/constants/constants.dart';
 import '../../../data/db/webview_db.dart';
-import '../../viewModel/home_view_model.dart';
-import '../../viewModel/webview_view_model.dart';
+import '../../viewModel/home_screen_view_model.dart';
+import '../../viewModel/webview_screen_view_model.dart';
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/home/home_quick_links_wrap_widget.dart';
 import '../../widgets/home/home_search_textfield.dart';
 import '../../widgets/home/more_options_menu_widget.dart';
-import '../../widgets/home/news_tree_widget.dart';
+import '../../widgets/home/news_container.dart';
 import '../../widgets/home/responsive_title_widget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -23,7 +23,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  @override
   @override
   void initState() {
     super.initState();

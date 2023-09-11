@@ -1,23 +1,23 @@
+import 'package:browser_app/core/common/widgets/spaces.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
-import 'package:share_plus/share_plus.dart';
 
-import '../../../core/common/snackbar/show_snackbar.dart';
-import '../../../core/common/widgets/drop_menu.dart';
 import '../../../domain/enums/tts_status_enums.dart';
 import '../../../utils/tts.dart';
+import '../../viewModel/news_screen_view_model.dart';
 import '../../widgets/news/news_widgets.dart';
 
 class NewsDetailsScreen extends StatefulWidget {
-  const NewsDetailsScreen(
-      {super.key,
-      required this.image,
-      required this.title,
-      required this.description,
-      required this.link,
-      required this.author,
-      required this.publishedAt,
-      required this.content});
+  const NewsDetailsScreen({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.description,
+    required this.link,
+    required this.author,
+    required this.publishedAt,
+    required this.content,
+  });
 
   final String author;
   final String content;
@@ -30,7 +30,6 @@ class NewsDetailsScreen extends StatefulWidget {
   @override
   State<NewsDetailsScreen> createState() => _NewsDetailsScreenState();
 }
-
 
 class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
   PlayStatus _status = PlayStatus.paused;
@@ -57,15 +56,6 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
     }
   }
 
-  Future<void> shareApp() async {
-    try {
-      const url = "https://github.com/swarajkumarsingh/browser_app";
-      await Share.share("Share this app $url");
-    } catch (e) {
-      showSnackBar("Unable to share, Please try again later.");
-    }
-  }
-
   void _toggleStatus() {
     setState(() {
       _status = _status == PlayStatus.playing
@@ -83,7 +73,7 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
 
   Future<void> _startNewsAudioImpl() async {
     final String content =
-        "${widget.title}.  ${widget.description} news reported by ${widget.author} more on this news click the link below";
+        "${widget.title}.  ${widget.description} news reported by ${widget.author} more on this News. Click the link below";
 
     _toggleStatus();
     await tts.speak(content);
@@ -94,73 +84,94 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
       await tts.pause();
       return _toggleStatus();
     }
-
     await _toggleIconWhenAudioCompleted();
-
     await _startNewsAudioImpl();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          widget.title,
-          style: const TextStyle(color: Colors.black),
+      appBar: appBar(),
+      backgroundColor: Theme.of(context).primaryColor,
+      body: body(),
+      floatingActionButton: floatingActionButton(),
+    );
+  }
+
+  FloatingActionButton floatingActionButton() {
+    return FloatingActionButton.extended(
+      label: const Text("Speak"),
+      tooltip: "Speak",
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? Colors.deepPurple
+          : const Color.fromARGB(255, 198, 197, 197),
+      onPressed: () async => _startNewsAudio(),
+      icon: Icon(_getIcon(), color: Colors.black),
+    );
+  }
+
+  SingleChildScrollView body() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            NewsImageWidget(widget: widget),
+            const VerticalSpace(height: 20),
+            NewsTitleWidget(widget: widget),
+            const VerticalSpace(height: 20),
+            NewsPublishedAtWidget(widget: widget),
+            NewsAuthorWidget(widget: widget),
+            const VerticalSpace(height: 20),
+            NewsDescWidget(widget: widget),
+            const Divider(),
+            MoreOnThisNewsWidget(widget: widget)
+          ],
         ),
-        leading: InkWell(
-          onTap: () => appRouter.pop(),
-          child: const Icon(
-            Icons.keyboard_backspace_outlined,
-            size: 30,
-            color: Colors.black,
-          ),
+      ),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      backgroundColor: Theme.of(context).primaryColor,
+      iconTheme: IconThemeData(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.white70
+            : Colors.black,
+      ),
+      elevation: 0,
+      title: Text(
+        widget.title,
+        style: TextStyle(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white70
+              : Colors.black,
         ),
-        actions: [
-          InkWell(
-            onTap: () async => await shareApp(),
-            child: Container(
-              margin: const EdgeInsets.only(right: 16),
-              child: const Icon(
-                Icons.share_outlined,
-                size: 25,
-                color: Colors.black,
-              ),
+      ),
+      leading: InkWell(
+        onTap: () => appRouter.pop(),
+        child: const Icon(
+          Icons.keyboard_backspace_outlined,
+          size: 30,
+        ),
+      ),
+      actions: [
+        InkWell(
+          onTap: () async => await newsViewModel.shareApp(),
+          child: Container(
+            margin: const EdgeInsets.only(right: 16),
+            child: Icon(
+              Icons.share_outlined,
+              size: 25,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white70
+                  : Colors.black,
             ),
           ),
-          const DropMenu(),
-        ],
-      ),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              NewsImageWidget(widget: widget),
-              const SizedBox(height: 20),
-              NewsTitleWidget(widget: widget),
-              const SizedBox(height: 20),
-              NewsPublishedAtWidget(widget: widget),
-              NewsAuthorWidget(widget: widget),
-              const SizedBox(height: 20),
-              NewsDescWidget(widget: widget),
-              const Divider(),
-              MoreOnThisNewsWidget(widget: widget)
-            ],
-          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: const Text("Speak"),
-        tooltip: "Speak",
-        backgroundColor: const Color.fromARGB(255, 198, 197, 197),
-        onPressed: () async => _startNewsAudio(),
-        icon: Icon(_getIcon(), color: Colors.black),
-      ),
+      ],
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/provider/state_providers.dart';
-import '../../viewModel/webview_view_model.dart';
+import '../../viewModel/webview_screen_view_model.dart';
 import '../../widgets/home/home_navigation_icons.dart';
 import '../../widgets/home/more_options_menu_widget.dart';
 import '../../widgets/search/search_navigation_icons.dart';

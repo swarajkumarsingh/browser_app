@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../domain/models/history_model.dart';
 import '../../../utils/functions/functions.dart';
-import '../../viewModel/history_view_model.dart';
+import '../../viewModel/history_screen_view_model.dart';
 
 class HistoryListTileWidget extends ConsumerWidget {
   final Box<dynamic> box;

@@ -1,11 +1,12 @@
-import 'package:browser_app/data/service/api_service.dart';
-import 'package:browser_app/presentation/viewModel/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_approuter/flutter_approuter.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../domain/models/news_model.dart';
+import '../../../utils/text_utils.dart';
 import '../../view/news/news_details_screen.dart';
+import '../../viewModel/home_screen_view_model.dart';
+import '../../viewModel/news_screen_view_model.dart';
 import 'news_widget.dart';
 
 class NewsContainer extends StatelessWidget {
@@ -15,24 +16,11 @@ class NewsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<News?> getNews() async {
-      final response = await apiService.getNewsData(newsApiUrl);
-      if (response.statusCode == 200) {
-        return News.fromJson(response.data);
-      }
-      return null;
-    }
-
     return FutureBuilder<News?>(
-      future: getNews(),
+      future: newsViewModel.getNews(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) {
+        if (snapshot.hasError || textUtils.isEmpty(snapshot.data.toString())) {
           homeViewModel.reportNewsFetchError(snapshot.error);
-          return const Center(child: Text("No News Data"));
-        }
-        if (snapshot.hasData && snapshot.data == null) {
-          homeViewModel
-              .reportNewsFetchError("News API data null ${snapshot.data}");
           return const Center(child: Text("No News Data"));
         }
         if (snapshot.hasData) {

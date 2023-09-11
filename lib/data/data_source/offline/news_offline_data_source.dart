@@ -3,8 +3,8 @@ import '../../../domain/models/news_model.dart';
 
 import '../../remote/remote_response.dart';
 
-class HomeOfflineDataSource {
-  RemoteResponse<News> getNewsData() {
+class NewsOfflineDataSource {
+  static RemoteResponse<News> getNewsData() {
     final model = homeDB.getNews();
     if (model == null) {
       return RemoteResponse.somethingWentWrong();

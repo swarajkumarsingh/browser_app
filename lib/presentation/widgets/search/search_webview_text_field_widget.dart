@@ -40,8 +40,7 @@ class SearchScreenTextfieldWidget extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
           suffixIcon: IconButton(
               icon: const Icon(Icons.clear),
-              onPressed: () async =>
-                  searchScreenViewModel.onTap(ref: ref)),
+              onPressed: () => _textEditingController.clear()),
           border: const OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(

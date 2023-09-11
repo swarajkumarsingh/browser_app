@@ -1,4 +1,4 @@
-import 'package:browser_app/utils/date/date_time_util.dart';
+import '../../utils/date/date_time_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:screenshot/screenshot.dart';

@@ -1,8 +1,8 @@
-import '../../utils/text_utils.dart';
 import 'package:dio/dio.dart';
 
 import '../../core/config/config.dart';
 import '../../core/dio/api.dart';
+import '../../utils/text_utils.dart';
 import 'api_service.dart';
 
 class ApiServiceImpl extends ApiService {

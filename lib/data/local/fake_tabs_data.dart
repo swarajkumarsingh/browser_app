@@ -1,5 +1,5 @@
-import '../db/webview_db.dart';
 import '../../domain/models/webview_model.dart';
+import '../db/webview_db.dart';
 
 List<WebViewModel> fakeTabsData = <WebViewModel>[
   WebViewModel(

@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:xml/xml.dart' as xml;
 
-import '../../../utils/browser/browser_utils.dart';
 import '../../../utils/text_utils.dart';
-import '../../remote/remote_response.dart';
 import '../../service/api_service.dart';
+import '../../remote/remote_response.dart';
+import '../../../utils/browser/browser_utils.dart';
 
 class WebviewOnlineDataSource {
   Future<RemoteResponse<Response>> getUrlData({required String url}) async {

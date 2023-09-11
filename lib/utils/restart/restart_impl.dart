@@ -9,6 +9,8 @@ import 'restart.dart';
 import 'restart_widget.dart';
 
 class RestartClassImpl extends RestartClass {
+  int numOfRetries = 0;
+
   @override
   Future<bool?> restart() async {
     final bool result = await Restart.restartApp();
@@ -20,8 +22,6 @@ class RestartClassImpl extends RestartClass {
 
   @override
   void silentRestart([BuildContext? context]) {
-    int numOfRetries = 0;
-
     /*
      * Some errors occurs every time, and in that case restart app goes to an infinite loop,
      * to prevent that we take a track of restart and if it exceeds the number, we exit the app.
@@ -37,12 +37,14 @@ class RestartClassImpl extends RestartClass {
         numOfRetries++;
         return;
       }
+
       final BuildContext? secondaryContext = genericDataProvider.getContext();
       if (secondaryContext != null) {
         RestartWidget.restartApp(secondaryContext);
         numOfRetries++;
         return;
       }
+      
       numOfRetries++;
       restart();
       return;
