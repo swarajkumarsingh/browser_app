@@ -93,10 +93,17 @@ dependencies:
 
   # screenshot provider
   screenshot: ^2.1.0
+
+  # Speech to text
   speech_to_text: ^6.3.0
+
+  # Flutter text_field
   flutter_typeahead: ^4.6.2
-  stack_trace: ^1.11.0
+
+  # XML parser
   xml: ^6.3.0
+
+  # Text to Speech
   flutter_tts: ^3.8.2
 
 # Dev Dependencies
@@ -115,11 +122,18 @@ dev_dependencies:
   # Flutter Lints
   flutter_lints: ^2.0.0
 
+  # Generate Splash Screen
+  flutter_native_splash: ^2.3.2
+
 # FLutter launcher icon config
 flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/images/icon.png"
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/logo.png
 
 # Flutter config
 flutter:

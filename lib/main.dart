@@ -1,11 +1,10 @@
 import 'dart:io';
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 import 'my_app.dart';
 import 'utils/orientation.dart';
@@ -32,10 +31,5 @@ Future<void> _init() async {
     await FlutterDisplayMode.setHighRefreshRate();
     await setPreferredOrientations();
     runApp(const AppWrapper());
-    FlutterError.demangleStackTrace = (StackTrace stack) {
-      if (stack is stack_trace.Trace) return stack.vmTrace;
-      if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
-      return stack;
-    };
   }, errorTracker.captureError);
 }
