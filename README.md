@@ -12,7 +12,7 @@
   <img src="./assets/images/logo.png" alt="App Logo" />
 </div>
 
-Welcome to the Awesome Flutter Browser App repository! This open-source project aims to provide a powerful, feature-rich browser experience built with Flutter. We encourage and welcome contributions from the community to help make this project even better.
+Welcome to the Browser App repository! This open-source project aims to provide a powerful, feature-rich browser experience built with Flutter. We encourage and welcome contributions from the community to help make this project even better.
 
 ## Table of Contents
 
@@ -24,7 +24,7 @@ Welcome to the Awesome Flutter Browser App repository! This open-source project 
 
 ## Introduction
 
-The Awesome Flutter Browser App is a versatile web browser built using Flutter. It offers a user-friendly interface and a wide range of features, making it a powerful alternative to popular browsers like Chrome. Whether you want to browse the web, manage your downloads, listen to news articles, or utilize speech-to-text and text-to-speech capabilities, this app has you covered.
+The Awesome Flutter Browser App is a versatile web browser built using Flutter. It offers a user-friendly interface and a wide range of features, making it a powerful alternative to popular browsers like Chrome. Whether you want to browse the web, manage your downloads, listen to news articles, or utilize speech-to-text, real-time text suggestions like Chrome and text-to-speech capabilities, this app has you covered.
 
 ## Features
 
@@ -33,30 +33,35 @@ The Awesome Flutter Browser App is a versatile web browser built using Flutter. 
 - Browse websites with a clean and intuitive user interface.
 - Navigate seamlessly with a powerful URL bar and tab management.
 
-### 2. View History
+### 2. Search Suggestions
+- Real-time text suggestions like Chrome.
 
 - Access your browsing history
 
-### 3. View Downloads
+### 3. View History
+
+- Access your browsing history
+
+### 4. View Downloads
 
 - Easily manage your downloaded files from within the app.
 - Monitor download progress and file details.
 
-### 4. News Screen with Text-to-Speech
+### 5. News Screen with Text-to-Speech
 
 - Stay updated with the latest news articles.
 - Enjoy text-to-speech functionality to have articles read aloud.
 
-### 5. Speech-to-Text and Text-to-Speech
+### 6. Speech-to-Text and Text-to-Speech
 
 - Convert speech into text for quick searches.
 - Listen to web content using text-to-speech technology.
 
-### 6. Customizable Settings
+### 7. Customizable Settings
 
 - Tailor the app to your preferences with various customizable settings.
 
-### 7. Open for Contributions
+### 8. Open for Contributions
 
 - We welcome contributions from the open-source community.
 - Feel free to report issues, suggest enhancements, or submit pull requests.
