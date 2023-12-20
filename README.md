@@ -95,16 +95,16 @@ Thank you for considering contributing to the Awesome Flutter Browser App! We ho
 
 <!-- Add screenshots, GIFs, or demo links here for a more interactive experience -->
 <div align="center">
-<img src="./.github/screenshots/IMG-20230910-WA0002.jpg" alt="App Screenshot 0" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0001.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0003.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0004.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0005.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0006.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0007.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0008.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0009.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0010.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0011.jpg" alt="App Screenshot 1" width="300"/>
-<img src="./.github/screenshots/IMG-20230910-WA0012.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075348/yxkzqc9mby9rn6luotxz.jpg" alt="App Screenshot 0" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075348/nenunuclf3goo9keyvyf.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075348/jsv7y1h27halqqlktw1k.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075348/f4cvwjftntqqybvnsaho.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075348/hfwpa1kqyrzvikvsfyda.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075348/emw8jffmkdy5zr0ogbyf.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075350/uvhmt533ftkkx6gdwctv.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075349/cx2mbczhgc8jfoq5imce.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075348/kiv1fpyfhn8pnpfnm7wu.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075349/iwf7zvex7oxu1fiun2j6.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075349/xm9wpg3isey1rugezxxb.jpg" alt="App Screenshot 1" width="300"/>
+<img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075348/iax3kbm3vamdpjwhicpr.jpg" alt="App Screenshot 1" width="300"/>
 </div>
