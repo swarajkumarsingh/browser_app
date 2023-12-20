@@ -9,7 +9,7 @@
 # Browser App | Flutter
 
 <div align="center">
-  <img src="./assets/images/logo.png" alt="App Logo" />
+  <img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075722/t5pqpjrmxi92kuntwfi1.png" alt="App Logo" />
 </div>
 
 Welcome to the Browser App repository! This open-source project aims to provide a powerful, feature-rich browser experience built with Flutter. We encourage and welcome contributions from the community to help make this project even better.
