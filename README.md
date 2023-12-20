@@ -95,16 +95,16 @@ Thank you for considering contributing to the Awesome Flutter Browser App! We ho
 
 <!-- Add screenshots, GIFs, or demo links here for a more interactive experience -->
 <div align="center">
-<img src=".github/screenshots/IMG-20230910-WA0002.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0001.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0003.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0004.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0005.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0006.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0007.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0008.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0009.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0010.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0011.jpg" alt="App Screenshot 1" width="300"/>
-<img src=".github/screenshots/IMG-20230910-WA0012.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0002.jpg" alt="App Screenshot 0" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0001.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0003.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0004.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0005.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0006.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0007.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0008.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0009.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0010.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0011.jpg" alt="App Screenshot 1" width="300"/>
+<img src="./.github/screenshots/IMG-20230910-WA0012.jpg" alt="App Screenshot 1" width="300"/>
 </div>
