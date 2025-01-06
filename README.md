@@ -93,6 +93,12 @@ This project is licensed under the [MIT License](LICENSE). Feel free to use, mod
 
 Thank you for considering contributing to the Awesome Flutter Browser App! We hope you find this project exciting and look forward to collaborating with you to make it even more awesome. If you have any questions or need assistance, please don't hesitate to reach out to us. Happy browsing!
 
+[![Video Title](https://cdn.pixabay.com/photo/2023/01/08/14/22/sample-7705346_640.jpg)](https://github.com/user-attachments/assets/c28f975d-8fd1-4d97-b1a9-11c4d81c980e)
+
+
+
+
+
 <!-- Add screenshots, GIFs, or demo links here for a more interactive experience -->
 <div align="center">
 <img src="https://res.cloudinary.com/swaraj-cloud/image/upload/v1703075348/yxkzqc9mby9rn6luotxz.jpg" alt="App Screenshot 0" width="300"/>
